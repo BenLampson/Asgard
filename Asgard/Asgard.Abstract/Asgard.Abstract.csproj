@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<OutputType>Library</OutputType>
+		<Version>3.0.0</Version>
+		<Title>Asgard Framework</Title>
+		<Authors>BenLampson</Authors>
+		<Company>BenLampson</Company>
+		<Product>Asgard</Product>
+		<Description>Asgard .Net Framework</Description>
+		<Copyright>Copyright 2025 MuDou.tech</Copyright>
+		<PackageProjectUrl>https://github.com/BenLampson/Asgard</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/BenLampson/Asgard</RepositoryUrl>
+		<RepositoryType>GitHub</RepositoryType>
+		<PackageTags>.netcore;MuDou;AI;Asgard;Container</PackageTags>
+		<IsPackable>true</IsPackable>
+		<PackageReleaseNotes>Asgard.Abstract 是阿斯加德框架（Asgard Framework）中的一个核心抽象层，主要用于定义系统的基础接口和模型，为整个框架的扩展和实现提供标准化的基础。该项目采用 .NET 8，设计目标是实现高可扩展性、高可维护性和模块化的企业级应用开发。</PackageReleaseNotes>
+		<PackageId>Asgard.Abstract</PackageId>
+		<PackageIcon>logo.png</PackageIcon>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Update="logo.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+ 
+ 
+
+</Project>

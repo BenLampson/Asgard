@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FreeSql" Version="3.5.213" />
+    <PackageReference Include="FreeSql.DbContext" Version="3.5.213" />
+    <PackageReference Include="FreeSql.Extensions.JsonMap" Version="3.5.213" />
+    <PackageReference Include="FreeSql.Extensions.Linq" Version="3.5.213" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
+  </ItemGroup>
+
+</Project>
