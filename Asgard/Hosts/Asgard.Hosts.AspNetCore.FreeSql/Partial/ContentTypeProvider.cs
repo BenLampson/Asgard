@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.StaticFiles;
 
-namespace Asgard.Hosts.AspNetCore.FreeSql.Partial
+namespace Asgard.Hosts.AspNetCore.FreeSql
 {
 
     /// <summary>

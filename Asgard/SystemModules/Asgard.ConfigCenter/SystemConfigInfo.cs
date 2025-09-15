@@ -17,6 +17,15 @@ namespace Asgard.ConfigCenter
         /// <returns></returns>
         public static List<SystemConfig>? GetConfig(AsgardContext<IFreeSql> context)
         {
+            if (context.Cache is null)
+            {
+                if (context.DB.Default is null)
+                {
+                    return new List<SystemConfig>();
+                }
+                var allConfigs = context.DB.Default.Select<SystemConfig>().ToList();
+                return allConfigs;
+            }
             return context.Cache.GetOrSet($"SystemConfigCenter", () =>
               {
                   if (context.DB.Default is null)
@@ -40,6 +49,10 @@ namespace Asgard.ConfigCenter
         /// <param name="context"></param>
         public static void RefreshCache(AsgardContext<IFreeSql> context)
         {
+            if (context.Cache is null)
+            {
+                return;
+            }
             context.Cache.Remove("SystemConfigCenter");
             _ = GetConfig(context);
         }

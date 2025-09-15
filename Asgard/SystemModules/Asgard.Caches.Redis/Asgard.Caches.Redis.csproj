@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
+    <ProjectReference Include="..\..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" />
+  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Caching.CSRedis" Version="3.8.800" /> 
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.5" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.5" />  
+	</ItemGroup>
+</Project>

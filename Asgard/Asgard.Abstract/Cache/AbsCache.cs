@@ -27,7 +27,7 @@ namespace Asgard.Abstract.Cache
         /// <typeparam name="T">目标类型</typeparam>
         /// <param name="key">key</param> 
         /// <returns>从缓存获取的值,可能为空</returns>
-        public abstract T? TryGet<T>(string key);
+        public abstract T? TryGet<T>(string key) where T : class;
 
         /// <summary>
         /// 根据key获取某一个缓存,自己用优先级判定
@@ -86,7 +86,7 @@ namespace Asgard.Abstract.Cache
         /// <param name="onSet">当获取不到的时候从哪获取值</param>
         /// <param name="settings">过期时间</param> 
         /// <returns></returns>
-        public T GetOrSet<T>(string key, Func<T> onSet, CacheItemSettings settings)
+        public T GetOrSet<T>(string key, Func<T> onSet, CacheItemSettings settings) where T : class
         {
             var res = TryGet<T>(key);
             if (res is not null)

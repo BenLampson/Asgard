@@ -1,13 +1,12 @@
 ﻿using System.Net;
 
-using ShangShuSheng.Core.ContextModules;
-using ShangShuSheng.Core.ContextModules.Cache;
-using ShangShuSheng.Core.ContextModules.ConfigCenter;
-using ShangShuSheng.Core.ContextModules.DB;
-using ShangShuSheng.Core.ContextModules.Logger;
-using ShangShuSheng.Core.ContextModules.Logger.Models;
+using Asgard.Abstract;
+using Asgard.Abstract.Models.AsgardConfig.ChildConfigModel.LogConfig;
+using Asgard.Caches.Redis;
+using Asgard.ConfigCenter;
+using Asgard.DataBaseManager.FreeSql;
 
-namespace Asgard.Hosts.AspNetCore
+namespace Asgard.Hosts.AspNetCore.FreeSql
 {
     /// <summary>
     /// 一个内阁系统的管理器,你可以利用该系统快速启动项目
@@ -20,24 +19,23 @@ namespace Asgard.Hosts.AspNetCore
         /// </summary>
         public void StartConfigCenterPartial()
         {
-            var consoleLoggerProvider = LoggerProvider.CreateConsoleLogProvider(LogLevelEnum.Trace);
+            var consoleLoggerProvider = Asgard.Logger.FreeSqlProvider.LoggerProvider.CreateConsoleLogProvider(LogLevelEnum.Trace);
             //如果不是自宿主,直接走
             if (NodeConfig.Value.ConfigCenter.SelfHostConfigCenter)
             {
 
-                var configCenterDbManager = new DataBaseManager(consoleLoggerProvider
-                    , NodeConfig);
+                var configCenterDbManager = new FreeSqlManager(consoleLoggerProvider
+                    , NodeConfig.Value);
                 var configCenterCacheManager = new CacheManager(consoleLoggerProvider);
                 configCenterCacheManager.PushRedis(NodeConfig.Value.RedisConfig.GetConnStr(), consoleLoggerProvider.CreateLogger<CacheManager>());
 
-                var configCenterContext = new ShangShuShengContext(
-                     cache: configCenterCacheManager
+                var configCenterContext = new AsgardContext<IFreeSql>(
+                      nodeConfig: NodeConfig.Value
                      , loggerProvider: consoleLoggerProvider
+                     , cache: configCenterCacheManager
                      , db: configCenterDbManager
-                     , plugin: new(consoleLoggerProvider)
                      , mq: null
                      , auth: null
-                     , nodeConfig: NodeConfig
                      , eventID: Guid.NewGuid().ToString("N")
                      , createNewContext: null
                 );

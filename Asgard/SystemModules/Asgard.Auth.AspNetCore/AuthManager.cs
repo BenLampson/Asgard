@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Text;
 
+using Asgard.Abstract.Auth;
 using Asgard.Abstract.Models.AsgardUserInfo;
 using Asgard.Extends.Json;
 using Asgard.Tools;
@@ -11,14 +12,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Asgard.Auth.AspNetCore
 {
-    public class AuthManager
+    public class AuthManager : AbsAuthManager
     {
-        private readonly byte[] _jwtKey;
         private readonly JwtSecurityTokenHandler _hander = new();
         private readonly TokenValidationParameters _validationParams;
         private readonly SigningCredentials _signingCredentials;
-        private readonly string _audience;
-        private readonly string _issuer;
 
         /// <summary>
         /// 构造函数
@@ -26,13 +24,10 @@ namespace Asgard.Auth.AspNetCore
         /// <param name="jwtKey">密钥RSA512</param>
         /// <param name="issuer">颁发人</param>
         /// <param name="audience">听众</param> 
-        public AuthManager(string jwtKey, string issuer, string audience)
+        public AuthManager(string jwtKey, string issuer, string audience) : base(jwtKey, issuer, audience)
         {
             IdentityModelEventSource.ShowPII = true;
-            _audience = audience;
-            _issuer = issuer;
-            _jwtKey = Convert.FromBase64String(jwtKey);
-            var key = new SymmetricSecurityKey(_jwtKey);
+            var key = new SymmetricSecurityKey(Convert.FromBase64String(_jwtKey));
             _signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             _validationParams = new TokenValidationParameters()
             {
@@ -43,7 +38,7 @@ namespace Asgard.Auth.AspNetCore
                 ValidIssuer = issuer,
                 ConfigurationManager = null,
                 ValidAudience = audience,
-                IssuerSigningKey = new SymmetricSecurityKey(_jwtKey),
+                IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(_jwtKey)),
                 ClockSkew = TimeSpan.FromSeconds(20), // 可选：允许 nbf/exp 最多偏移 20 秒 
             };
         }
@@ -52,7 +47,7 @@ namespace Asgard.Auth.AspNetCore
         /// <summary>
         /// 解密获取某一个用户信息
         /// </summary>
-        public bool TryGetUserInfo(string rawToken, out UserInfo? userInfo, out string? jti, out TokenType type)
+        public override bool TryGetUserInfo(string rawToken, out UserInfo? userInfo, out string? jti, out TokenType type)
         {
             jti = null;
             userInfo = null;
@@ -106,7 +101,7 @@ namespace Asgard.Auth.AspNetCore
         /// <param name="delayWork"></param>
         /// <param name="expire"></param> 
         /// <returns></returns>
-        public bool TryCreateToken(UserInfo userInfo, out string? token, DateTime? delayWork, DateTime? expire)
+        public override bool TryCreateToken(UserInfo userInfo, out string? token, DateTime? delayWork, DateTime? expire)
         {
             token = string.Empty;
             try
@@ -144,7 +139,7 @@ namespace Asgard.Auth.AspNetCore
         /// <param name="jti"></param>
         /// <param name="expires"></param>
         /// <returns></returns>
-        public bool TryCreateRefreshToken(UserInfo userInfo, out string token, out string jti, DateTime? expires = null)
+        public override bool TryCreateRefreshToken(UserInfo userInfo, out string token, out string jti, DateTime? expires = null)
         {
             jti = token = string.Empty;
             try

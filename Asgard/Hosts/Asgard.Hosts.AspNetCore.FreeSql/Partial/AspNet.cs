@@ -2,11 +2,22 @@
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
+using Asgard.Abstract;
+using Asgard.Abstract.Logger;
+using Asgard.Abstract.Models.AsgardConfig.ChildConfigModel.LogConfig;
+using Asgard.DataBaseManager.FreeSql;
+using Asgard.Extends.AspNetCore.ApiModels;
+using Asgard.Extends.Json;
+using Asgard.Logger.FreeSqlProvider;
+
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.OpenApi.Models;
 
-namespace Asgard.Hosts.AspNetCore
+using Swashbuckle.AspNetCore.SwaggerUI;
+
+namespace Asgard.Hosts.AspNetCore.FreeSql
 {
     /// <summary>
     /// 一个内阁系统的管理器,你可以利用该系统快速启动项目
@@ -17,7 +28,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 跨域配置昵称
         /// </summary>
-        private static readonly string _myAllowSpecificOrigins = "_ShangShuSheng.Core.Cros";
+        private static readonly string _myAllowSpecificOrigins = "_Asgard.Hosts.AspNetCore.FreeSql.Core.Cros";
 
         /// <summary>
         /// 初始化一个Asp.Net对象出来,做自宿主 
@@ -91,7 +102,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <param name="builder"></param>
         /// <param name="plugin"></param>
         /// <param name="webapiConfig"></param>
-        private void InitServices(WebApplicationBuilder builder, PluginLoaderManager plugin, WebApiConfig webapiConfig)
+        private void InitServices(WebApplicationBuilder builder, PluginLoaderManager<IFreeSql> plugin, WebApiConfig webapiConfig)
         {
             _ = builder.Services.AddControllers()
                 .ConfigureApplicationPartManager(action =>
@@ -101,7 +112,8 @@ namespace Asgard.Hosts.AspNetCore
                  {
                      if (NodeConfig.Value.SelfAsAPlugin)//如果自己就是插件,那就要跳过自己
                      {
-                         if (NodeConfig.Value.SelfPluginInfo.FilePath.Equals(System.Reflection.Assembly.GetEntryAssembly().Location, StringComparison.OrdinalIgnoreCase))
+                         var targetAssembly = System.Reflection.Assembly.GetEntryAssembly();
+                         if (targetAssembly is null || NodeConfig.Value.SelfPluginInfo.FilePath.Equals(targetAssembly.Location, StringComparison.OrdinalIgnoreCase))
                          {
                              return;
                          }
@@ -151,10 +163,10 @@ namespace Asgard.Hosts.AspNetCore
                             Array.Empty<string>()
                         }
                     });
-                    c.SwaggerDoc("ShangShuSheng", new OpenApiInfo()
+                    c.SwaggerDoc("Asgard", new OpenApiInfo()
                     {
-                        Title = "尚书省",
-                        Description = "尚书省,系统承载器",
+                        Title = "阿斯加德",
+                        Description = "阿斯加德,系统承载器",
                     });
                     plugin.AllPluginInstance.ForEach(item =>
                     {
@@ -219,11 +231,11 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 初始化DI数据
         /// </summary> 
-        private void InitDI(WebApplicationBuilder builder, LoggerProvider provider, DataBaseManager db, Func<ShangShuShengContext> contextCreator)
+        private void InitDI(WebApplicationBuilder builder, LoggerProvider provider, FreeSqlManager db, Func<AsgardContext<IFreeSql>> contextCreator)
         {
             _ = builder.Services.AddSingleton(_ => provider);
             _ = builder.Services.AddSingleton(_ => db);
-            _ = builder.Services.AddScoped<ShangShuShengContext>(_ => contextCreator());
+            _ = builder.Services.AddScoped(_ => contextCreator());
             _ = builder.Services.AddScoped(typeof(AbsLogger<>), typeof(LoggerCenter<>));
         }
 
@@ -272,7 +284,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 初始化swagger支持部分
         /// </summary>
-        private void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager pluginManager)
+        private void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager<IFreeSql> pluginManager)
         {
             if (webAPIConfig.UseSwagger)
             {
@@ -289,7 +301,7 @@ namespace Asgard.Hosts.AspNetCore
                 });
                 _ = app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint($"{webAPIConfig.SwaggerUrlPrefix}/swagger/ShangShuSheng/swagger.json", "ShangShuSheng");
+                    c.SwaggerEndpoint($"{webAPIConfig.SwaggerUrlPrefix}/swagger/asgard/swagger.json", "asgard");
                     pluginManager.AllPluginInstance.ForEach(item =>
                     {
                         if (item.AllApi.Count == 0)
@@ -320,7 +332,7 @@ namespace Asgard.Hosts.AspNetCore
         /// </summary>
         /// <param name="app"></param>
         /// <param name="plugin"></param>
-        private void RoutingConfig(WebApplication app, PluginLoaderManager plugin)
+        private void RoutingConfig(WebApplication app, PluginLoaderManager<IFreeSql> plugin)
         {
             plugin.AllPluginInstance.ForEach(item =>
             {
@@ -337,7 +349,7 @@ namespace Asgard.Hosts.AspNetCore
                   {
                       context.Response.StatusCode = (int)HttpStatusCode.OK;
                       context.Response.ContentType = "application/json";
-                      var httpContext = context.RequestServices.GetService<ShangShuShengContext>();
+                      var httpContext = context.RequestServices.GetService<AsgardContext<IFreeSql>>();
                       var exception = context.Features.Get<IExceptionHandlerFeature>();
                       var res = new DataResponse<string>
                       {

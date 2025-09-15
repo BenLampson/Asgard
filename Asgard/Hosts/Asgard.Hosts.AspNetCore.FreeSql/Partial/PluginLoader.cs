@@ -1,6 +1,6 @@
-﻿using ShangShuSheng.Core.ContextModules.PluginLoader;
+﻿using Asgard.Abstract.Models.AsgardConfig.ChildConfigModel.PluginConfig;
 
-namespace Asgard.Hosts.AspNetCore
+namespace Asgard.Hosts.AspNetCore.FreeSql
 {
     /// <summary>
     /// 一个内阁系统的管理器,你可以利用该系统快速启动项目

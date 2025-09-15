@@ -2,14 +2,18 @@
 using System.Runtime.InteropServices;
 using System.Text.Json;
 
+using Asgard.Abstract;
 using Asgard.Abstract.MQ;
+using Asgard.Auth.AspNetCore;
+using Asgard.Caches.Redis;
 using Asgard.ConfigCenter;
 using Asgard.ConfigCenter.DBModels;
 using Asgard.DataBaseManager.FreeSql;
 using Asgard.Extends.Json;
+using Asgard.Job;
 using Asgard.Logger.FreeSqlProvider;
 
-namespace Asgard.Hosts.AspNetCore
+namespace Asgard.Hosts.AspNetCore.FreeSql
 {
     /// <summary>
     /// 一个内阁系统的管理器,你可以利用该系统快速启动项目
@@ -46,7 +50,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 认证管理器
         /// </summary>
-        public AuthManager.AspNetCore.AuthManager? AuthManager { get; private set; }
+        public AuthManager? AuthManager { get; private set; }
 
         /// <summary>
         /// 本地缓存实例
@@ -56,7 +60,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// job管理器
         /// </summary>
-        public JobManager? JobManager { get; private set; }
+        public JobManager<IFreeSql>? JobManager { get; private set; }
 
         /// <summary>
         /// MQ服务
@@ -66,7 +70,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 插件管理器
         /// </summary>
-        public PluginLoaderManager? PluginManager { get; private set; }
+        public PluginLoaderManager<IFreeSql>? PluginManager { get; private set; }
 
 
         /// <summary>
@@ -231,7 +235,7 @@ namespace Asgard.Hosts.AspNetCore
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public ShangShuShengContext CreateContext()
+        public AsgardContext<IFreeSql> CreateContext()
         {
             if (
                 CacheManager is null ||
@@ -245,14 +249,13 @@ namespace Asgard.Hosts.AspNetCore
                     $"数据库配置:{DB is null} " +
                     $"日志管理器:{LoggerProvider is null}");
             }
-            return new ShangShuShengContext(
-                    CacheManager,
+            return new AsgardContext<IFreeSql>(
+                    NodeConfig.Value,
                     LoggerProvider,
+                    CacheManager,
                     DB,
-                    PluginManager,
                     MQ,
                     AuthManager,
-                    NodeConfig,
                     Guid.NewGuid().ToString("N"),
                     CreateContext);
         }

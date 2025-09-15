@@ -75,7 +75,7 @@ namespace Asgard.ConfigCenter
                 WebAPIConfig = new WebApiConfig()
                 {
                     ApiPrefix = "",
-                    CertificateFile = "./ShangShuSheng.pfx",
+                    CertificateFile = "./Asgard.pfx",
                     CertificatePassword = "!QAZ2wsx",
                     HttpPort = 11080,
                     HttpsPort = 11443,
@@ -87,7 +87,7 @@ namespace Asgard.ConfigCenter
                 AuthConfig = new AuthConfig()
                 {
                     Audience = "AllUser",
-                    Issuer = "ShangShuSheng",
+                    Issuer = "Asgard",
                     JwtKey = AuthKVToolsMethod.CreateNewHMACSHA256Key(),
                     AesKey = key,
                     AesIV = iv,

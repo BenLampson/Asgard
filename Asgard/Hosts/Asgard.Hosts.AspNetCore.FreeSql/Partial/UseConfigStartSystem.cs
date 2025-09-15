@@ -1,15 +1,15 @@
-﻿using FreeSql;
+﻿using Asgard.Auth.AspNetCore;
+using Asgard.Caches.Redis;
+using Asgard.DataBaseManager.FreeSql;
+using Asgard.IDGen;
+using Asgard.Job;
+using Asgard.Logger.FreeSqlProvider;
+using Asgard.MQ.RabbitMQ;
+using Asgard.Tools;
 
-using ShangShuSheng.Core.ContextModules.AspNet.Auth;
-using ShangShuSheng.Core.ContextModules.Cache;
-using ShangShuSheng.Core.ContextModules.DB;
-using ShangShuSheng.Core.ContextModules.Job;
-using ShangShuSheng.Core.ContextModules.Logger;
-using ShangShuSheng.Core.ContextModules.MQ.RabbitMQ;
-using ShangShuSheng.Core.ContextModules.PluginLoader;
-using ShangShuSheng.Core.ContextModules.Tools;
+using FreeSql;
 
-namespace Asgard.Hosts.AspNetCore
+namespace Asgard.Hosts.AspNetCore.FreeSql
 {
     /// <summary>
     /// 一个内阁系统的管理器,你可以利用该系统快速启动项目
@@ -47,7 +47,7 @@ namespace Asgard.Hosts.AspNetCore
             {
                 throw new Exception($"数据库配置为空");
             }
-            DB = new DataBaseManager(LoggerProvider, NodeConfig);
+            DB = new FreeSqlManager(LoggerProvider, NodeConfig.Value);
             AuthManager = new AuthManager(NodeConfig.Value.AuthConfig.JwtKey, NodeConfig.Value.AuthConfig.Issuer, NodeConfig.Value.AuthConfig.Audience);
             try
             {
@@ -57,14 +57,14 @@ namespace Asgard.Hosts.AspNetCore
             {
                 throw new Exception($"初始化加密部分出错{ex.Message} aesKey:{NodeConfig.Value.AuthConfig.AesKey} aesIV:{NodeConfig.Value.AuthConfig.AesIV}");
             }
-            JobManager = new JobManager(LoggerProvider);
+            JobManager = new JobManager<IFreeSql>(LoggerProvider);
             if (NodeConfig.Value.IdWorker is not null)
             {
-                IDGen.Init(NodeConfig.Value.IdWorker.WorkID, NodeConfig.Value.IdWorker.DataCenterID);
+                SnowflakeIDGen.Init(NodeConfig.Value.IdWorker.WorkID, NodeConfig.Value.IdWorker.DataCenterID);
             }
             else
             {
-                IDGen.Init(1, 1);
+                SnowflakeIDGen.Init(1, 1);
             }
             if (NodeConfig.Value.MqConfig is null ||
                 string.IsNullOrWhiteSpace(NodeConfig.Value.MqConfig.Password) ||
@@ -95,7 +95,7 @@ namespace Asgard.Hosts.AspNetCore
                 Console.WriteLine($"MQ没有配置,跳过MQ初始化");
             }
 
-            PluginManager = new PluginLoaderManager(LoggerProvider);
+            PluginManager = new PluginLoaderManager<IFreeSql>(LoggerProvider);
 
             Console.BackgroundColor = ConsoleColor.Green;
             Console.ForegroundColor = ConsoleColor.White;
