@@ -41,6 +41,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asgard.Extends.AspNetCore",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asgard.MQ.RabbitMQ", "SystemModules\Asgard.MQ.RabbitMQ\Asgard.MQ.RabbitMQ.csproj", "{14904027-09E6-4AF1-B0E7-D13BAF561D4C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asgard.Hosts.AspNetCore", "Hosts\Asgard.Hosts.AspNetCore\Asgard.Hosts.AspNetCore.csproj", "{44015965-489D-474A-83BD-7BF9AA3A888A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asgard.AspNetCore.Full", "Examples\Asgard.AspNetCore.Full\Asgard.AspNetCore.Full.csproj", "{EC3F6139-3BB3-4D6D-8759-00019F817B02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +115,14 @@ Global
 		{14904027-09E6-4AF1-B0E7-D13BAF561D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{14904027-09E6-4AF1-B0E7-D13BAF561D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{14904027-09E6-4AF1-B0E7-D13BAF561D4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44015965-489D-474A-83BD-7BF9AA3A888A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44015965-489D-474A-83BD-7BF9AA3A888A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44015965-489D-474A-83BD-7BF9AA3A888A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44015965-489D-474A-83BD-7BF9AA3A888A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC3F6139-3BB3-4D6D-8759-00019F817B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC3F6139-3BB3-4D6D-8759-00019F817B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC3F6139-3BB3-4D6D-8759-00019F817B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC3F6139-3BB3-4D6D-8759-00019F817B02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,6 +137,8 @@ Global
 		{777DB7C3-5844-4A67-B863-317EFE251C43} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{2B11D685-A2CD-4419-A634-9AFCBF48DAE5} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{14904027-09E6-4AF1-B0E7-D13BAF561D4C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{44015965-489D-474A-83BD-7BF9AA3A888A} = {CDCDADAA-827A-4190-82AF-5892E5B487ED}
+		{EC3F6139-3BB3-4D6D-8759-00019F817B02} = {E7761CA9-521C-4006-BBC3-3FA6983DF95E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A299BA7-4569-46D9-A723-A5111721BF02}

@@ -18,7 +18,7 @@ namespace Asgard.Abstract.DataBase
         /// <summary>
         /// 日志器
         /// </summary>
-        protected readonly AbsLogger _logger;
+        protected readonly AbsLogger? _logger;
 
         /// <summary>
         /// 用户自定义的数据库实例
@@ -30,9 +30,9 @@ namespace Asgard.Abstract.DataBase
         /// </summary>
         /// <param name="provider"></param>
         /// <param name="configInfo"></param> 
-        public AbsDataBaseManager(AbsLoggerProvider provider, NodeConfig configInfo)
+        public AbsDataBaseManager(AbsLoggerProvider? provider, NodeConfig configInfo)
         {
-            _logger = provider.CreateLogger<AbsDataBaseManager<T>>();
+            _logger = provider?.CreateLogger<AbsDataBaseManager<T>>();
             InitDefault(configInfo);
             if (Default is null)
             {

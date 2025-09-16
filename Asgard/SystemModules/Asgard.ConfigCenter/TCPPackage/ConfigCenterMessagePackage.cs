@@ -16,7 +16,7 @@ namespace Asgard.ConfigCenter.TCPPackage
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="id"></param>
-        public ConfigCenterMessagePackage(AbsLogger logger, Memory<byte> id) : base(logger, id)
+        public ConfigCenterMessagePackage(AbsLogger? logger, Memory<byte> id) : base(logger, id)
         {
             _flagSize = 2;
         }

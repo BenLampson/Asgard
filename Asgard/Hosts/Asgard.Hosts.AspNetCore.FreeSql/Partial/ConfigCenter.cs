@@ -1,11 +1,5 @@
 ﻿using System.Net;
 
-using Asgard.Abstract;
-using Asgard.Abstract.Models.AsgardConfig.ChildConfigModel.LogConfig;
-using Asgard.Caches.Redis;
-using Asgard.ConfigCenter;
-using Asgard.DataBaseManager.FreeSql;
-
 namespace Asgard.Hosts.AspNetCore.FreeSql
 {
     /// <summary>

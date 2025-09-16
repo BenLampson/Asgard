@@ -74,14 +74,14 @@ namespace Asgard.Abstract.Communication.Tcp
         /// <summary>
         /// 日志对象
         /// </summary>
-        protected readonly AbsLogger _logger;
+        protected readonly AbsLogger? _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="logger">日志模块</param>
         /// <param name="id">ID</param>
-        public AbsTcpPackage(AbsLogger logger, Memory<byte> id)
+        public AbsTcpPackage(AbsLogger? logger, Memory<byte> id)
         {
             ID = id;
             _logger = logger;
@@ -105,7 +105,7 @@ namespace Asgard.Abstract.Communication.Tcp
                 return;
             }
             Disposed = true;
-            _logger.Trace($"包被销毁.");
+            _logger?.Trace($"包被销毁.");
             try
             {
                 _ = _waitter.Set();
@@ -113,7 +113,7 @@ namespace Asgard.Abstract.Communication.Tcp
             }
             catch (Exception ex)
             {
-                _logger.Error("关闭TCP客户端报错", exception: ex);
+                _logger?.Error("关闭TCP客户端报错", exception: ex);
             }
             try
             {
@@ -122,7 +122,7 @@ namespace Asgard.Abstract.Communication.Tcp
             }
             catch (Exception ex)
             {
-                _logger.Error("销毁TCP客户端报错", exception: ex);
+                _logger?.Error("销毁TCP客户端报错", exception: ex);
             }
         }
 
@@ -176,7 +176,7 @@ namespace Asgard.Abstract.Communication.Tcp
             }
             catch (Exception ex)
             {
-                _logger.Error($"向TCP写入消息报错.", exception: ex);
+                _logger?.Error($"向TCP写入消息报错.", exception: ex);
             }
             return false;
         }

@@ -22,11 +22,11 @@ namespace Asgard.Abstract.Communication.Tcp
         /// <summary>
         /// 日志对象
         /// </summary>
-        protected readonly AbsLogger _logger;
+        protected readonly AbsLogger? _logger;
         /// <summary>
         /// 日志提供器
         /// </summary>
-        protected readonly AbsLoggerProvider _loggerProvider;
+        protected readonly AbsLoggerProvider? _loggerProvider;
 
         /// <summary>
         /// 当获取到数据时事件
@@ -62,13 +62,13 @@ namespace Asgard.Abstract.Communication.Tcp
         /// <param name="logger">日志</param>
         /// <param name="name">名称</param>
         /// <param name="packageCreator">对应包构造器,入参代表着此时是主动收到的包</param>
-        public TcpServer(IPEndPoint iPEndPoint, AbsLoggerProvider logger, string name, Func<AbsTcpPackage<T>> packageCreator)
+        public TcpServer(IPEndPoint iPEndPoint, AbsLoggerProvider? logger, string name, Func<AbsTcpPackage<T>> packageCreator)
         {
             _packageCreator = packageCreator;
             _loggerProvider = logger;
             Name = name;
             _ipendPoint = iPEndPoint;
-            _logger = logger.CreateLogger(nameof(TcpServer<T>));
+            _logger = logger?.CreateLogger(nameof(TcpServer<T>));
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
@@ -106,7 +106,7 @@ namespace Asgard.Abstract.Communication.Tcp
             }
             catch (Exception ex)
             {
-                _logger.Error("AbsCommServer dispose error.", exception: ex);
+                _logger?.Error("AbsCommServer dispose error.", exception: ex);
             }
         }
 
@@ -147,17 +147,17 @@ namespace Asgard.Abstract.Communication.Tcp
                         }
                         catch (SocketException ex)
                         {
-                            _logger.Critical($"Got socket exception, server {_ipendPoint} shutdown.", exception: ex);
+                            _logger?.Critical($"Got socket exception, server {_ipendPoint} shutdown.", exception: ex);
                             break;
                         }
                         catch (ObjectDisposedException ex)
                         {
-                            _logger.Warning($"Maybe you dispose this instance so fast than socket sutdown {_socket.RemoteEndPoint} closed.", exception: ex);
+                            _logger?.Warning($"Maybe you dispose this instance so fast than socket sutdown {_socket.RemoteEndPoint} closed.", exception: ex);
                             break;
                         }
                         catch (Exception ex)
                         {
-                            _logger.Error("Got AcceptAsync exception.", exception: ex);
+                            _logger?.Error("Got AcceptAsync exception.", exception: ex);
                             continue;
                         }
                     }

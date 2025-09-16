@@ -10,6 +10,10 @@ namespace Asgard.Abstract.Models.AsgardConfig
     public class NodeConfig
     {
         /// <summary>
+        /// 当前节点名称
+        /// </summary>
+        public string Name { get; set; } = Guid.NewGuid().ToString("N");
+        /// <summary>
         /// 对这个服务的描述信息
         /// </summary>
         public string Desc { get; set; } = string.Empty;

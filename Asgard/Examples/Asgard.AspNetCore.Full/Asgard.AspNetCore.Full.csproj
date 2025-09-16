@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
+    <ProjectReference Include="..\..\Asgard.IDGen\Asgard.IDGen.csproj" />
+    <ProjectReference Include="..\..\Asgard.Job\Asgard.Job.csproj" />
+    <ProjectReference Include="..\..\Asgard.Plugin\Asgard.Plugin.csproj" />
+    <ProjectReference Include="..\..\Asgard.Tools\Asgard.Tools.csproj" />
+    <ProjectReference Include="..\..\Hosts\Asgard.Hosts.AspNetCore\Asgard.Hosts.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\SystemModules\Asgard.Auth.AspNetCore\Asgard.Auth.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\SystemModules\Asgard.Caches.Redis\Asgard.Caches.Redis.csproj" />
+    <ProjectReference Include="..\..\SystemModules\Asgard.ConfigCenter\Asgard.ConfigCenter.csproj" />
+    <ProjectReference Include="..\..\SystemModules\Asgard.Logger.FreeSqlProvider\Asgard.Logger.FreeSqlProvider.csproj" />
+    <ProjectReference Include="..\..\SystemModules\Asgard.MQ.RabbitMQ\Asgard.MQ.RabbitMQ.csproj" />
+  </ItemGroup>
+
+</Project>

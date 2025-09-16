@@ -26,6 +26,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <None Update="logo.png">
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>

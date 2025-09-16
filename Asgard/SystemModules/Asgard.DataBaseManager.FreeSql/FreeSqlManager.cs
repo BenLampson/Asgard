@@ -8,7 +8,7 @@ namespace Asgard.DataBaseManager.FreeSql
 {
     public class FreeSqlManager : AbsDataBaseManager<IFreeSql>
     {
-        public FreeSqlManager(AbsLoggerProvider provider, NodeConfig configInfo) : base(provider, configInfo)
+        public FreeSqlManager(AbsLoggerProvider? provider, NodeConfig configInfo) : base(provider, configInfo)
         {
         }
 
@@ -30,14 +30,14 @@ namespace Asgard.DataBaseManager.FreeSql
 #if DEBUG
                         instance.Aop.CurdAfter += (s, e) =>
                         {
-                            _logger.Trace(e.Sql);
+                            _logger?.Trace(e.Sql);
                         };
 #endif
                         return instance;
                     }
                     catch (Exception ex)
                     {
-                        _logger.Critical("Try GetDBInstance failed.", exception: ex);
+                        _logger?.Critical("Try GetDBInstance failed.", exception: ex);
                         throw new Exception("DB Instance was null.");
                     }
                 });
@@ -62,7 +62,7 @@ namespace Asgard.DataBaseManager.FreeSql
             {
                 Default.Aop.CurdAfter += (s, e) =>
                 {
-                    _logger.Trace(e.Sql);
+                    _logger?.Trace(e.Sql);
                 };
             }
         }

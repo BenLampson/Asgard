@@ -19,7 +19,7 @@ namespace Asgard.ConfigCenter
         private readonly TcpServer<byte[]> _server;
         private TcpClient<byte[]>? _client;
         private readonly IPEndPoint _endPoint;
-        private readonly AbsLoggerProvider _loggerProvider;
+        private readonly AbsLoggerProvider? _loggerProvider;
 
         /// <summary>
         /// 当链接断开时
@@ -38,15 +38,14 @@ namespace Asgard.ConfigCenter
         /// <param name="loggerProvider"></param>
         public SystemConfigClient(
             IPEndPoint endPoint,
-            AbsLoggerProvider loggerProvider)
+            AbsLoggerProvider? loggerProvider)
         {
             _endPoint = endPoint;
             _loggerProvider = loggerProvider;
             _server = new TcpServer<byte[]>(_endPoint,
                _loggerProvider, "SystemConfigClient",
-               () => new ConfigCenterMessagePackage(_loggerProvider.CreateLogger<SystemConfigClient>()
+               () => new ConfigCenterMessagePackage(_loggerProvider?.CreateLogger<SystemConfigClient>()
                , Guid.NewGuid().ToByteArray()));
-            var _logger = _loggerProvider.CreateLogger<SystemConfigClient>();
             _client = _server.GetClient("ConfigCenter");
             _client.GetPackage += _client_GetPackage;
             _client.OnDisConnected += _client_OnDisConnected;

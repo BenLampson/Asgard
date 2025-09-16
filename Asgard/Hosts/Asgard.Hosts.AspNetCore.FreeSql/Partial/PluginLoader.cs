@@ -1,4 +1,4 @@
-﻿using Asgard.Abstract.Models.AsgardConfig.ChildConfigModel.PluginConfig;
+﻿
 
 namespace Asgard.Hosts.AspNetCore.FreeSql
 {

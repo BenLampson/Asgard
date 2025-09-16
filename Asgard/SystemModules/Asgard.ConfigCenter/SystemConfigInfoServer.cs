@@ -33,11 +33,11 @@ namespace Asgard.ConfigCenter
         /// <param name="config"></param>
         public SystemConfigInfoServer(
             IPEndPoint endPoint,
-            AbsLoggerProvider loggerProvider,
+            AbsLoggerProvider? loggerProvider,
             AsgardContext<IFreeSql> context,
-            SystemConfig config)
+            NodeConfig config)
         {
-            var _logger = loggerProvider.CreateLogger<SystemConfigInfoServer>();
+            var _logger = loggerProvider?.CreateLogger<SystemConfigInfoServer>();
             _server = new TcpServer<byte[]>(endPoint,
                 loggerProvider, "SystemConfigInfoServer",
                 () => new ConfigCenterMessagePackage(_logger, Guid.NewGuid().ToByteArray()));
@@ -54,7 +54,7 @@ namespace Asgard.ConfigCenter
         /// </summary>
         /// <param name="context"></param>
         /// <param name="config"></param>
-        private void InitConfigCenterServer(AsgardContext<IFreeSql> context, SystemConfig config)
+        private void InitConfigCenterServer(AsgardContext<IFreeSql> context, NodeConfig config)
         {
             context.DB.Default.CodeFirst.SyncStructure(typeof(SystemConfig));
 
@@ -65,7 +65,7 @@ namespace Asgard.ConfigCenter
                 IdWorker = new IDWorker(),
                 JustJobServer = false,
                 PluginsFolder = "Plugins",
-                DefaultDB = config.Value.DefaultDB,
+                DefaultDB = config.DefaultDB,
                 ConfigCenter = new(),
                 CustomeSettings = new(),
                 MqConfig = new(),

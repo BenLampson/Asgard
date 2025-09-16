@@ -2,6 +2,9 @@
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
+using Asgard.Abstract.Models.AsgardConfig;
+using Asgard.Extends.AspNetCore.ApiModels;
+using Asgard.Plugin;
 
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
@@ -10,18 +13,14 @@ using Microsoft.OpenApi.Models;
 
 using Swashbuckle.AspNetCore.SwaggerUI;
 
-namespace Asgard.Hosts.AspNetCore.FreeSql
+namespace Asgard.Hosts.AspNetCore
 {
-    /// <summary>
-    /// 一个内阁系统的管理器,你可以利用该系统快速启动项目
-    /// 注意,为了保持系统的一致性,就算是配置中心自己,本质也是自己启动了自己
-    /// </summary>
-    public partial class HostManager
+    public partial class Yggdrasil<ORMType>
     {
         /// <summary>
         /// 跨域配置昵称
         /// </summary>
-        private static readonly string _myAllowSpecificOrigins = "_Asgard.Hosts.AspNetCore.FreeSql.Core.Cros";
+        private static readonly string _myAllowSpecificOrigins = "_ShangShuSheng.Core.Cros";
 
         /// <summary>
         /// 初始化一个Asp.Net对象出来,做自宿主 
@@ -29,18 +28,18 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// <returns></returns>
         private void InitAspNet()
         {
-            if (NodeConfig is null || NodeConfig.Value.JustJobServer || NodeConfig.Value.WebAPIConfig is null || PluginManager is null || LoggerProvider is null || DB is null)
+            if (NodeConfig is null || NodeConfig.JustJobServer || NodeConfig.WebAPIConfig is null || PluginManager is null)
             {
                 return;
             }
             var builder = WebApplication.CreateBuilder();
-            InitHost(builder, NodeConfig.Value.WebAPIConfig);
-            InitServices(builder, PluginManager, NodeConfig.Value.WebAPIConfig);
-            InitDI(builder, LoggerProvider, DB, CreateContext);
+            InitHost(builder, NodeConfig.WebAPIConfig);
+            InitServices(builder, PluginManager, NodeConfig.WebAPIConfig);
+            InitDI(builder, LoggerProvider, CreateContext);
             WebApp = builder.Build();
-            _ = WebApp.UsePathBase(NodeConfig.Value.WebAPIConfig.ApiPrefix);
-            InitStaticFile(WebApp, builder, NodeConfig.Value.WebAPIConfig);
-            InitSwagger(WebApp, NodeConfig.Value.WebAPIConfig, PluginManager);
+            _ = WebApp.UsePathBase(NodeConfig.WebAPIConfig.ApiPrefix);
+            InitStaticFile(WebApp, builder, NodeConfig.WebAPIConfig);
+            InitSwagger(WebApp, NodeConfig.WebAPIConfig, PluginManager);
             ConfigWebsocket(WebApp);
             RoutingConfig(WebApp, PluginManager);
         }
@@ -95,37 +94,36 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// <param name="builder"></param>
         /// <param name="plugin"></param>
         /// <param name="webapiConfig"></param>
-        private void InitServices(WebApplicationBuilder builder, PluginLoaderManager<IFreeSql> plugin, WebApiConfig webapiConfig)
+        private void InitServices(WebApplicationBuilder builder, PluginLoaderManager<ORMType> plugin, WebApiConfig webapiConfig)
         {
             _ = builder.Services.AddControllers()
                 .ConfigureApplicationPartManager(action =>
-             {
-                 plugin.AllPluginInstance.Where(plugin => plugin.AllApi.Count != 0)
-                 .ToList().ForEach(plugin =>
-                 {
-                     if (NodeConfig.Value.SelfAsAPlugin)//如果自己就是插件,那就要跳过自己
-                     {
-                         var targetAssembly = System.Reflection.Assembly.GetEntryAssembly();
-                         if (targetAssembly is null || NodeConfig.Value.SelfPluginInfo.FilePath.Equals(targetAssembly.Location, StringComparison.OrdinalIgnoreCase))
-                         {
-                             return;
-                         }
-                     }
-                     if (plugin.Assembly is null)
-                     {
-                         return;
-                     }
-                     action.ApplicationParts.Add(new AssemblyPart(plugin.Assembly!.Assembly));
-                 });
-             }).AddJsonOptions(options =>
-             {
-                 options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
-                 options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
-                 options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
-                 options.JsonSerializerOptions.Converters.Add(new DateTime2StringConverter("yyyy-MM-dd HH:mm:ss"));
-                 options.JsonSerializerOptions.Converters.Add(new Long2StringConverter());
-                 options.JsonSerializerOptions.Converters.Add(new TimeSpan2StringConverter());
-             });
+                {
+                    plugin.AllPluginInstance.Where(plugin => plugin.AllApi.Count != 0)
+                    .ToList().ForEach(plugin =>
+                    {
+                        if (NodeConfig is not null && NodeConfig.SelfAsAPlugin)//如果自己就是插件,那就要跳过自己
+                        {
+                            if (NodeConfig.SelfPluginInfo.FilePath.Equals(System.Reflection.Assembly.GetEntryAssembly()?.Location, StringComparison.OrdinalIgnoreCase))
+                            {
+                                return;
+                            }
+                        }
+                        if (plugin.Assembly is null)
+                        {
+                            return;
+                        }
+                        action.ApplicationParts.Add(new AssemblyPart(plugin.Assembly!.Assembly));
+                    });
+                }).AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+                    options.JsonSerializerOptions.Converters.Add(new DateTime2StringConverter("yyyy-MM-dd HH:mm:ss"));
+                    options.JsonSerializerOptions.Converters.Add(new Long2StringConverter());
+                    options.JsonSerializerOptions.Converters.Add(new TimeSpan2StringConverter());
+                });
             _ = builder.Services.AddEndpointsApiExplorer();
             if (webapiConfig.UseSwagger)
             {
@@ -156,10 +154,10 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
                             Array.Empty<string>()
                         }
                     });
-                    c.SwaggerDoc("Asgard", new OpenApiInfo()
+                    c.SwaggerDoc("ShangShuSheng", new OpenApiInfo()
                     {
-                        Title = "阿斯加德",
-                        Description = "阿斯加德,系统承载器",
+                        Title = "尚书省",
+                        Description = "尚书省,系统承载器",
                     });
                     plugin.AllPluginInstance.ForEach(item =>
                     {
@@ -224,12 +222,10 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// <summary>
         /// 初始化DI数据
         /// </summary> 
-        private void InitDI(WebApplicationBuilder builder, LoggerProvider provider, FreeSqlManager db, Func<AsgardContext<IFreeSql>> contextCreator)
+        private void InitDI(WebApplicationBuilder builder, AbsLoggerProvider provider, Func<AbsYggdrasil> contextCreator)
         {
             _ = builder.Services.AddSingleton(_ => provider);
-            _ = builder.Services.AddSingleton(_ => db);
             _ = builder.Services.AddScoped(_ => contextCreator());
-            _ = builder.Services.AddScoped(typeof(AbsLogger<>), typeof(LoggerCenter<>));
         }
 
         /// <summary>
@@ -277,7 +273,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// <summary>
         /// 初始化swagger支持部分
         /// </summary>
-        private void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager<IFreeSql> pluginManager)
+        private void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager<ORMType> pluginManager)
         {
             if (webAPIConfig.UseSwagger)
             {
@@ -294,7 +290,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
                 });
                 _ = app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint($"{webAPIConfig.SwaggerUrlPrefix}/swagger/asgard/swagger.json", "asgard");
+                    c.SwaggerEndpoint($"{webAPIConfig.SwaggerUrlPrefix}/swagger/ShangShuSheng/swagger.json", "ShangShuSheng");
                     pluginManager.AllPluginInstance.ForEach(item =>
                     {
                         if (item.AllApi.Count == 0)
@@ -325,7 +321,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// </summary>
         /// <param name="app"></param>
         /// <param name="plugin"></param>
-        private void RoutingConfig(WebApplication app, PluginLoaderManager<IFreeSql> plugin)
+        private void RoutingConfig(WebApplication app, PluginLoaderManager<ORMType> plugin)
         {
             plugin.AllPluginInstance.ForEach(item =>
             {
@@ -342,7 +338,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
                   {
                       context.Response.StatusCode = (int)HttpStatusCode.OK;
                       context.Response.ContentType = "application/json";
-                      var httpContext = context.RequestServices.GetService<AsgardContext<IFreeSql>>();
+                      var httpContext = context.RequestServices.GetService<AbsYggdrasil>();
                       var exception = context.Features.Get<IExceptionHandlerFeature>();
                       var res = new DataResponse<string>
                       {
@@ -351,7 +347,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
                       if (exception != null)
                       {
                           var error = $"{exception.Error.Message} 事件ID:{(httpContext is null ? "事件ID空" : httpContext.EventID)}";
-                          if (NodeConfig is not null && NodeConfig.Value.SystemLog.MinLevel == LogLevelEnum.Trace)
+                          if (NodeConfig is not null && NodeConfig.SystemLog.MinLevel == LogLevelEnum.Trace)
                           {
                               res.Data = exception.Error.StackTrace;
                           }

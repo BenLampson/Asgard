@@ -31,7 +31,7 @@ namespace Asgard.Abstract
         /// <summary>
         /// 日志提供器
         /// </summary>
-        public AbsLoggerProvider LoggerProvider { get; init; }
+        public AbsLoggerProvider? LoggerProvider { get; init; }
 
         /// <summary>
         /// 创建一个新的上下文
@@ -65,7 +65,7 @@ namespace Asgard.Abstract
         /// <param name="createNewContext"></param> 
         public AsgardContext(
             NodeConfig nodeConfig,
-            AbsLoggerProvider loggerProvider,
+            AbsLoggerProvider? loggerProvider,
             AbsCache? cache,
             AbsDataBaseManager<ORMType> db,
             AbsMQManager? mq,

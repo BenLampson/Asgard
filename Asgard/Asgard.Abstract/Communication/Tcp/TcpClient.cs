@@ -33,7 +33,7 @@ namespace Asgard.Abstract.Communication.Tcp
         /// <summary>
         /// 日志对象
         /// </summary>
-        protected readonly AbsLogger _logger;
+        protected readonly AbsLogger? _logger;
 
         /// <summary>
         /// 我创建的包池,用于处理等待包
@@ -87,10 +87,10 @@ namespace Asgard.Abstract.Communication.Tcp
         /// <param name="name">名称</param>
         /// <param name="localInfo">本地地址信息</param>
         /// <param name="packageCreator">包创建器</param>
-        public TcpClient(IPEndPoint targetIp, AbsLoggerProvider logger, string name, IPEndPoint? localInfo, Func<AbsTcpPackage<T>> packageCreator)
+        public TcpClient(IPEndPoint targetIp, AbsLoggerProvider? logger, string name, IPEndPoint? localInfo, Func<AbsTcpPackage<T>> packageCreator)
         {
             _target = targetIp;
-            _logger = logger.CreateLogger(nameof(TcpClient<T>));
+            _logger = logger?.CreateLogger(nameof(TcpClient<T>));
             ID = name;
             _packageCreator = packageCreator;
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -110,14 +110,14 @@ namespace Asgard.Abstract.Communication.Tcp
         /// <param name="createPackage">包创建器</param>
         public TcpClient(
             IPEndPoint targetIp,
-            AbsLoggerProvider logger,
+            AbsLoggerProvider? logger,
             string name,
             Socket socket,
             Func<AbsTcpPackage<T>> createPackage)
         {
             _packageCreator = createPackage;
             _target = targetIp;
-            _logger = logger.CreateLogger(nameof(TcpClient<T>));
+            _logger = logger?.CreateLogger(nameof(TcpClient<T>));
             ID = name;
             _socket = socket;
             HandleClient();
@@ -157,7 +157,7 @@ namespace Asgard.Abstract.Communication.Tcp
             }
             catch (Exception ex)
             {
-                _logger.Error("AbsCommTcpClient dispose error.", exception: ex);
+                _logger?.Error("AbsCommTcpClient dispose error.", exception: ex);
             }
         }
 
@@ -303,17 +303,17 @@ namespace Asgard.Abstract.Communication.Tcp
                     }
                     catch (SocketException ex)
                     {
-                        _logger.Critical($"Got socket exception, _socket {_socket.RemoteEndPoint} closed.", exception: ex);
+                        _logger?.Critical($"Got socket exception, _socket {_socket.RemoteEndPoint} closed.", exception: ex);
                         break;
                     }
                     catch (ObjectDisposedException ex)
                     {
-                        _logger.Warning($"Maybe you dispose this instance so fast than socket sutdown {_socket.RemoteEndPoint} closed.", exception: ex);
+                        _logger?.Warning($"Maybe you dispose this instance so fast than socket sutdown {_socket.RemoteEndPoint} closed.", exception: ex);
                         break;
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error("Got ReceiveAsync data exception.", exception: ex);
+                        _logger?.Error("Got ReceiveAsync data exception.", exception: ex);
                         continue;
                     }
 
@@ -322,11 +322,11 @@ namespace Asgard.Abstract.Communication.Tcp
                 {
                     try
                     {
-                        _logger.Information($"Client {_socket.RemoteEndPoint} closed.");
+                        _logger?.Information($"Client {_socket.RemoteEndPoint} closed.");
                     }
                     catch (Exception ex)
                     {
-                        _logger.Error($"Close _socket {_socket.RemoteEndPoint} got exception.", exception: ex);
+                        _logger?.Error($"Close _socket {_socket.RemoteEndPoint} got exception.", exception: ex);
                     }
                 }
                 OnDisConnected?.Invoke(this);
