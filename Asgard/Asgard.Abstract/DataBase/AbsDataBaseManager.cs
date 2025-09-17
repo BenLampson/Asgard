@@ -9,11 +9,12 @@ namespace Asgard.Abstract.DataBase
     /// <summary>
     /// 抽象的数据库管理器
     /// </summary>
-    public abstract class AbsDataBaseManager<T>
-    { /// <summary>
-      /// sql对象
-      /// </summary>
-        public T Default { get; protected set; }
+    public abstract class AbsDataBaseManager<ORMType>
+    {
+        /// <summary>
+        /// sql对象
+        /// </summary>
+        public ORMType Default { get; protected set; }
 
         /// <summary>
         /// 日志器
@@ -23,7 +24,7 @@ namespace Asgard.Abstract.DataBase
         /// <summary>
         /// 用户自定义的数据库实例
         /// </summary>
-        protected readonly ConcurrentDictionary<string, T> _customDBInstance = new();
+        protected readonly ConcurrentDictionary<string, ORMType> _customDBInstance = new();
 
         /// <summary>
         /// 
@@ -32,7 +33,7 @@ namespace Asgard.Abstract.DataBase
         /// <param name="configInfo"></param> 
         public AbsDataBaseManager(AbsLoggerProvider? provider, NodeConfig configInfo)
         {
-            _logger = provider?.CreateLogger<AbsDataBaseManager<T>>();
+            _logger = provider?.CreateLogger<AbsDataBaseManager<ORMType>>();
             InitDefault(configInfo);
             if (Default is null)
             {
@@ -56,7 +57,7 @@ namespace Asgard.Abstract.DataBase
         /// <param name="readDB">读库</param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public abstract T? GetMyDB(string idKey, string connectionStr, int type, string[] readDB);
+        public abstract ORMType? GetMyDB(string idKey, string connectionStr, int type, string[] readDB);
 
 
         /// <summary>
@@ -64,7 +65,7 @@ namespace Asgard.Abstract.DataBase
         /// </summary>
         /// <param name="idKey"></param>
         /// <returns></returns>
-        public T? GetMyDB(string idKey)
+        public ORMType? GetMyDB(string idKey)
         {
             var keyValue = idKey;
             _ = _customDBInstance.TryGetValue(keyValue, out var db);

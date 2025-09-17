@@ -35,7 +35,7 @@ namespace Asgard.Hosts.AspNetCore
             var builder = WebApplication.CreateBuilder();
             InitHost(builder, NodeConfig.WebAPIConfig);
             InitServices(builder, PluginManager, NodeConfig.WebAPIConfig);
-            InitDI(builder, LoggerProvider, CreateContext);
+            InitDI(builder, LoggerProvider);
             WebApp = builder.Build();
             _ = WebApp.UsePathBase(NodeConfig.WebAPIConfig.ApiPrefix);
             InitStaticFile(WebApp, builder, NodeConfig.WebAPIConfig);
@@ -222,10 +222,10 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 初始化DI数据
         /// </summary> 
-        private void InitDI(WebApplicationBuilder builder, AbsLoggerProvider provider, Func<AbsYggdrasil> contextCreator)
+        private void InitDI(WebApplicationBuilder builder, AbsLoggerProvider provider)
         {
             _ = builder.Services.AddSingleton(_ => provider);
-            _ = builder.Services.AddScoped(_ => contextCreator());
+            _ = builder.Services.AddScoped(_ => new Yggdrasil<ORMType>());
         }
 
         /// <summary>
