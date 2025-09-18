@@ -32,7 +32,7 @@ namespace Asgard.Abstract
         /// <summary>
         /// 数据库管理器
         /// </summary>
-        public AbsDataBaseManager<ORMType>? DBManager { get; private set; }
+        public AbsDataBaseManager? DBManager { get; private set; }
 
 
         /// <summary>

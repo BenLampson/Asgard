@@ -10,7 +10,7 @@ namespace Asgard.Abstract
     /// <summary>
     /// 阿斯加德上下文对象
     /// </summary>
-    public sealed class AsgardContext<ORMType> : IDisposable
+    public sealed class AsgardContext : IDisposable
     {
         /// <summary>
         /// 事件ID,每次请求/事件都会发生变化
@@ -27,16 +27,12 @@ namespace Asgard.Abstract
         /// <summary>
         /// 数据库模块
         /// </summary>
-        public AbsDataBaseManager<ORMType> DB { get; init; }
+        public AbsDataBaseManager DB { get; init; }
         /// <summary>
         /// 日志提供器
         /// </summary>
         public AbsLoggerProvider? LoggerProvider { get; init; }
 
-        /// <summary>
-        /// 创建一个新的上下文
-        /// </summary>
-        public Func<AsgardContext<ORMType>>? CreateNewContext { get; init; }
 
         /// <summary>
         /// MQ服务
@@ -67,11 +63,10 @@ namespace Asgard.Abstract
             NodeConfig nodeConfig,
             AbsLoggerProvider? loggerProvider,
             AbsCache? cache,
-            AbsDataBaseManager<ORMType> db,
+            AbsDataBaseManager db,
             AbsMQManager? mq,
             AbsAuthManager? auth,
-            string? eventID,
-            Func<AsgardContext<ORMType>>? createNewContext
+            string? eventID
             )
         {
             if (!string.IsNullOrWhiteSpace(eventID))
@@ -84,7 +79,6 @@ namespace Asgard.Abstract
             DB = db;
             MQ = mq;
             Auth = auth;
-            CreateNewContext = createNewContext;
         }
 
 

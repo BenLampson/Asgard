@@ -1,5 +1,4 @@
 ﻿using System.Collections.Concurrent;
-using System.ComponentModel.DataAnnotations;
 
 using Asgard.Abstract.Logger;
 using Asgard.Abstract.Models.AsgardConfig;
@@ -9,12 +8,19 @@ namespace Asgard.Abstract.DataBase
     /// <summary>
     /// 抽象的数据库管理器
     /// </summary>
-    public abstract class AbsDataBaseManager<ORMType>
+    public abstract class AbsDataBaseManager
     {
         /// <summary>
-        /// sql对象
+        /// 默认的数据库实例
         /// </summary>
-        public ORMType Default { get; protected set; }
+        public ORMType? DefaultDB<ORMType>()
+        {
+            if (_customDBInstance.TryGetValue("default", out var target) && target is ORMType db)
+            {
+                return db;
+            }
+            return default;
+        }
 
         /// <summary>
         /// 日志器
@@ -24,7 +30,7 @@ namespace Asgard.Abstract.DataBase
         /// <summary>
         /// 用户自定义的数据库实例
         /// </summary>
-        protected readonly ConcurrentDictionary<string, ORMType> _customDBInstance = new();
+        protected readonly ConcurrentDictionary<string, Object> _customDBInstance = new();
 
         /// <summary>
         /// 
@@ -33,12 +39,8 @@ namespace Asgard.Abstract.DataBase
         /// <param name="configInfo"></param> 
         public AbsDataBaseManager(AbsLoggerProvider? provider, NodeConfig configInfo)
         {
-            _logger = provider?.CreateLogger<AbsDataBaseManager<ORMType>>();
+            _logger = provider?.CreateLogger<AbsDataBaseManager>();
             InitDefault(configInfo);
-            if (Default is null)
-            {
-                throw new ValidationException("Default DB instance is null.");
-            }
         }
         /// <summary>
         /// 初始化默认数据库
@@ -57,7 +59,7 @@ namespace Asgard.Abstract.DataBase
         /// <param name="readDB">读库</param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public abstract ORMType? GetMyDB(string idKey, string connectionStr, int type, string[] readDB);
+        public abstract ORMType? GetMyDB<ORMType>(string idKey, string connectionStr, int type, string[] readDB);
 
 
         /// <summary>
@@ -65,11 +67,13 @@ namespace Asgard.Abstract.DataBase
         /// </summary>
         /// <param name="idKey"></param>
         /// <returns></returns>
-        public ORMType? GetMyDB(string idKey)
+        public ORMType? GetMyDB<ORMType>(string idKey)
         {
-            var keyValue = idKey;
-            _ = _customDBInstance.TryGetValue(keyValue, out var db);
-            return db;
+            if (_customDBInstance.TryGetValue(idKey, out var target) && target is ORMType db)
+            {
+                return db;
+            }
+            return default;
         }
 
         /// <summary>
@@ -77,16 +81,6 @@ namespace Asgard.Abstract.DataBase
         /// </summary>
         public void Stop()
         {
-            try
-            {
-                if (Default is IDisposable canDispose)
-                {
-                    canDispose.Dispose();
-                }
-            }
-            catch
-            {
-            }
             try
             {
                 var allKeys = _customDBInstance.Keys;
