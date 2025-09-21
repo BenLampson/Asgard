@@ -23,7 +23,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
                 var configCenterCacheManager = new CacheManager(consoleLoggerProvider);
                 configCenterCacheManager.PushRedis(NodeConfig.Value.RedisConfig.GetConnStr(), consoleLoggerProvider.CreateLogger<CacheManager>());
 
-                var configCenterContext = new AsgardContext<IFreeSql>(
+                var configCenterContext = new AsgardContext(
                       nodeConfig: NodeConfig.Value
                      , loggerProvider: consoleLoggerProvider
                      , cache: configCenterCacheManager
@@ -31,12 +31,11 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
                      , mq: null
                      , auth: null
                      , eventID: Guid.NewGuid().ToString("N")
-                     , createNewContext: null
                 );
 
-                var server = new SystemConfigInfoServer(new IPEndPoint(IPAddress.Any, NodeConfig.Value.ConfigCenter.ConfigCenterPort),
-                    consoleLoggerProvider, configCenterContext, NodeConfig);
-                server.Start();
+                //var server = new SystemConfigInfoServer(new IPEndPoint(IPAddress.Any, NodeConfig.Value.ConfigCenter.ConfigCenterPort),
+                //    consoleLoggerProvider, configCenterContext, NodeConfig);
+                //server.Start();
             }
             else if (NodeConfig.Value.ConfigCenter.WithOutConfigCenter)
             {

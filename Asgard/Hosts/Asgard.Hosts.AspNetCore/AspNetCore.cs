@@ -15,7 +15,7 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace Asgard.Hosts.AspNetCore
 {
-    public partial class Yggdrasil<ORMType>
+    public partial class Yggdrasil
     {
         /// <summary>
         /// 跨域配置昵称
@@ -94,7 +94,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <param name="builder"></param>
         /// <param name="plugin"></param>
         /// <param name="webapiConfig"></param>
-        private void InitServices(WebApplicationBuilder builder, PluginLoaderManager<ORMType> plugin, WebApiConfig webapiConfig)
+        private void InitServices(WebApplicationBuilder builder, PluginLoaderManager plugin, WebApiConfig webapiConfig)
         {
             _ = builder.Services.AddControllers()
                 .ConfigureApplicationPartManager(action =>
@@ -222,10 +222,13 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 初始化DI数据
         /// </summary> 
-        private void InitDI(WebApplicationBuilder builder, AbsLoggerProvider provider)
+        private void InitDI(WebApplicationBuilder builder, AbsLoggerProvider? provider)
         {
-            _ = builder.Services.AddSingleton(_ => provider);
-            _ = builder.Services.AddScoped(_ => new Yggdrasil<ORMType>());
+            if (provider is not null)
+            {
+                _ = builder.Services.AddSingleton(_ => provider);
+            }
+            _ = builder.Services.AddScoped(_ => new Yggdrasil());
         }
 
         /// <summary>
@@ -273,7 +276,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 初始化swagger支持部分
         /// </summary>
-        private void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager<ORMType> pluginManager)
+        private void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager pluginManager)
         {
             if (webAPIConfig.UseSwagger)
             {
@@ -321,7 +324,7 @@ namespace Asgard.Hosts.AspNetCore
         /// </summary>
         /// <param name="app"></param>
         /// <param name="plugin"></param>
-        private void RoutingConfig(WebApplication app, PluginLoaderManager<ORMType> plugin)
+        private void RoutingConfig(WebApplication app, PluginLoaderManager plugin)
         {
             plugin.AllPluginInstance.ForEach(item =>
             {

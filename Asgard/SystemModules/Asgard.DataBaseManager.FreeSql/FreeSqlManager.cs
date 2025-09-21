@@ -6,18 +6,20 @@ using FreeSql;
 
 namespace Asgard.DataBaseManager.FreeSql
 {
-    public class FreeSqlManager : AbsDataBaseManager<IFreeSql>
+    public class FreeSqlManager : AbsDataBaseManager
     {
         public FreeSqlManager(AbsLoggerProvider? provider, NodeConfig configInfo) : base(provider, configInfo)
         {
         }
 
-        public override IFreeSql? GetMyDB(string idKey, string connectionStr, int type, string[] readDB)
+
+
+        public override ORMType? GetMyDB<ORMType>(string idKey, string connectionStr, int type, string[] readDB) where ORMType : default
         {
             var keyValue = idKey;
             try
             {
-                return _customDBInstance.GetOrAdd(keyValue, (key) =>
+                var target = _customDBInstance.GetOrAdd(keyValue, (key) =>
                 {
                     try
                     {
@@ -41,30 +43,36 @@ namespace Asgard.DataBaseManager.FreeSql
                         throw new Exception("DB Instance was null.");
                     }
                 });
+                if (target is ORMType targetInstance)
+                {
+                    return targetInstance;
+                }
             }
             catch
             {
-                _customDBInstance.TryRemove(keyValue, out var _);
-                return null;
+                _ = _customDBInstance.TryRemove(keyValue, out var _);
             }
+
+            return default;
         }
 
         protected override void InitDefault(NodeConfig configInfo)
         {
-            Default = new FreeSqlBuilder()
-                .UseConnectionString((DataType)configInfo.DefaultDB.DbType, configInfo.DefaultDB.DbAddress)
-                .UseSlave(configInfo.DefaultDB.ReadDBAddress)
-                .UseExitAutoDisposePool(false)
-                .Build();
-            Default.UseJsonMap();
-            Default.CodeFirst.IsAutoSyncStructure = false;
+            var defaultDB = new FreeSqlBuilder()
+                  .UseConnectionString((DataType)configInfo.DefaultDB.DbType, configInfo.DefaultDB.DbAddress)
+                  .UseSlave(configInfo.DefaultDB.ReadDBAddress)
+                  .UseExitAutoDisposePool(false)
+                  .Build();
+            defaultDB.UseJsonMap();
+            defaultDB.CodeFirst.IsAutoSyncStructure = false;
             if (configInfo.SystemLog.MinLevel == 0)
             {
-                Default.Aop.CurdAfter += (s, e) =>
+                defaultDB.Aop.CurdAfter += (s, e) =>
                 {
                     _logger?.Trace(e.Sql);
                 };
             }
+            _ = _customDBInstance.TryAdd("default", defaultDB);
         }
     }
 }

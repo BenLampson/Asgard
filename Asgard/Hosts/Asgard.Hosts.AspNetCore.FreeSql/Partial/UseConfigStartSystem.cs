@@ -1,9 +1,4 @@
-﻿using Asgard.Auth.AspNetCore;
-using Asgard.Caches.Redis;
-using Asgard.DataBaseManager.FreeSql;
-using Asgard.IDGen;
-using Asgard.Job;
-using Asgard.Logger.FreeSqlProvider;
+﻿using Asgard.IDGen;
 using Asgard.MQ.RabbitMQ;
 using Asgard.Tools;
 
@@ -57,7 +52,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
             {
                 throw new Exception($"初始化加密部分出错{ex.Message} aesKey:{NodeConfig.Value.AuthConfig.AesKey} aesIV:{NodeConfig.Value.AuthConfig.AesIV}");
             }
-            JobManager = new JobManager<IFreeSql>(LoggerProvider);
+            JobManager = new JobManager(LoggerProvider);
             if (NodeConfig.Value.IdWorker is not null)
             {
                 SnowflakeIDGen.Init(NodeConfig.Value.IdWorker.WorkID, NodeConfig.Value.IdWorker.DataCenterID);
@@ -95,7 +90,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
                 Console.WriteLine($"MQ没有配置,跳过MQ初始化");
             }
 
-            PluginManager = new PluginLoaderManager<IFreeSql>(LoggerProvider);
+            PluginManager = new PluginLoaderManager(LoggerProvider);
 
             Console.BackgroundColor = ConsoleColor.Green;
             Console.ForegroundColor = ConsoleColor.White;

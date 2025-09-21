@@ -8,7 +8,7 @@ namespace Asgard.Job
     /// 记住,JOB是存在一部分自管理功能得,你的运行的错误需要自己处理,容器防止崩溃所以不记录
     /// </summary>
     [Job]
-    public abstract class JobBase<OrmType> : IDisposable
+    public abstract class JobBase : IDisposable
     {
         /// <summary>
         /// JobID
@@ -108,13 +108,13 @@ namespace Asgard.Job
         /// 启动服务 强制为任务模型
         /// </summary>
         /// <param name="context">上下文</param>
-        public abstract Task Start(AsgardContext<OrmType> context);
+        public abstract Task Start(AsgardContext context);
 
 
         /// <summary>
         /// 结束 系统会并行等待这个函数
         /// </summary>
-        public abstract Task Stop(AsgardContext<OrmType> context);
+        public abstract Task Stop(AsgardContext context);
 
 
     }

@@ -57,8 +57,7 @@ namespace Asgard.Abstract
         /// <param name="mq"></param> 
         /// <param name="nodeConfig"></param>
         /// <param name="auth"></param>
-        /// <param name="eventID"></param> 
-        /// <param name="createNewContext"></param> 
+        /// <param name="eventID"></param>   
         public AsgardContext(
             NodeConfig nodeConfig,
             AbsLoggerProvider? loggerProvider,

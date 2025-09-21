@@ -17,7 +17,7 @@ namespace Asgard.ConfigCenter.HostExtendsModules
         /// </summary>
         /// <param name="yggdrasil"></param>
         /// <returns></returns>
-        public static YggdrasilBuilder<ORMType> UseNodeConfigFromFile<ORMType>(this YggdrasilBuilder<ORMType> builder)
+        public static YggdrasilBuilder UseNodeConfigFromFile<ORMType>(this YggdrasilBuilder builder)
         {
             if (!File.Exists(Path.Combine(AppContext.BaseDirectory, "appsettings.json")))
             {
@@ -32,7 +32,7 @@ namespace Asgard.ConfigCenter.HostExtendsModules
         /// </summary>
         /// <param name="yggdrasil"></param>
         /// <returns></returns>
-        public static YggdrasilBuilder<ORMType> UseNodeConfigFromFile<ORMType>(this YggdrasilBuilder<ORMType> builder, string filePath)
+        public static YggdrasilBuilder UseNodeConfigFromFile<ORMType>(this YggdrasilBuilder builder, string filePath)
         {
             var configStr = File.ReadAllText(filePath);
             var tmpConfig = JsonSerializer.Deserialize<SystemConfig>(configStr, CommonSerializerOptions.CamelCaseChineseNameCaseInsensitive);

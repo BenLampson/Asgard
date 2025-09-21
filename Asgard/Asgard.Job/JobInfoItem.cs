@@ -5,7 +5,7 @@ namespace Asgard.Job
     /// <summary>
     /// job服务item
     /// </summary>
-    internal class JobInfoItem<OrmType>
+    internal class JobInfoItem
     {
         /// <summary>
         /// Job构造函数
@@ -34,12 +34,12 @@ namespace Asgard.Job
         /// <summary>
         /// 实例对象
         /// </summary>
-        private JobBase<OrmType>? _jobInstance;
+        private JobBase? _jobInstance;
 
         /// <summary>
         /// Job实例对象
         /// </summary>
-        public JobBase<OrmType>? JobInstance
+        public JobBase? JobInstance
         {
             get => _jobInstance;
             set

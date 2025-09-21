@@ -95,7 +95,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// <param name="builder"></param>
         /// <param name="plugin"></param>
         /// <param name="webapiConfig"></param>
-        private void InitServices(WebApplicationBuilder builder, PluginLoaderManager<IFreeSql> plugin, WebApiConfig webapiConfig)
+        private void InitServices(WebApplicationBuilder builder, PluginLoaderManager plugin, WebApiConfig webapiConfig)
         {
             _ = builder.Services.AddControllers()
                 .ConfigureApplicationPartManager(action =>
@@ -224,7 +224,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// <summary>
         /// 初始化DI数据
         /// </summary> 
-        private void InitDI(WebApplicationBuilder builder, LoggerProvider provider, FreeSqlManager db, Func<AsgardContext<IFreeSql>> contextCreator)
+        private void InitDI(WebApplicationBuilder builder, LoggerProvider provider, FreeSqlManager db, Func<AsgardContext> contextCreator)
         {
             _ = builder.Services.AddSingleton(_ => provider);
             _ = builder.Services.AddSingleton(_ => db);
@@ -277,7 +277,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// <summary>
         /// 初始化swagger支持部分
         /// </summary>
-        private void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager<IFreeSql> pluginManager)
+        private void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager pluginManager)
         {
             if (webAPIConfig.UseSwagger)
             {
@@ -325,7 +325,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// </summary>
         /// <param name="app"></param>
         /// <param name="plugin"></param>
-        private void RoutingConfig(WebApplication app, PluginLoaderManager<IFreeSql> plugin)
+        private void RoutingConfig(WebApplication app, PluginLoaderManager plugin)
         {
             plugin.AllPluginInstance.ForEach(item =>
             {
@@ -342,7 +342,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
                   {
                       context.Response.StatusCode = (int)HttpStatusCode.OK;
                       context.Response.ContentType = "application/json";
-                      var httpContext = context.RequestServices.GetService<AsgardContext<IFreeSql>>();
+                      var httpContext = context.RequestServices.GetService<AsgardContext>();
                       var exception = context.Features.Get<IExceptionHandlerFeature>();
                       var res = new DataResponse<string>
                       {

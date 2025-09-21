@@ -11,12 +11,12 @@ namespace Asgard.Extends.AspNetCore
     /// 容器API抽象基类
     /// </summary>
     [APIServer]
-    public class APIControllerBase<ORMType> : ControllerBase
+    public class APIControllerBase : ControllerBase
     {
         /// <summary>
         /// 内阁上下文
         /// </summary>
-        protected AsgardContext<ORMType> Context { get; private set; }
+        protected AsgardContext Context { get; private set; }
         /// <summary>
         /// 内阁上下文
         /// </summary>
@@ -28,7 +28,7 @@ namespace Asgard.Extends.AspNetCore
         /// </summary>
         /// <param name="context"></param>
         /// <param name="logger"></param>
-        public APIControllerBase(AsgardContext<ORMType> context, AbsLogger logger)
+        public APIControllerBase(AsgardContext context, AbsLogger logger)
         {
             Context = context;
             Logger = logger;
@@ -180,7 +180,7 @@ namespace Asgard.Extends.AspNetCore
         /// <summary>
         /// 获取当前商户的数据库对象
         /// </summary>
-        protected ORMType? CurrentTenantFirstDB()
+        protected ORMType? CurrentTenantFirstDB<ORMType>()
         {
             var userinfo = CurrentUser;
             if (userinfo is null)
@@ -192,8 +192,27 @@ namespace Asgard.Extends.AspNetCore
             {
                 return default;
             }
-            return Context.DB.GetMyDB($"{userinfo.CurrentTID}_Default", tdInfo.ConnStr, tdInfo.Type, tdInfo.ReadDB);
+            return Context.DB.GetMyDB<ORMType>($"{userinfo.CurrentTID}_Default", tdInfo.ConnStr, tdInfo.Type, tdInfo.ReadDB);
         }
+
+        /// <summary>
+        /// 获取当前商户的数据库对象
+        /// </summary>
+        protected ORMType? DefaultDB<ORMType>()
+        {
+            var userinfo = CurrentUser;
+            if (userinfo is null)
+            {
+                return default;
+            }
+            var tdInfo = userinfo.TDBInfo.FirstOrDefault();
+            if (tdInfo is null)
+            {
+                return default;
+            }
+            return Context.DB.DefaultDB<ORMType>();
+        }
+
 
     }
 }

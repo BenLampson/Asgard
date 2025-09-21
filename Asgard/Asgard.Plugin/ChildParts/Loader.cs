@@ -7,18 +7,18 @@ namespace Asgard.Plugin
     /// <summary>
     /// 管理器
     /// </summary>
-    public partial class PluginLoaderManager<ORMType>
+    public partial class PluginLoaderManager
     {
 
-        private readonly List<PluginInstance<ORMType>> _items = new();
+        private readonly List<PluginInstance> _items = new();
         /// <summary>
         /// 
         /// </summary> 
         /// <returns></returns>
-        public bool LoadPlugin(AbsDataBaseManager<ORMType> dbInstance, AbsLoggerProvider loggerProvider, PluginItem plugin)
+        public bool LoadPlugin(AbsDataBaseManager dbInstance, AbsLoggerProvider loggerProvider, PluginItem plugin)
         {
 
-            var pluginInstance = new PluginInstance<ORMType>(plugin);
+            var pluginInstance = new PluginInstance(plugin);
             if (!pluginInstance.CheckPathInfo())
             {
                 _logger.Warning($"文件[{pluginInstance.PluginFilePath}]不存在, 创建:{plugin.Name}加载失败.");

@@ -51,7 +51,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// <summary>
         /// job管理器
         /// </summary>
-        public JobManager<IFreeSql>? JobManager { get; private set; }
+        public JobManager? JobManager { get; private set; }
 
         /// <summary>
         /// MQ服务
@@ -61,7 +61,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// <summary>
         /// 插件管理器
         /// </summary>
-        public PluginLoaderManager<IFreeSql>? PluginManager { get; private set; }
+        public PluginLoaderManager? PluginManager { get; private set; }
 
 
         /// <summary>
@@ -204,7 +204,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
                 waitForProcessShutdownStart.Wait();
             }
 
-
+            Console.WriteLine("系统关闭完成,尝试销毁资源.");
             if (WebApp is not null)
             {
                 await WebApp.StopAsync();
@@ -213,8 +213,6 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
             {
                 NotifyStoping();
             }
-            Console.WriteLine("系统关闭完成,尝试销毁资源.");
-            DB?.Default?.Dispose();
             Console.WriteLine("销毁完成.");
             Console.WriteLine("系统已停止.");
             LoggerProvider?.CreateLogger<HostManager>().Critical("系统已停止.", eventID: EventID);
@@ -226,7 +224,7 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public AsgardContext<IFreeSql> CreateContext()
+        public AsgardContext CreateContext()
         {
             if (
                 CacheManager is null ||
@@ -240,15 +238,14 @@ namespace Asgard.Hosts.AspNetCore.FreeSql
                     $"数据库配置:{DB is null} " +
                     $"日志管理器:{LoggerProvider is null}");
             }
-            return new AsgardContext<IFreeSql>(
+            return new AsgardContext(
                     NodeConfig.Value,
                     LoggerProvider,
                     CacheManager,
                     DB,
                     MQ,
                     AuthManager,
-                    Guid.NewGuid().ToString("N"),
-                    CreateContext);
+                    Guid.NewGuid().ToString("N"));
         }
     }
 }

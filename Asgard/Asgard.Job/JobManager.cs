@@ -6,7 +6,7 @@ namespace Asgard.Job
     /// <summary>
     /// 任务管理器
     /// </summary>
-    public class JobManager<OrmType>
+    public class JobManager
     {
         /// <summary>
         /// 日志提供器
@@ -20,7 +20,7 @@ namespace Asgard.Job
         /// <summary>
         /// 所有的任务对象
         /// </summary>
-        private readonly List<JobInfoItem<OrmType>> _allJobItems = new();
+        private readonly List<JobInfoItem> _allJobItems = new();
 
         /// <summary>
         /// 取消Token
@@ -30,7 +30,7 @@ namespace Asgard.Job
         /// <summary>
         /// 创建上下文函数
         /// </summary>
-        public Func<AsgardContext<OrmType>>? CreateContextAction;
+        public Func<AsgardContext>? CreateContextAction;
 
         /// <summary>
         /// 默认构造
@@ -38,7 +38,7 @@ namespace Asgard.Job
         public JobManager(AbsLoggerProvider provider)
         {
             _provider = provider;
-            _logger = provider.CreateLogger<JobManager<OrmType>>();
+            _logger = provider.CreateLogger<JobManager>();
         }
 
 
@@ -50,7 +50,7 @@ namespace Asgard.Job
         /// <param name="jobType">job服务的类型</param> 
         public void PushNewJobInfo(Type jobType)
         {
-            if (typeof(JobBase<OrmType>).IsAssignableFrom(jobType))
+            if (typeof(JobBase).IsAssignableFrom(jobType))
             {
                 var constructor = jobType.GetConstructor(new Type[] { typeof(AbsLogger) });
                 if (constructor is null)
@@ -68,12 +68,12 @@ namespace Asgard.Job
                         _logger.Information($"创建工作器实例失败,不加载!");
                         return;
                     }
-                    if (instance is not JobBase<OrmType> jobBase)
+                    if (instance is not JobBase jobBase)
                     {
                         _logger.Information($"工作器没有继承基类AbsJobBase,不加载!");
                         return;
                     }
-                    var item = new JobInfoItem<OrmType>(constructor)
+                    var item = new JobInfoItem(constructor)
                     {
                         JobTypeFullName = jobType.FullName ?? jobType.Name,
                         Interval = jobBase.Interval,
@@ -119,7 +119,7 @@ namespace Asgard.Job
                             var loggerInstance = _provider.CreateLogger(item.JobTypeFullName);
                             var instance = item.Constructor.Invoke(new object[] { loggerInstance });
 
-                            if (instance is not JobBase<OrmType> baseInstance)
+                            if (instance is not JobBase baseInstance)
                             {
                                 _logger.Information($"创建工作器:{item.JobTypeFullName}实例完成,但是其并不是AbsJobBase, 跳过执行!");
                                 return;
@@ -186,7 +186,7 @@ namespace Asgard.Job
         /// <summary>
         /// 停止服务
         /// </summary>
-        public void Stop(AsgardContext<OrmType> context)
+        public void Stop(AsgardContext context)
         {
             _cancellationToken.Cancel();
             _allJobItems.ForEach(item =>

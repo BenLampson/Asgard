@@ -8,7 +8,7 @@ namespace Asgard.Plugin
     /// <summary>
     /// 管理器
     /// </summary>
-    public partial class PluginLoaderManager<ORMType>
+    public partial class PluginLoaderManager
     {
         /// <summary>
         /// 日志
@@ -17,7 +17,7 @@ namespace Asgard.Plugin
         /// <summary>
         /// 所有的插件实例
         /// </summary>
-        public List<PluginInstance<ORMType>> AllPluginInstance
+        public List<PluginInstance> AllPluginInstance
         {
             get => this._items.OrderBy(item =>
             {
@@ -46,8 +46,8 @@ namespace Asgard.Plugin
         /// </summary>
         public PluginLoaderManager(AbsLoggerProvider provider)
         {
-            _logger = provider.CreateLogger<PluginLoaderManager<ORMType>>();
-            if (Assembly.GetAssembly(typeof(AbsSSSAccessPoint<ORMType>)) is Assembly asb)
+            _logger = provider.CreateLogger<PluginLoaderManager>();
+            if (Assembly.GetAssembly(typeof(AbsSSSAccessPoint)) is Assembly asb)
             {
                 if (asb.GetCustomAttribute(typeof(AssemblyFileVersionAttribute)) is AssemblyFileVersionAttribute asbVerInfo)
                 {
@@ -65,7 +65,7 @@ namespace Asgard.Plugin
         /// 系统启动成功,异步通知.
         /// </summary>
         /// <param name="context"></param>
-        public void SystemStarted(AsgardContext<ORMType> context)
+        public void SystemStarted(AsgardContext context)
         {
             _logger.Trace("开始调用系统启动函数[OnSystemStarted]");
             this._items.ForEach(item =>
@@ -88,7 +88,7 @@ namespace Asgard.Plugin
         /// <summary>
         /// 系统启动成功,同步通知,可以阻塞容器.
         /// </summary> 
-        public void SystemStoping(AsgardContext<ORMType> context)
+        public void SystemStoping(AsgardContext context)
         {
             _logger.Trace("开始调用系统关闭函数[SystemTryShutDown]", eventID: context.EventID);
             this._items.ForEach(item =>

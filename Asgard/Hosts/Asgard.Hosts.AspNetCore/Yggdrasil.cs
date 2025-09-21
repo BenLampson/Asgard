@@ -2,12 +2,12 @@
 
 namespace Asgard.Hosts.AspNetCore
 {
-    public partial class Yggdrasil<ORMType> : AbsYggdrasil
+    public partial class Yggdrasil : AbsYggdrasil
     {
         /// <summary>
         /// 插件加载管理器
         /// </summary>
-        public PluginLoaderManager<ORMType>? PluginManager { get; set; }
+        public PluginLoaderManager? PluginManager { get; set; }
         /// <summary>
         /// Asp.net app
         /// </summary>
@@ -24,7 +24,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 构建世界之树对象
         /// </summary>
-        public Yggdrasil<ORMType> Build()
+        public Yggdrasil Build()
         {
             return this;
         }

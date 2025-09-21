@@ -12,7 +12,7 @@ namespace Asgard.Plugin
     /// <summary>
     /// API插件选项
     /// </summary>
-    public class PluginInstance<ORMType>
+    public class PluginInstance
     {
         /// <summary>
         /// 插件信息
@@ -53,7 +53,7 @@ namespace Asgard.Plugin
         /// <summary>
         /// 入口实例
         /// </summary>
-        public AbsSSSAccessPoint<ORMType>? EnteranceInstance { get; private set; }
+        public AbsSSSAccessPoint? EnteranceInstance { get; private set; }
 
         /// <summary>
         /// 所有的GRPC服务类型
@@ -99,12 +99,12 @@ namespace Asgard.Plugin
         /// 尝试创建入口
         /// </summary> 
         /// <returns></returns>
-        public bool TryCreateEntrance(AbsDataBaseManager<ORMType> dbInstance, AbsLoggerProvider loggerProvider, out AbsSSSAccessPoint<ORMType>? instance)
+        public bool TryCreateEntrance(AbsDataBaseManager dbInstance, AbsLoggerProvider loggerProvider, out AbsSSSAccessPoint? instance)
         {
             instance = null;
             Assembly = new AssemblyLoader(PluginFilePath);
             var tempInfo = Assembly.Assembly.CreateInstance(_pluginItem.EntranceTypeDesc, true, BindingFlags.Default, null, new object[] { dbInstance, loggerProvider }, null, null);
-            if (tempInfo is AbsSSSAccessPoint<ORMType> entrance && Assembly is not null)
+            if (tempInfo is AbsSSSAccessPoint entrance && Assembly is not null)
             {
                 EnteranceInstance = instance = entrance;
                 Version = Assembly.Assembly.GetName().Version ?? new Version();
