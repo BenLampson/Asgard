@@ -10,15 +10,15 @@ namespace Asgard.Abstract.Cache
         /// <summary>
         /// 日志
         /// </summary>
-        private readonly AbsLogger _logger;
+        private readonly AbsLogger? _logger;
 
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="loggerProvider">日志提供器</param>
-        public AbsCache(AbsLoggerProvider loggerProvider)
+        public AbsCache(AbsLoggerProvider? loggerProvider)
         {
-            _logger = loggerProvider.CreateLogger<AbsCache>();
+            _logger = loggerProvider?.CreateLogger<AbsCache>();
         }
 
         /// <summary>

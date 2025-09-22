@@ -11,8 +11,4 @@
     <ProjectReference Include="..\Asgard.DataBaseManager.FreeSql\Asgard.DataBaseManager.FreeSql.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="HostExtendsModules\" />
-  </ItemGroup>
-
 </Project>

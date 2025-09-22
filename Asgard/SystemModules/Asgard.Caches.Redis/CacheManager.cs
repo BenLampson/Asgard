@@ -21,7 +21,7 @@ namespace Asgard.Caches.Redis
         /// <summary>
         /// 日志
         /// </summary>
-        private readonly AbsLogger _logger;
+        private readonly AbsLogger? _logger;
 
 
         /// <summary>
@@ -44,19 +44,19 @@ namespace Asgard.Caches.Redis
         /// 构造函数
         /// </summary>
         /// <param name="loggerProvider">日志提供器</param>
-        public CacheManager(AbsLoggerProvider loggerProvider) : base(loggerProvider)
+        public CacheManager(AbsLoggerProvider? loggerProvider) : base(loggerProvider)
         {
-            _logger = loggerProvider.CreateLogger<CacheManager>();
+            _logger = loggerProvider?.CreateLogger<CacheManager>();
         }
 
         /// <summary>
         /// 推送一个新的缓存实例
         /// </summary> 
-        public void PushRedis(string redisConnString, AbsLogger logger)
+        public void PushRedis(string redisConnString, AbsLogger? logger)
         {
             if (string.IsNullOrEmpty(redisConnString))
             {
-                logger.Warning($"Redis模块关闭,因为没有配置连接字符串.");
+                logger?.Warning($"Redis模块关闭,因为没有配置连接字符串.");
                 return;
             }
             try
@@ -69,7 +69,7 @@ namespace Asgard.Caches.Redis
             catch (Exception ex)
             {
                 _redis?.Dispose();
-                logger.Critical($"Redis服务关创建失败,模块关闭", exception: ex);
+                logger?.Critical($"Redis服务关创建失败,模块关闭", exception: ex);
             }
         }
 
