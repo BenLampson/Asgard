@@ -12,6 +12,22 @@ namespace Asgard.Abstract
     public class YggdrasilBuilder
     {
         /// <summary>
+        /// 构造函数,可以传入节点配置
+        /// </summary>
+        /// <param name="config"></param>
+        public YggdrasilBuilder(NodeConfig config)
+        {
+            this.NodeConfig = config;
+        }
+
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        public YggdrasilBuilder()
+        {
+
+        }
+        /// <summary>
         /// 事件ID,每次启动都会变
         /// </summary>
         public string EventID { get; private set; } = Guid.NewGuid().ToString("N");
@@ -41,6 +57,16 @@ namespace Asgard.Abstract
         public AbsMQManager? MQ { get; private set; }
 
         /// <summary>
+        /// 设置节点配置
+        /// </summary>
+        /// <param name="config"></param>
+        /// <returns></returns>
+        public YggdrasilBuilder SetNodeConfig(NodeConfig config)
+        {
+            this.NodeConfig = config;
+            return this;
+        }
+        /// <summary>
         /// 设置缓存提供器
         /// </summary>
         /// <param name="cacheLoader"></param>
@@ -51,16 +77,7 @@ namespace Asgard.Abstract
             return this;
         }
 
-        /// <summary>
-        /// 设置节点配置
-        /// </summary>
-        /// <param name="config"></param>
-        /// <returns></returns>
-        public YggdrasilBuilder SetNodeConfig(NodeConfig config)
-        {
-            this.NodeConfig = config;
-            return this;
-        }
+
 
         /// <summary>
         /// 设置数据库管理器
