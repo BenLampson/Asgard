@@ -9,3 +9,4 @@ new YggdrasilBuilder()
     .UseMemCache()
     .UseFreeSqlLogger()
     .UseFreeSqlDBManager();
+

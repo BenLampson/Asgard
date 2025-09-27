@@ -1,4 +1,5 @@
-﻿using Asgard.Abstract.Cache;
+﻿using Asgard.Abstract.Auth;
+using Asgard.Abstract.Cache;
 using Asgard.Abstract.DataBase;
 using Asgard.Abstract.Logger;
 using Asgard.Abstract.Models.AsgardConfig;
@@ -40,6 +41,10 @@ namespace Asgard.Abstract
         /// 日志提供器
         /// </summary>
         public Func<NodeConfig, AbsLoggerProvider>? LoggerProvider { get; private set; }
+        /// <summary>
+        /// 权限模块 
+        /// </summary>
+        public Func<AbsLoggerProvider?, NodeConfig, AbsAuthManager>? AuthProvider { get; init; }
 
         /// <summary>
         /// 本地缓存实例
@@ -52,9 +57,14 @@ namespace Asgard.Abstract
         public Func<AbsLoggerProvider?, NodeConfig, AbsDataBaseManager>? DBManager { get; private set; }
 
         /// <summary>
-        /// 数据库管理器
+        /// MQ库管理器
         /// </summary>
         public AbsMQManager? MQ { get; private set; }
+
+        /// <summary>
+        /// 事件ID生成器
+        /// </summary>
+        public Func<string> EventIDBuilder { get; init; } = () => Guid.NewGuid().ToString("N");
 
         /// <summary>
         /// 设置节点配置

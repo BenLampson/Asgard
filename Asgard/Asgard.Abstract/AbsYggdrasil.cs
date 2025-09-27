@@ -1,6 +1,9 @@
-﻿using Asgard.Abstract.Cache;
+﻿using Asgard.Abstract.Auth;
+using Asgard.Abstract.Cache;
+using Asgard.Abstract.DataBase;
 using Asgard.Abstract.Logger;
 using Asgard.Abstract.Models.AsgardConfig;
+using Asgard.Abstract.MQ;
 
 namespace Asgard.Abstract
 {
@@ -12,54 +15,52 @@ namespace Asgard.Abstract
         /// <summary>
         /// 事件ID,每次启动都会变
         /// </summary>
-        public string EventID { get; set; } = Guid.NewGuid().ToString("N");
+        public string EventID { get; init; } = Guid.NewGuid().ToString("N");
         /// <summary>
         /// 当前节点配置
         /// </summary>
-        public NodeConfig? NodeConfig { get; private set; }
+        public NodeConfig? NodeConfig { get; init; }
+        /// <summary>
+        /// 权限模块 
+        /// </summary>
+        public AbsAuthManager? AuthManager { get; init; }
 
         /// <summary>
         /// 日志提供器
         /// </summary>
-        public AbsLoggerProvider? LoggerProvider { get; private set; }
+        public AbsLoggerProvider? LoggerProvider { get; init; }
+
+        /// <summary>
+        /// 数据库管理器
+        /// </summary>
+        public AbsDataBaseManager? DBManager { get; init; }
 
         /// <summary>
         /// 本地缓存实例
         /// </summary>
-        public AbsCache? CacheManager { get; set; }
+        public AbsCache? CacheManager { get; init; }
+
+        /// <summary>
+        /// MQ库管理器
+        /// </summary>
+        public AbsMQManager? MQ { get; init; }
+
 
 
         /// <summary>
-        /// 设置缓存管理器
+        /// 获取一个新的上下文对象
         /// </summary>
-        /// <param name="cache"></param>
         /// <returns></returns>
-        public AbsYggdrasil SetCacheManager(AbsCache cache)
+        /// <exception cref="ArgumentNullException"></exception>
+        public AsgardContext GetContext()
         {
-            this.CacheManager = cache;
-            return this;
+            if (NodeConfig == null)
+            {
+                throw new ArgumentNullException("请先初始化系统配置");
+            }
+            var context = new AsgardContext(NodeConfig, LoggerProvider, CacheManager, DBManager, MQ, AuthManager, Guid.NewGuid().ToString("N"));
+            return context;
         }
 
-        /// <summary>
-        /// 设置日志提供器
-        /// </summary>
-        /// <param name="loggerProvider"></param>
-        /// <returns></returns>
-        public AbsYggdrasil SetLoggerProvider(AbsLoggerProvider loggerProvider)
-        {
-            this.LoggerProvider = loggerProvider;
-            return this;
-        }
-
-        /// <summary>
-        /// 设置节点配置
-        /// </summary>
-        /// <param name="nodeConfig">对应配置</param>
-        /// <returns></returns>
-        public AbsYggdrasil SetNodeConfig(NodeConfig nodeConfig)
-        {
-            this.NodeConfig = nodeConfig;
-            return this;
-        }
     }
 }

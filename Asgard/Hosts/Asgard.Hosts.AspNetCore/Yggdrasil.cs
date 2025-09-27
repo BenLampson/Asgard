@@ -13,6 +13,11 @@ namespace Asgard.Hosts.AspNetCore
         /// </summary>
         public WebApplication? WebApp { get; private set; }
 
+        /// <summary>
+        /// 在构建WebApplicationBuilder时的回调
+        /// </summary>
+        public Action<WebApplicationBuilder>? OnWebAppbuild { get; init; }
+
 
 
         public Yggdrasil()

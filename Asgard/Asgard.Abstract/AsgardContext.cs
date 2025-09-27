@@ -27,7 +27,7 @@ namespace Asgard.Abstract
         /// <summary>
         /// 数据库模块
         /// </summary>
-        public AbsDataBaseManager DB { get; init; }
+        public AbsDataBaseManager? DB { get; init; }
         /// <summary>
         /// 日志提供器
         /// </summary>
@@ -62,7 +62,7 @@ namespace Asgard.Abstract
             NodeConfig nodeConfig,
             AbsLoggerProvider? loggerProvider,
             AbsCache? cache,
-            AbsDataBaseManager db,
+            AbsDataBaseManager? db,
             AbsMQManager? mq,
             AbsAuthManager? auth,
             string? eventID

@@ -13,7 +13,7 @@ namespace Asgard.Plugin
         /// <summary>
         /// 日志
         /// </summary>
-        private readonly AbsLogger _logger;
+        private readonly AbsLogger? _logger;
         /// <summary>
         /// 所有的插件实例
         /// </summary>
@@ -44,9 +44,9 @@ namespace Asgard.Plugin
         /// <summary>
         /// 构造函数
         /// </summary>
-        public PluginLoaderManager(AbsLoggerProvider provider)
+        public PluginLoaderManager(AbsLoggerProvider? provider)
         {
-            _logger = provider.CreateLogger<PluginLoaderManager>();
+            _logger = provider?.CreateLogger<PluginLoaderManager>();
             if (Assembly.GetAssembly(typeof(AbsSSSAccessPoint)) is Assembly asb)
             {
                 if (asb.GetCustomAttribute(typeof(AssemblyFileVersionAttribute)) is AssemblyFileVersionAttribute asbVerInfo)
@@ -67,18 +67,18 @@ namespace Asgard.Plugin
         /// <param name="context"></param>
         public void SystemStarted(AsgardContext context)
         {
-            _logger.Trace("开始调用系统启动函数[OnSystemStarted]");
+            _logger?.Trace("开始调用系统启动函数[OnSystemStarted]");
             this._items.ForEach(item =>
             {
                 try
                 {
                     item.EnteranceInstance?.OnSystemStarted(context);
-                    _logger.Trace($"调用[{item.Name}]的系统启动函数[{nameof(item.EnteranceInstance.OnSystemStarted)}]成功", eventID: context.EventID);
+                    _logger?.Trace($"调用[{item.Name}]的系统启动函数[{nameof(item.EnteranceInstance.OnSystemStarted)}]成功", eventID: context.EventID);
 
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error($"调用[{item.Name}]的系统启动函数[{nameof(item.EnteranceInstance.OnSystemStarted)}]失败.", exception: ex, eventID: context.EventID);
+                    _logger?.Error($"调用[{item.Name}]的系统启动函数[{nameof(item.EnteranceInstance.OnSystemStarted)}]失败.", exception: ex, eventID: context.EventID);
                     item.StartExceptionMessage = ex.Message;
                 }
 
@@ -90,7 +90,7 @@ namespace Asgard.Plugin
         /// </summary> 
         public void SystemStoping(AsgardContext context)
         {
-            _logger.Trace("开始调用系统关闭函数[SystemTryShutDown]", eventID: context.EventID);
+            _logger?.Trace("开始调用系统关闭函数[SystemTryShutDown]", eventID: context.EventID);
             this._items.ForEach(item =>
             {
                 try
@@ -99,10 +99,10 @@ namespace Asgard.Plugin
                 }
                 catch (Exception ex)
                 {
-                    _logger.Error($"调用[{item.Name}]的系统关闭函数[{nameof(item.EnteranceInstance.SystemTryShutDown)}]失败.", exception: ex, eventID: context.EventID);
+                    _logger?.Error($"调用[{item.Name}]的系统关闭函数[{nameof(item.EnteranceInstance.SystemTryShutDown)}]失败.", exception: ex, eventID: context.EventID);
                 }
             });
-            _logger.Trace("系统关闭函数[SystemTryShutDown]完成.", eventID: context.EventID);
+            _logger?.Trace("系统关闭函数[SystemTryShutDown]完成.", eventID: context.EventID);
         }
     }
 }

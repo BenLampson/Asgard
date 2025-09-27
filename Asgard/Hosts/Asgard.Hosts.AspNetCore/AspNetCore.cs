@@ -20,7 +20,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 跨域配置昵称
         /// </summary>
-        private static readonly string _myAllowSpecificOrigins = "_ShangShuSheng.Core.Cros";
+        private static readonly string _myAllowSpecificOrigins = "_Asgard.Core.Cros";
 
         /// <summary>
         /// 初始化一个Asp.Net对象出来,做自宿主 
@@ -154,7 +154,7 @@ namespace Asgard.Hosts.AspNetCore
                             Array.Empty<string>()
                         }
                     });
-                    c.SwaggerDoc("ShangShuSheng", new OpenApiInfo()
+                    c.SwaggerDoc("Asgard", new OpenApiInfo()
                     {
                         Title = "尚书省",
                         Description = "尚书省,系统承载器",
@@ -293,7 +293,7 @@ namespace Asgard.Hosts.AspNetCore
                 });
                 _ = app.UseSwaggerUI(c =>
                 {
-                    c.SwaggerEndpoint($"{webAPIConfig.SwaggerUrlPrefix}/swagger/ShangShuSheng/swagger.json", "ShangShuSheng");
+                    c.SwaggerEndpoint($"{webAPIConfig.SwaggerUrlPrefix}/swagger/Asgard/swagger.json", "Asgard");
                     pluginManager.AllPluginInstance.ForEach(item =>
                     {
                         if (item.AllApi.Count == 0)
