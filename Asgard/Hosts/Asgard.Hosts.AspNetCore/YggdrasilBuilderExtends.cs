@@ -13,9 +13,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <param name="builder"></param>
         /// <param name="onWebAppbuild"></param>
         /// <returns></returns>
-        public static Yggdrasil BuildAspNetCoreHost(this YggdrasilBuilder builder,
-            Action<WebApplicationBuilder>? onWebAppbuild
-            )
+        public static Yggdrasil BuildAspNetCoreHost(this YggdrasilBuilder builder)
         {
             var loggerProvider = builder.LoggerProvider != null ? builder.LoggerProvider(builder.NodeConfig!) : null;
             var cacheManager = builder.CacheManager != null ? builder.CacheManager(builder.LoggerProvider != null ? builder.LoggerProvider(builder.NodeConfig!) : null, builder.NodeConfig!) : null;
@@ -26,7 +24,6 @@ namespace Asgard.Hosts.AspNetCore
             var yggdrasil = new Yggdrasil()
             {
                 NodeConfig = builder.NodeConfig,
-                OnWebAppbuild = onWebAppbuild,
                 AuthManager = authManager,
                 CacheManager = cacheManager,
                 DBManager = dBManager,

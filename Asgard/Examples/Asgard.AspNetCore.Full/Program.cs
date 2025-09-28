@@ -2,11 +2,15 @@
 using Asgard.Caches.Redis;
 using Asgard.ConfigCenter.HostExtendsModules;
 using Asgard.DataBaseManager.FreeSql;
+using Asgard.Hosts.AspNetCore;
 using Asgard.Logger.FreeSqlProvider;
 
-new YggdrasilBuilder()
+var aspHost = new YggdrasilBuilder()
     .UseNodeConfigFromFile("")
     .UseMemCache()
     .UseFreeSqlLogger()
-    .UseFreeSqlDBManager();
+    .UseFreeSqlDBManager()
+    .BuildAspNetCoreHost();
+
+aspHost.Build
 

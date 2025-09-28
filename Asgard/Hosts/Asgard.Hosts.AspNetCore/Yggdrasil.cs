@@ -29,7 +29,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 构建世界之树对象
         /// </summary>
-        public Yggdrasil Build()
+        public Yggdrasil Start()
         {
             return this;
         }
