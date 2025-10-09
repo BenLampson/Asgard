@@ -1,6 +1,7 @@
 ﻿using Asgard.Abstract.Auth;
 using Asgard.Abstract.Cache;
 using Asgard.Abstract.DataBase;
+using Asgard.Abstract.Job;
 using Asgard.Abstract.Logger;
 using Asgard.Abstract.Models.AsgardConfig;
 using Asgard.Abstract.MQ;
@@ -34,6 +35,11 @@ namespace Asgard.Abstract
         /// 数据库管理器
         /// </summary>
         public AbsDataBaseManager? DBManager { get; init; }
+
+        /// <summary>
+        /// Job管理器
+        /// </summary>
+        public AbsJobManager? JobManager { get; init; }
 
         /// <summary>
         /// 本地缓存实例

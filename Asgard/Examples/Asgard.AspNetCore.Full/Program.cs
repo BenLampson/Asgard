@@ -12,5 +12,5 @@ var aspHost = new YggdrasilBuilder()
     .UseFreeSqlDBManager()
     .BuildAspNetCoreHost();
 
-aspHost.Build
+await aspHost.Start();
 

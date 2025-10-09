@@ -1,4 +1,5 @@
 ﻿using Asgard.Abstract;
+using Asgard.Abstract.Job;
 using Asgard.Abstract.Logger;
 
 namespace Asgard.Job
@@ -6,49 +7,29 @@ namespace Asgard.Job
     /// <summary>
     /// 任务管理器
     /// </summary>
-    public class JobManager
+    public class JobManager : AbsJobManager
     {
-        /// <summary>
-        /// 日志提供器
-        /// </summary>
-        private readonly AbsLoggerProvider _provider;
-        /// <summary>
-        /// 日志对象
-        /// </summary>
-        private readonly AbsLogger _logger;
 
         /// <summary>
         /// 所有的任务对象
         /// </summary>
         private readonly List<JobInfoItem> _allJobItems = new();
 
-        /// <summary>
-        /// 取消Token
-        /// </summary>
-        private readonly CancellationTokenSource _cancellationToken = new();
 
-        /// <summary>
-        /// 创建上下文函数
-        /// </summary>
-        public Func<AsgardContext>? CreateContextAction;
 
         /// <summary>
         /// 默认构造
         /// </summary>
-        public JobManager(AbsLoggerProvider provider)
+        public JobManager(AbsLoggerProvider provider) : base(provider)
         {
-            _provider = provider;
-            _logger = provider.CreateLogger<JobManager>();
         }
-
-
 
 
         /// <summary>
         /// 推送一个新的任务内容
         /// </summary>
         /// <param name="jobType">job服务的类型</param> 
-        public void PushNewJobInfo(Type jobType)
+        public override void PushNewJobInfo(Type jobType)
         {
             if (typeof(JobBase).IsAssignableFrom(jobType))
             {
@@ -102,7 +83,7 @@ namespace Asgard.Job
         /// <summary>
         /// 开始服务
         /// </summary>
-        public void Start()
+        public override void Start()
         {
             if (CreateContextAction is null)
             {
@@ -186,7 +167,7 @@ namespace Asgard.Job
         /// <summary>
         /// 停止服务
         /// </summary>
-        public void Stop(AsgardContext context)
+        public override void Stop(AsgardContext context)
         {
             _cancellationToken.Cancel();
             _allJobItems.ForEach(item =>
