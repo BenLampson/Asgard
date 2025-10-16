@@ -2,7 +2,6 @@
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 
-
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.FileProviders;

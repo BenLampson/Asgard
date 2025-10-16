@@ -8,7 +8,6 @@ global using Asgard.Abstract;
 global using Asgard.Abstract.Logger;
 global using Asgard.Abstract.Models.AsgardConfig.ChildConfigModel.LogConfig;
 global using Asgard.DataBaseManager.FreeSql;
-global using Asgard.Extends.AspNetCore.ApiModels;
 global using Asgard.Extends.Json;
 global using Asgard.Logger.FreeSqlProvider;
 global using Asgard.Abstract.MQ;

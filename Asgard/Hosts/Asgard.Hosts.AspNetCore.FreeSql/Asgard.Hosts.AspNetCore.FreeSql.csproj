@@ -13,7 +13,6 @@
 		<ProjectReference Include="..\..\Asgard.Extends\Asgard.Extends.csproj" />
 		<ProjectReference Include="..\..\Asgard.IDGen\Asgard.IDGen.csproj" />
 		<ProjectReference Include="..\..\Asgard.Job\Asgard.Job.csproj" />
-		<ProjectReference Include="..\..\Asgard.Plugin\Asgard.Plugin.csproj" />
 		<ProjectReference Include="..\..\Asgard.Tools\Asgard.Tools.csproj" />
 		<ProjectReference Include="..\..\SystemModules\Asgard.Auth.AspNetCore\Asgard.Auth.AspNetCore.csproj" />
 		<ProjectReference Include="..\..\SystemModules\Asgard.Caches.Redis\Asgard.Caches.Redis.csproj" />

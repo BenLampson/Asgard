@@ -5,6 +5,7 @@ using Asgard.Abstract.Job;
 using Asgard.Abstract.Logger;
 using Asgard.Abstract.Models.AsgardConfig;
 using Asgard.Abstract.MQ;
+using Asgard.Plugin;
 
 namespace Asgard.Abstract
 {

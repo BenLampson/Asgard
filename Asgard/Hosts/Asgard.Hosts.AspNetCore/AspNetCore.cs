@@ -28,14 +28,14 @@ namespace Asgard.Hosts.AspNetCore
         /// <returns></returns>
         private void InitAspNet()
         {
-            if (NodeConfig is null || NodeConfig.JustJobServer || NodeConfig.WebAPIConfig is null || PluginManager is null)
+            if (NodeConfig is null || NodeConfig.JustJobServer || NodeConfig.WebAPIConfig is null)
             {
                 return;
             }
             var builder = WebApplication.CreateBuilder();
             InitHost(builder, NodeConfig.WebAPIConfig);
             InitServices(builder, PluginManager, NodeConfig.WebAPIConfig);
-            InitDI(builder, LoggerProvider);
+            InitDI(builder, PluginManager, LoggerProvider);
             WebApp = builder.Build();
             _ = WebApp.UsePathBase(NodeConfig.WebAPIConfig.ApiPrefix);
             InitStaticFile(WebApp, builder, NodeConfig.WebAPIConfig);
@@ -94,12 +94,12 @@ namespace Asgard.Hosts.AspNetCore
         /// <param name="builder"></param>
         /// <param name="plugin"></param>
         /// <param name="webapiConfig"></param>
-        private void InitServices(WebApplicationBuilder builder, PluginLoaderManager plugin, WebApiConfig webapiConfig)
+        private void InitServices(WebApplicationBuilder builder, PluginLoaderManager? plugin, WebApiConfig webapiConfig)
         {
             _ = builder.Services.AddControllers()
                 .ConfigureApplicationPartManager(action =>
                 {
-                    plugin.AllPluginInstance.Where(plugin => plugin.AllApi.Count != 0)
+                    plugin?.AllPluginInstance.Where(plugin => plugin.AllApi.Count != 0)
                     .ToList().ForEach(plugin =>
                     {
                         if (NodeConfig is not null && NodeConfig.SelfAsAPlugin)//如果自己就是插件,那就要跳过自己
@@ -159,7 +159,7 @@ namespace Asgard.Hosts.AspNetCore
                         Title = "尚书省",
                         Description = "尚书省,系统承载器",
                     });
-                    plugin.AllPluginInstance.ForEach(item =>
+                    plugin?.AllPluginInstance.ForEach(item =>
                     {
                         if (item.AllApi.Count == 0)
                         {
@@ -179,7 +179,7 @@ namespace Asgard.Hosts.AspNetCore
                     });
 
 
-                    plugin.AllPluginInstance.ForEach(item =>
+                    plugin?.AllPluginInstance.ForEach(item =>
                     {
                         if (Directory.Exists(item.PluginFolderPath))
                         {
@@ -222,13 +222,28 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 初始化DI数据
         /// </summary> 
-        private void InitDI(WebApplicationBuilder builder, AbsLoggerProvider? provider)
+        private void InitDI(WebApplicationBuilder builder, PluginLoaderManager? pluginManager, AbsLoggerProvider? provider)
         {
             if (provider is not null)
             {
                 _ = builder.Services.AddSingleton(_ => provider);
             }
             _ = builder.Services.AddScoped(_ => new Yggdrasil());
+            pluginManager?.AllPluginInstance.ForEach(item =>
+            {
+                if (item.EnteranceInstance is not AbsAspNetCoreHostBifrost pluginItem)
+                {
+                    return;
+                }
+                try
+                {
+                    pluginItem.OnServiceInit(builder.Services);
+                }
+                catch (Exception ex)
+                {
+                    provider?.CreateLogger<Yggdrasil>().Error($"插件:{item.Name} 调用:{nameof(pluginItem.OnServiceInit)}报错!ex:{ex}");
+                }
+            });
         }
 
         /// <summary>
@@ -276,7 +291,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 初始化swagger支持部分
         /// </summary>
-        private void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager pluginManager)
+        private void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager? pluginManager)
         {
             if (webAPIConfig.UseSwagger)
             {
@@ -294,7 +309,7 @@ namespace Asgard.Hosts.AspNetCore
                 _ = app.UseSwaggerUI(c =>
                 {
                     c.SwaggerEndpoint($"{webAPIConfig.SwaggerUrlPrefix}/swagger/Asgard/swagger.json", "Asgard");
-                    pluginManager.AllPluginInstance.ForEach(item =>
+                    pluginManager?.AllPluginInstance.ForEach(item =>
                     {
                         if (item.AllApi.Count == 0)
                         {
@@ -324,15 +339,15 @@ namespace Asgard.Hosts.AspNetCore
         /// </summary>
         /// <param name="app"></param>
         /// <param name="plugin"></param>
-        private void RoutingConfig(WebApplication app, PluginLoaderManager plugin)
+        private void RoutingConfig(WebApplication app, PluginLoaderManager? plugin)
         {
-            plugin.AllPluginInstance.ForEach(item =>
+            plugin?.AllPluginInstance.ForEach(item =>
             {
-                if (item.EnteranceInstance is null)
+                if (item.EnteranceInstance is not AbsAspNetCoreHostBifrost pluginItem)
                 {
                     return;
                 }
-                item.EnteranceInstance.OnBuildWebApp(app);
+                pluginItem.OnBuildWebApp(app);
             });
             _ = app.UseRouting()
               .UseExceptionHandler(builder =>
@@ -365,7 +380,7 @@ namespace Asgard.Hosts.AspNetCore
               .UseAuthorization()
               .UseEndpoints(endpoints =>
               {
-                  plugin.AllPluginInstance.Where(plugin => plugin.AllGrpcServices.Count != 0)
+                  plugin?.AllPluginInstance.Where(plugin => plugin.AllGrpcServices.Count != 0)
                  .ToList().ForEach(plugin =>
                  {
                      foreach (var item in plugin.AllGrpcServices)

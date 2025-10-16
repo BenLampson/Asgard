@@ -4,6 +4,7 @@ using System.Text.Json;
 
 
 
+
 namespace Asgard.Hosts.AspNetCore.FreeSql
 {
     /// <summary>
