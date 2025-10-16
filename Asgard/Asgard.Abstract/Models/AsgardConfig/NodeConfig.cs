@@ -85,7 +85,7 @@ namespace Asgard.Abstract.Models.AsgardConfig
         /// <summary>
         /// 用户自定义的设置,可以配置这个节点的特殊信息
         /// </summary>
-        public Dictionary<string, string> CustomeSettings { get; set; } = new();
+        public Dictionary<string, string> CustomSettings { get; set; } = new();
 
 
     }

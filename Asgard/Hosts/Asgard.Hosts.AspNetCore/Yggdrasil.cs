@@ -1,15 +1,9 @@
 ﻿using System.Runtime.InteropServices;
 
-using Asgard.Plugin;
-
 namespace Asgard.Hosts.AspNetCore
 {
     public partial class Yggdrasil : AbsYggdrasil
     {
-        /// <summary>
-        /// 插件加载管理器
-        /// </summary>
-        public PluginLoaderManager? PluginManager { get; set; }
         /// <summary>
         /// Asp.net app
         /// </summary>
@@ -38,6 +32,8 @@ namespace Asgard.Hosts.AspNetCore
                 throw new Exception("请先初始化设置");
             }
             InitAspNet();
+
+            SystemStatusPrinter();
 
             if (WebApp is not null)//web宿主
             {
@@ -108,6 +104,43 @@ namespace Asgard.Hosts.AspNetCore
             Console.WriteLine("销毁完成.");
             Console.WriteLine("系统已停止.");
             LoggerProvider?.CreateLogger<Yggdrasil>().Critical("系统已停止.", eventID: EventID);
+        }
+
+        /// <summary>
+        /// 打印系统状态
+        /// </summary>
+        private void SystemStatusPrinter()
+        {
+            if (NodeConfig is null)
+            {
+                return;
+            }
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"当前连接的配置中心:{NodeConfig.ConfigCenter.ConfigCenter}:{NodeConfig.ConfigCenter.ConfigCenterPort}");
+            Console.WriteLine($"当前点位名称:{NodeConfig.Name}");
+            Console.WriteLine($"当前默认数据库类型:{NodeConfig.DefaultDB.DbType} 地址:{NodeConfig.DefaultDB.DbAddress}");
+            Console.WriteLine($"当前读库的配置为:{string.Join(" ", NodeConfig.DefaultDB.ReadDBAddress)}");
+            if (!NodeConfig.JustJobServer && NodeConfig.WebAPIConfig is not null)
+            {
+                if (NodeConfig.WebAPIConfig.HttpsPort != 0)
+                {
+                    Console.WriteLine($"当前系统将会监听http的地址为 :https://*:{NodeConfig.WebAPIConfig.HttpsPort}");
+                }
+                if (NodeConfig.WebAPIConfig.HttpPort != 0)
+                {
+                    Console.WriteLine($"当前系统将会监听普通的HTTP的地址为 :http://*:{NodeConfig.WebAPIConfig.HttpPort}");
+                }
+
+                if (NodeConfig.WebAPIConfig.HttpV2Port != 0)
+                {
+                    Console.WriteLine($"当前用于HTTP2通信的地址为 :http://*:{NodeConfig.WebAPIConfig.HttpV2Port} 你可以使用该地址进行GRPC访问");
+                }
+                Console.WriteLine($"当前系统允许的跨域访问过滤为:{string.Join(";", NodeConfig.WebAPIConfig.WithOrigins)}");
+
+            }
+            Console.ResetColor();
+            Console.WriteLine("\r\n\r\n");
         }
 
 

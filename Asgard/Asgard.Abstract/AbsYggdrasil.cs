@@ -14,6 +14,10 @@ namespace Asgard.Abstract
     public abstract class AbsYggdrasil
     {
         /// <summary>
+        /// 插件加载管理器
+        /// </summary>
+        public PluginLoaderManager? PluginManager { get; set; }
+        /// <summary>
         /// 事件ID,每次启动都会变
         /// </summary>
         public string EventID { get; init; } = Guid.NewGuid().ToString("N");

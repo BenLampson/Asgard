@@ -12,7 +12,7 @@
   </ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Caching.CSRedis" Version="3.8.800" /> 
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.5" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.5" />  
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.10" />  
 	</ItemGroup>
 </Project>
