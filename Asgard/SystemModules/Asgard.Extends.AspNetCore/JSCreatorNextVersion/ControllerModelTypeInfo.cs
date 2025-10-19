@@ -11,7 +11,7 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
         /// <summary>
         /// 原始模型的类型
         /// </summary>
-        public Type RawType { get; set; }
+        public Type? RawType { get; set; }
 
         /// <summary>
         /// 是否是返回
@@ -29,7 +29,7 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
         /// <summary>
         /// 注释
         /// </summary>
-        public string Notic { get; set; }
+        public string Notic { get; set; } = string.Empty;
 
         /// <summary>
         /// 对应的属性列表 ,key 属性跟他的类型,value

@@ -17,7 +17,6 @@
     <ProjectReference Include="..\..\Asgard.Job\Asgard.Job.csproj" />
     <ProjectReference Include="..\..\Asgard.Tools\Asgard.Tools.csproj" />
     <ProjectReference Include="..\..\Hosts\Asgard.Hosts.AspNetCore\Asgard.Hosts.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\SystemModules\Asgard.Auth.AspNetCore\Asgard.Auth.AspNetCore.csproj" />
     <ProjectReference Include="..\..\SystemModules\Asgard.Caches.Redis\Asgard.Caches.Redis.csproj" />
     <ProjectReference Include="..\..\SystemModules\Asgard.ConfigCenter\Asgard.ConfigCenter.csproj" />
     <ProjectReference Include="..\..\SystemModules\Asgard.Logger.FreeSqlProvider\Asgard.Logger.FreeSqlProvider.csproj" />

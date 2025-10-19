@@ -18,7 +18,7 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
         /// <param name="doc"></param>
         public static void AddNewType(this List<ControllerModelTypeInfo> list, Type target, XDocument doc)
         {
-            if (list.Any(item => item.RawType.FullName == target.FullName)) //如果有,直接忽略
+            if (list.Any(item => item.RawType is null || item.RawType.FullName == target.FullName)) //如果有,直接忽略
             {
                 return;
             }
@@ -96,7 +96,7 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
                         targetType = item.GenericTypeArguments[0];
                     }
                 }
-                if (targetType.Namespace is null)
+                if (targetType?.Namespace is null)
                 {
                     continue;
                 }
@@ -124,7 +124,7 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
 
 
 
-                if (list.Any(lItem => lItem.RawType.FullName == targetType.FullName)) //如果有,直接忽略
+                if (list.Any(lItem => lItem.RawType is null || lItem.RawType.FullName == targetType.FullName)) //如果有,直接忽略
                 {
                     continue;
                 }
@@ -144,7 +144,7 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
         {
 
             // 构造类的签名
-            string classSignature = $"T:{targetType.FullName.Replace('+', '.')}";
+            string classSignature = $"T:{targetType?.FullName?.Replace('+', '.') ?? ""}";
             // 查询对应类的注释
             var classMember = noticXml.Descendants("member")
                                  .FirstOrDefault(e => e.Attribute("name")?.Value == classSignature);
@@ -163,7 +163,7 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
             if (type.DeclaringType == null)
             {
                 // 非嵌套类型，直接返回 FullName
-                return type.FullName.Replace('+', '.');
+                return type.FullName?.Replace('+', '.') ?? string.Empty;
             }
 
             // 嵌套类型，递归构建完整名称
@@ -177,7 +177,10 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
         /// <returns>属性的注释内容</returns>
         public static string GetPropertySummary(PropertyInfo property, XDocument doc)
         {
-
+            if (property.DeclaringType is null)
+            {
+                return string.Empty;
+            }
             // 构造属性的签名
             string propertySignature = $"P:{GetFullTypeName(property.DeclaringType)}.{property.Name}".Replace("+", ".");
 

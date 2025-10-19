@@ -11,18 +11,18 @@ namespace Asgard.Abstract.Plugin
         /// <summary>
         /// 数据库管理实例
         /// </summary>
-        public AbsDataBaseManager DBManager { get; init; }
+        public AbsDataBaseManager? DBManager { get; init; }
 
         /// <summary>
         /// 日志提供器
         /// </summary>
-        public AbsLoggerProvider LoggerProvider { get; init; }
+        public AbsLoggerProvider? LoggerProvider { get; init; }
 
 
         /// <summary>
         /// 构造函数
         /// </summary> 
-        public AbsBifrost(AbsDataBaseManager dbInstance, AbsLoggerProvider loggerProvider)
+        public AbsBifrost(AbsDataBaseManager? dbInstance, AbsLoggerProvider? loggerProvider)
         {
             DBManager = dbInstance;
             LoggerProvider = loggerProvider;

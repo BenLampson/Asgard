@@ -25,7 +25,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 构建世界之树对象
         /// </summary>
-        public async Task Start()
+        public override async Task StartAsync()
         {
             if (NodeConfig is null)
             {

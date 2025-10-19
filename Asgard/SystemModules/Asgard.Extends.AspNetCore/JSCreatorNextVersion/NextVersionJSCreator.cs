@@ -107,6 +107,10 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
                 {
                     foreach (var modelItem in controllerItem.AllModelTypes)
                     {
+                        if (modelItem.RawType is null)
+                        {
+                            continue;
+                        }
                         _ = controllerFileSB.AppendLine($"\t/** {modelItem.Notic} */");
                         if (modelItem.IsPageResult)
                         {
@@ -159,7 +163,10 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
                     ;
                     foreach (var mItem in controllerItem.Methods)//遍历所有函数
                     {
-
+                        if (mItem.SourceMethodTypeInfo is null)
+                        {
+                            continue;
+                        }
                         apiInfosMD.Add($"1. {_apiKey}.{controllerItem.Name.Replace("Controller", "")}.Controller.{mItem.RouteName} : {mItem.Notice}");
 
                         _ = controllerFileSB.AppendLine($"\t/** {mItem.Notice} **/")

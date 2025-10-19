@@ -16,7 +16,7 @@ namespace Asgard.Plugin
         /// 
         /// </summary> 
         /// <returns></returns>
-        public bool LoadPlugin(AbsDataBaseManager dbInstance, AbsLoggerProvider loggerProvider, PluginItem plugin)
+        public bool LoadPlugin(AbsDataBaseManager? dbInstance, AbsLoggerProvider? loggerProvider, PluginItem plugin)
         {
 
             var pluginInstance = new PluginInstance(plugin);

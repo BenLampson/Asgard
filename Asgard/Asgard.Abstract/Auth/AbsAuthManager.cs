@@ -1,4 +1,6 @@
-﻿using Asgard.Abstract.Models.AsgardUserInfo;
+﻿using Asgard.Abstract.Logger;
+using Asgard.Abstract.Models.AsgardConfig;
+using Asgard.Abstract.Models.AsgardUserInfo;
 
 namespace Asgard.Abstract.Auth
 {
@@ -11,26 +13,19 @@ namespace Asgard.Abstract.Auth
         /// <summary>
         /// jwt密钥
         /// </summary>
-        protected readonly string _jwtKey;
+        protected readonly NodeConfig _nodeConfig;
+
         /// <summary>
-        /// 听众,也就是使用者
+        /// 日志提供器
         /// </summary>
-        protected readonly string _audience;
-        /// <summary>
-        /// 颁发者
-        /// </summary>
-        protected readonly string _issuer;
+        protected readonly AbsLoggerProvider? _loggerProvider;
         /// <summary>
         /// 构造函数
-        /// </summary>
-        /// <param name="jwtKey">密钥RSA512</param>
-        /// <param name="issuer">颁发人</param>
-        /// <param name="audience">听众</param> 
-        public AbsAuthManager(string jwtKey, string issuer, string audience)
+        /// </summary> 
+        public AbsAuthManager(NodeConfig config, AbsLoggerProvider? loggerProvider)
         {
-            _audience = audience;
-            _issuer = issuer;
-            _jwtKey = jwtKey;
+            _nodeConfig = config;
+            _loggerProvider = loggerProvider;
         }
 
         /// <summary>

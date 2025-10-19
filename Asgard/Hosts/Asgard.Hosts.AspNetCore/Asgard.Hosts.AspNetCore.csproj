@@ -13,6 +13,7 @@
     <ProjectReference Include="..\..\Asgard.Extends\Asgard.Extends.csproj" />
     <ProjectReference Include="..\..\Asgard.Tools\Asgard.Tools.csproj" />
     <ProjectReference Include="..\..\SystemModules\Asgard.Extends.AspNetCore\Asgard.Extends.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\SystemModules\Asgard.Logger.FreeSqlProvider\Asgard.Logger.FreeSqlProvider.csproj" />
   </ItemGroup>
 
 	<ItemGroup>

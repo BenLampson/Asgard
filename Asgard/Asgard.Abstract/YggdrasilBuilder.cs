@@ -44,7 +44,7 @@ namespace Asgard.Abstract
         /// <summary>
         /// 权限模块 
         /// </summary>
-        public Func<AbsLoggerProvider?, NodeConfig, AbsAuthManager>? AuthProvider { get; init; }
+        public Func<AbsLoggerProvider?, NodeConfig, AbsAuthManager>? AuthProvider { get; private set; }
 
         /// <summary>
         /// 本地缓存实例
@@ -84,6 +84,17 @@ namespace Asgard.Abstract
         public YggdrasilBuilder SetCacheManager(Func<AbsLoggerProvider?, NodeConfig, AbsCache> cacheLoader)
         {
             this.CacheManager = cacheLoader;
+            return this;
+        }
+
+        /// <summary>
+        /// 设置权限管理器
+        /// </summary>
+        /// <param name="authManagerLoader"></param>
+        /// <returns></returns>
+        public YggdrasilBuilder SetAuthManager(Func<AbsLoggerProvider?, NodeConfig, AbsAuthManager> authManagerLoader)
+        {
+            this.AuthProvider = authManagerLoader;
             return this;
         }
 

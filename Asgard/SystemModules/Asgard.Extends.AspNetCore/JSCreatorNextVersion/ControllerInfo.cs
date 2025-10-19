@@ -22,24 +22,24 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
         /// <summary>
         /// 原始的控制器类型
         /// </summary>
-        public Type SourceControllerType { get; set; }
+        public Type? SourceControllerType { get; set; }
         /// <summary>
         /// 路由属性信息
         /// </summary>
-        public RouteAttribute RouterAttributeInfo { get; set; }
+        public RouteAttribute? RouterAttributeInfo { get; set; }
         /// <summary>
         /// 路由名称
         /// </summary>
-        public string RouteName { get; set; }
+        public string? RouteName { get; set; }
         /// <summary>
         /// 注释
         /// </summary>
-        public string Notice { get; set; }
+        public string? Notice { get; set; }
 
         /// <summary>
         /// 控制器的函数对象
         /// </summary>
-        public List<ControllerMethodInfo> Methods { get; set; }
+        public List<ControllerMethodInfo> Methods { get; set; } = new();
 
         /// <summary>
         /// 所有的模型信息

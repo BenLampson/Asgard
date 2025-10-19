@@ -7,7 +7,7 @@ namespace Asgard.Logger.FreeSqlProvider
     /// <summary>
     /// 日志中心
     /// </summary>
-    internal class LogCenter : AbsLogger, IDisposable
+    public class LogCenter : AbsLogger, IDisposable
     {
         /// <summary>
         /// 选项
@@ -159,44 +159,5 @@ namespace Asgard.Logger.FreeSqlProvider
 
     }
 
-    /// <summary>
-    /// 泛型日志实例
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class LoggerCenter<T> : AbsLogger<T> where T : class
-    {
-        /// <summary>
-        /// 实际的日志实例
-        /// </summary>
-        private readonly AbsLogger _logger;
-        /// <summary>
-        /// 构造函数
-        /// </summary> 
-        public LoggerCenter(string moduleName, LoggerProvider provider) : base(moduleName)
-        {
-            _logger = provider.CreateLogger(moduleName);
-        }
 
-        /// <summary>
-        /// 默认构造函数,用类型反推
-        /// </summary>
-        public LoggerCenter(LoggerProvider provider) : this(typeof(T).FullName ?? "错误的类型", provider)
-        {
-        }
-
-        /// <summary>
-        /// 记录日志
-        /// </summary>
-        /// <param name="level"></param>
-        /// <param name="text"></param>
-        /// <param name="eventID"></param>
-        /// <param name="exception"></param>
-        /// <param name="filePath"></param>
-        /// <param name="num"></param>
-        /// <param name="name"></param>
-        public override void Log(LogLevelEnum level, string text, string? eventID, Exception? exception, string filePath, int num, string name)
-        {
-            _logger.Log(level, text, eventID, exception, filePath, num, name);
-        }
-    }
 }

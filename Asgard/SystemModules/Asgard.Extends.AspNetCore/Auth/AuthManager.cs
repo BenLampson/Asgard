@@ -3,6 +3,8 @@ using System.Security.Claims;
 using System.Text;
 
 using Asgard.Abstract.Auth;
+using Asgard.Abstract.Logger;
+using Asgard.Abstract.Models.AsgardConfig;
 using Asgard.Abstract.Models.AsgardUserInfo;
 using Asgard.Extends.Json;
 using Asgard.Tools;
@@ -10,7 +12,7 @@ using Asgard.Tools;
 using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Asgard.Auth.AspNetCore
+namespace Asgard.Extends.AspNetCore.Auth
 {
     public class AuthManager : AbsAuthManager
     {
@@ -24,10 +26,10 @@ namespace Asgard.Auth.AspNetCore
         /// <param name="jwtKey">密钥RSA512</param>
         /// <param name="issuer">颁发人</param>
         /// <param name="audience">听众</param> 
-        public AuthManager(string jwtKey, string issuer, string audience) : base(jwtKey, issuer, audience)
+        public AuthManager(NodeConfig config, AbsLoggerProvider? loggerProvider) : base(config, loggerProvider)
         {
             IdentityModelEventSource.ShowPII = true;
-            var key = new SymmetricSecurityKey(Convert.FromBase64String(_jwtKey));
+            var key = new SymmetricSecurityKey(Convert.FromBase64String(_nodeConfig.AuthConfig.JwtKey));
             _signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             _validationParams = new TokenValidationParameters()
             {
@@ -35,10 +37,10 @@ namespace Asgard.Auth.AspNetCore
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = issuer,
+                ValidIssuer = _nodeConfig.AuthConfig.Issuer,
                 ConfigurationManager = null,
-                ValidAudience = audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(_jwtKey)),
+                ValidAudience = _nodeConfig.AuthConfig.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Convert.FromBase64String(_nodeConfig.AuthConfig.JwtKey)),
                 ClockSkew = TimeSpan.FromSeconds(20), // 可选：允许 nbf/exp 最多偏移 20 秒 
             };
         }
@@ -112,8 +114,8 @@ namespace Asgard.Auth.AspNetCore
                     return false;
                 }
 
-                var jwtToken = new JwtSecurityToken(issuer: _issuer,
-                    audience: _audience,
+                var jwtToken = new JwtSecurityToken(issuer: _nodeConfig.AuthConfig.Issuer,
+                    audience: _nodeConfig.AuthConfig.Audience,
                     claims: claims,
                     notBefore: delayWork ?? DateTime.Now,
                     expires: expire ?? DateTime.Now.AddHours(5),
@@ -150,8 +152,8 @@ namespace Asgard.Auth.AspNetCore
                     return false;
                 }
 
-                var jwtToken = new JwtSecurityToken(issuer: _issuer,
-                    audience: _audience,
+                var jwtToken = new JwtSecurityToken(issuer: _nodeConfig.AuthConfig.Issuer,
+                    audience: _nodeConfig.AuthConfig.Audience,
                     claims: claims,
                     notBefore: DateTime.Now,
                     expires: expires ?? DateTime.Now.AddMonths(1),

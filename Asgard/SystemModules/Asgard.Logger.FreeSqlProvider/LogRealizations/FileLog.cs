@@ -5,7 +5,7 @@ namespace Asgard.Logger.FreeSqlProvider.LogRealizations
     /// <summary>
     /// 文件日志写入器
     /// </summary>
-    internal class FileLog : IDisposable
+    public class FileLog : IDisposable
     {
         private StreamWriter? _targetFile;
         private readonly DirectoryInfo _logFolderInfo;

@@ -20,7 +20,7 @@ namespace Asgard.Extends.AspNetCore
         /// <summary>
         /// 内阁上下文
         /// </summary>
-        protected AbsLogger Logger { get; private set; }
+        protected AbsLoggerProvider Logger { get; private set; }
 
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Asgard.Extends.AspNetCore
         /// </summary>
         /// <param name="context"></param>
         /// <param name="logger"></param>
-        public APIControllerBase(AsgardContext context, AbsLogger logger)
+        public APIControllerBase(AsgardContext context, AbsLoggerProvider logger)
         {
             Context = context;
             Logger = logger;
@@ -192,6 +192,10 @@ namespace Asgard.Extends.AspNetCore
             {
                 return default;
             }
+            if (Context.DB is null)
+            {
+                return default;
+            }
             return Context.DB.GetMyDB<ORMType>($"{userinfo.CurrentTID}_Default", tdInfo.ConnStr, tdInfo.Type, tdInfo.ReadDB);
         }
 
@@ -207,6 +211,10 @@ namespace Asgard.Extends.AspNetCore
             }
             var tdInfo = userinfo.TDBInfo.FirstOrDefault();
             if (tdInfo is null)
+            {
+                return default;
+            }
+            if (Context.DB is null)
             {
                 return default;
             }

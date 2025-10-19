@@ -4,6 +4,7 @@ using System.Text.Unicode;
 
 using Asgard.Abstract.Models.AsgardConfig;
 using Asgard.Extends.AspNetCore.ApiModels;
+using Asgard.Logger.FreeSqlProvider;
 using Asgard.Plugin;
 
 using Microsoft.AspNetCore.Diagnostics;
@@ -228,7 +229,18 @@ namespace Asgard.Hosts.AspNetCore
             {
                 _ = builder.Services.AddSingleton(_ => provider);
             }
-            _ = builder.Services.AddScoped(_ => new Yggdrasil());
+            else
+            {
+                _ = builder.Services.AddSingleton<AbsLoggerProvider>(_ => new LoggerProvider(new LogOptions()
+                {
+                    EnableConsole = true
+                }));
+            }
+
+
+
+
+            _ = builder.Services.AddScoped<AsgardContext>(_ => GetContext());
             pluginManager?.AllPluginInstance.ForEach(item =>
             {
                 if (item.EnteranceInstance is not AbsAspNetCoreHostBifrost pluginItem)
@@ -356,7 +368,7 @@ namespace Asgard.Hosts.AspNetCore
                   {
                       context.Response.StatusCode = (int)HttpStatusCode.OK;
                       context.Response.ContentType = "application/json";
-                      var httpContext = context.RequestServices.GetService<AbsYggdrasil>();
+                      var httpContext = context.RequestServices.GetService<AsgardContext>();
                       var exception = context.Features.Get<IExceptionHandlerFeature>();
                       var res = new DataResponse<string>
                       {
