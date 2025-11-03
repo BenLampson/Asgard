@@ -4,9 +4,9 @@ using System.Xml.Linq;
 
 using Microsoft.AspNetCore.Mvc;
 
-namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
+namespace Asgard.Extends.AspNetCore.JSCreator
 {
-    public class NextVersionJSCreator
+    public class TSApiCreator
     {
         /// <summary>
         /// 要创建的文件夹
@@ -44,7 +44,7 @@ namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
         private List<ControllerInfo> AllController { get; set; } = new();
 
 
-        public NextVersionJSCreator(string folder, string entranceName, Assembly ass, string resultFolder)
+        public TSApiCreator(string folder, string entranceName, Assembly ass, string resultFolder)
         {
             _folder = resultFolder;
             _entranceName = entranceName;

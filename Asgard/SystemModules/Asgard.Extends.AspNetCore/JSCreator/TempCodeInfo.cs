@@ -1,4 +1,4 @@
-﻿namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
+﻿namespace Asgard.Extends.AspNetCore.JSCreator
 {
     public class TempCodeInfo
     {

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using System.Text;
 
-namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
+namespace Asgard.Extends.AspNetCore.JSCreator
 {
     internal class ProjectCreator
     {

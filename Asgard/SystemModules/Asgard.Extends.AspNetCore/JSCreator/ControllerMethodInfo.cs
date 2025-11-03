@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 
-namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
+namespace Asgard.Extends.AspNetCore.JSCreator
 {
 
     /// <summary>

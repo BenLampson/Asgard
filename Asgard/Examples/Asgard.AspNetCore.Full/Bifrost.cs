@@ -1,6 +1,9 @@
-﻿using Asgard.Abstract;
+﻿using System.Reflection;
+
+using Asgard.Abstract;
 using Asgard.Abstract.DataBase;
 using Asgard.Abstract.Logger;
+using Asgard.Extends.AspNetCore.JSCreator;
 using Asgard.Hosts.AspNetCore;
 
 using Microsoft.AspNetCore.Builder;
@@ -28,6 +31,9 @@ namespace Asgard.AspNetCore.Full
 
         public override void OnSystemStarted(AsgardContext context)
         {
+            var info = new TSApiCreator("folder", "asd", Assembly.GetExecutingAssembly(), "qwe");
+            info.LoadDll();
+            info.CreateScript();
         }
 
         public override void SystemTryShutDown()

@@ -7,7 +7,7 @@ using Asgard.Extends.AspNetCore.ApiModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 
-namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
+namespace Asgard.Extends.AspNetCore.JSCreator
 {
     /// <summary>
     /// 控制器信息

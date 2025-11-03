@@ -100,16 +100,20 @@ namespace Asgard.Hosts.AspNetCore
             _ = builder.Services.AddControllers()
                 .ConfigureApplicationPartManager(action =>
                 {
+                    action.ApplicationParts.Clear();
                     plugin?.AllPluginInstance.Where(plugin => plugin.AllApi.Count != 0)
                     .ToList().ForEach(plugin =>
                     {
-                        if (NodeConfig is not null && NodeConfig.SelfAsAPlugin)//如果自己就是插件,那就要跳过自己
-                        {
-                            if (NodeConfig.SelfPluginInfo.FilePath.Equals(System.Reflection.Assembly.GetEntryAssembly()?.Location, StringComparison.OrdinalIgnoreCase))
-                            {
-                                return;
-                            }
-                        }
+                        //if (NodeConfig is not null && NodeConfig.SelfAsAPlugin)//如果自己就是插件,那就要跳过自己
+                        //{
+                        //    if (NodeConfig.SelfPluginInfo.FilePath.Equals(System.Reflection.Assembly.GetEntryAssembly()?.Location, StringComparison.OrdinalIgnoreCase))
+                        //    {
+
+
+
+                        //        return;
+                        //    }
+                        //}
                         if (plugin.Assembly is null)
                         {
                             return;

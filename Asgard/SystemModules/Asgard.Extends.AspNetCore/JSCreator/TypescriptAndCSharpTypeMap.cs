@@ -1,4 +1,4 @@
-﻿namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
+﻿namespace Asgard.Extends.AspNetCore.JSCreator
 {
     /// <summary>
     /// 映射TS与C#的类型

@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 using Asgard.Extends.AspNetCore.ApiModels;
 
-namespace Asgard.Extends.AspNetCore.JSCreatorNextVersion
+namespace Asgard.Extends.AspNetCore.JSCreator
 {
     /// <summary>
     /// C#的类型扩展函数
