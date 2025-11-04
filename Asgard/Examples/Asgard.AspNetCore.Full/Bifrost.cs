@@ -31,9 +31,11 @@ namespace Asgard.AspNetCore.Full
 
         public override void OnSystemStarted(AsgardContext context)
         {
-            var info = new TSApiCreator("folder", "asd", Assembly.GetExecutingAssembly(), "qwe");
+#if DEBUG
+            var info = new TSApiCreator("./", "Asgard.AspNetCore.Full", Assembly.GetExecutingAssembly(), "qwe");
             info.LoadDll();
             info.CreateScript();
+#endif
         }
 
         public override void SystemTryShutDown()
