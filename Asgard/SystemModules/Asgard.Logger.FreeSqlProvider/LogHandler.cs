@@ -6,7 +6,7 @@ using Asgard.Abstract.Models.AsgardConfig.ChildConfigModel.LogConfig;
 namespace Asgard.Logger.FreeSqlProvider
 {
     /// <summary>
-    /// LOG处理器
+    /// Log handler
     /// </summary>
     public class LogHandler : IDisposable
     {
@@ -17,8 +17,8 @@ namespace Asgard.Logger.FreeSqlProvider
         private readonly string _memberName;
         private readonly LogLevelEnum _enterAndExitLevel;
         /// <summary>
-        /// 构造函数
-        /// </summary> 
+        /// Constructor
+        /// </summary>
         public LogHandler(AbsLogger logger, LogLevelEnum enterAndExitLevel, string eventID, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0, [CallerMemberName] string name = "")
         {
             _logger = logger;
@@ -27,11 +27,11 @@ namespace Asgard.Logger.FreeSqlProvider
             _enterAndExitLevel = enterAndExitLevel;
             _num = num;
             _memberName = name;
-            SaveLog($"进入:{_memberName}");
+            SaveLog($"Enter:{_memberName}");
         }
 
         /// <summary>
-        /// 追踪日志
+        /// Trace log
         /// </summary>
         /// <param name="text"></param>
         /// <param name="filePath"></param>
@@ -49,13 +49,13 @@ namespace Asgard.Logger.FreeSqlProvider
 
 
         /// <summary>
-        /// 记录调试日志
-        /// </summary>        
-        /// <param name="text">文本</param> 
-        /// <param name="exception">异常</param>
-        /// <param name="filePath">文件名</param>
-        /// <param name="name">函数名</param>
-        /// <param name="num">行数</param>
+        /// Record debug log
+        /// </summary>
+        /// <param name="text">Text</param>
+        /// <param name="exception">Exception</param>
+        /// <param name="filePath">File name</param>
+        /// <param name="name">Function name</param>
+        /// <param name="num">Line number</param>
         public void Debug(string text, Exception? exception = null,
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int num = 0,
@@ -64,13 +64,13 @@ namespace Asgard.Logger.FreeSqlProvider
             _logger.Log(LogLevelEnum.Debug, text, _eventID, exception, filePath, num, name);
         }
         /// <summary>
-        /// 记录信息日志
-        /// </summary>        
-        /// <param name="text">文本</param> 
-        /// <param name="exception">异常</param>
-        /// <param name="filePath">文件名</param>
-        /// <param name="name">函数名</param>
-        /// <param name="num">行数</param>
+        /// Record information log
+        /// </summary>
+        /// <param name="text">Text</param>
+        /// <param name="exception">Exception</param>
+        /// <param name="filePath">File name</param>
+        /// <param name="name">Function name</param>
+        /// <param name="num">Line number</param>
         public void Information(string text, Exception? exception = null,
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int num = 0,
@@ -79,13 +79,13 @@ namespace Asgard.Logger.FreeSqlProvider
             _logger.Log(LogLevelEnum.Information, text, _eventID, exception, filePath, num, name);
         }
         /// <summary>
-        /// 记录警告日志
-        /// </summary>        
-        /// <param name="text">文本</param> 
-        /// <param name="exception">异常</param>
-        /// <param name="filePath">文件名</param>
-        /// <param name="name">函数名</param>
-        /// <param name="num">行数</param>
+        /// Record warning log
+        /// </summary>
+        /// <param name="text">Text</param>
+        /// <param name="exception">Exception</param>
+        /// <param name="filePath">File name</param>
+        /// <param name="name">Function name</param>
+        /// <param name="num">Line number</param>
         public void Warning(string text, Exception? exception = null,
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int num = 0,
@@ -95,13 +95,13 @@ namespace Asgard.Logger.FreeSqlProvider
         }
 
         /// <summary>
-        /// 记录错误日志
-        /// </summary>        
-        /// <param name="text">文本</param> 
-        /// <param name="exception">异常</param>
-        /// <param name="filePath">文件名</param>
-        /// <param name="name">函数名</param>
-        /// <param name="num">行数</param>
+        /// Record error log
+        /// </summary>
+        /// <param name="text">Text</param>
+        /// <param name="exception">Exception</param>
+        /// <param name="filePath">File name</param>
+        /// <param name="name">Function name</param>
+        /// <param name="num">Line number</param>
         public void Error(string text, Exception? exception = null,
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int num = 0,
@@ -112,13 +112,13 @@ namespace Asgard.Logger.FreeSqlProvider
 
 
         /// <summary>
-        /// 记录危险日志
-        /// </summary>        
-        /// <param name="text">文本</param> 
-        /// <param name="exception">异常</param>
-        /// <param name="filePath">文件名</param>
-        /// <param name="name">函数名</param>
-        /// <param name="num">行数</param>
+        /// Record critical log
+        /// </summary>
+        /// <param name="text">Text</param>
+        /// <param name="exception">Exception</param>
+        /// <param name="filePath">File name</param>
+        /// <param name="name">Function name</param>
+        /// <param name="num">Line number</param>
         public void Critical(string text, Exception? exception = null,
             [CallerFilePath] string filePath = "",
             [CallerLineNumber] int num = 0,
@@ -162,7 +162,7 @@ namespace Asgard.Logger.FreeSqlProvider
         }
 
         /// <summary>
-        /// 析构函数
+        /// Destructor
         /// </summary>
         ~LogHandler()
         {
@@ -170,11 +170,11 @@ namespace Asgard.Logger.FreeSqlProvider
         }
 
         /// <summary>
-        /// 销毁函数
+        /// Dispose function
         /// </summary>
         public void Dispose()
         {
-            SaveLog($"退出:{_memberName}");
+            SaveLog($"Exit:{_memberName}");
             GC.SuppressFinalize(this);
         }
     }

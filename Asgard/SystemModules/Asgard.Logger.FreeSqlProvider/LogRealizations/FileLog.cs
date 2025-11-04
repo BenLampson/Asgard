@@ -3,7 +3,7 @@
 namespace Asgard.Logger.FreeSqlProvider.LogRealizations
 {
     /// <summary>
-    /// 文件日志写入器
+    /// File log writer
     /// </summary>
     public class FileLog : IDisposable
     {
@@ -14,7 +14,7 @@ namespace Asgard.Logger.FreeSqlProvider.LogRealizations
         private readonly string? _scopeName;
 
         /// <summary>
-        /// 文件日志
+        /// File log
         /// </summary>
         public FileLog(FileLogOptions options) : this(options, null)
         {
@@ -22,7 +22,7 @@ namespace Asgard.Logger.FreeSqlProvider.LogRealizations
 
 
         /// <summary>
-        /// 文件日志
+        /// File log
         /// </summary>
         public FileLog(FileLogOptions options, string? scopeName)
         {
@@ -40,7 +40,7 @@ namespace Asgard.Logger.FreeSqlProvider.LogRealizations
         }
 
         /// <summary>
-        /// 设置目标文件
+        /// Set target file
         /// </summary>
         private void SetTargetFile()
         {
@@ -62,7 +62,7 @@ namespace Asgard.Logger.FreeSqlProvider.LogRealizations
         }
 
         /// <summary>
-        /// 压缩文件
+        /// Compress file
         /// </summary>
         private void BackFile()
         {
@@ -71,15 +71,15 @@ namespace Asgard.Logger.FreeSqlProvider.LogRealizations
         }
 
         /// <summary>
-        /// 写入
-        /// </summary> 
+        /// Write
+        /// </summary>
         public void Write(string text)
         {
             lock (this)
             {
                 if (_targetFile is null)
                 {
-                    Console.WriteLine($"无法打开或写入文件:{_currentFileName}");
+                    Console.WriteLine($"Cannot open or write file:{_currentFileName}");
                     return;
                 }
 
@@ -97,7 +97,7 @@ namespace Asgard.Logger.FreeSqlProvider.LogRealizations
                 }
                 if (_targetFile is null)
                 {
-                    Console.WriteLine($"无法打开或写入文件:{_currentFileName}");
+                    Console.WriteLine($"Cannot open or write file:{_currentFileName}");
                     return;
                 }
                 _targetFile.WriteLine(text);

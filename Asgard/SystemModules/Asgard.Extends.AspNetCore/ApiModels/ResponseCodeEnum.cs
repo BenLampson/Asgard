@@ -3,40 +3,40 @@
 namespace Asgard.Extends.AspNetCore.ApiModels
 {
     /// <summary>
-    /// 响应Code
+    /// Response Code
     /// </summary>
     [Flags]
     public enum ResponseCodeEnum
     {
         /// <summary>
-        /// 成功
+        /// Success
         /// </summary>
-        [Description("成功")]
+        [Description("Success")]
         Success = 0,
         /// <summary>
-        /// 错误
+        /// Error
         /// </summary>
-        [Description("错误")]
+        [Description("Error")]
         Error = 1,
         /// <summary>
-        /// 系统内部
+        /// System internal
         /// </summary>
-        [Description("系统内部")]
+        [Description("System internal")]
         System = 2,
         /// <summary>
-        /// 逻辑错误
+        /// Logic error
         /// </summary>
-        [Description("逻辑错误")]
+        [Description("Logic error")]
         Logic = 4,
         /// <summary>
-        /// 参数错误
+        /// Parameter error
         /// </summary>
-        [Description("参数错误")]
+        [Description("Parameter error")]
         Parameter = 8,
         /// <summary>
-        /// 网络错误
+        /// Network error
         /// </summary>
-        [Description("网络错误")]
+        [Description("Network error")]
         Network = 16
     }
 }

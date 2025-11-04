@@ -12,14 +12,14 @@ using RabbitMQ.Client.Events;
 namespace Asgard.MQ.RabbitMQ
 {
     /// <summary>
-    /// RabbitMQ管理器
+    /// RabbitMQ manager
     /// </summary>
     public class RabbitMQManager : AbsMQManager
     {
 
 
         /// <summary>
-        /// 通道池
+        /// Channel pool
         /// </summary>
         private readonly ConcurrentDictionary<string, IChannel> _channelPool = new();
         private readonly string _userName;
@@ -40,7 +40,7 @@ namespace Asgard.MQ.RabbitMQ
 
 
         /// <summary>
-        /// 连接至某个服务
+        /// Connect to a service
         /// </summary>
         private IConnection GetConnect(string host, string userName, string password, string virtualHostName)
         {
@@ -58,11 +58,11 @@ namespace Asgard.MQ.RabbitMQ
         }
 
         /// <summary>
-        /// 給本地的MQ服务发送一条消息
+        /// Send a message to local MQ service
         /// </summary>
-        /// <param name="options">消息的参数</param>
-        /// <param name="message">消息内容</param>
-        /// <param name="hostInfo">主机信息,为空则使用容器配置</param>
+        /// <param name="options">Message parameters</param>
+        /// <param name="message">Message content</param>
+        /// <param name="hostInfo">Host information, use container configuration if null</param>
         /// <returns></returns>
         public override bool SendMessageTo(SendMQItemOptions options, string message, MQHostInfo? hostInfo = null)
         {
@@ -105,7 +105,7 @@ namespace Asgard.MQ.RabbitMQ
             }
             catch (Exception ex)
             {
-                Logger.Error($"Sens message to server failed.", exception: ex);
+                Logger.Error($"Send message to server failed.", exception: ex);
                 return false;
             }
             return true;
@@ -113,11 +113,11 @@ namespace Asgard.MQ.RabbitMQ
 
 
         /// <summary>
-        /// 給本地的MQ服务发送一条消息
+        /// Send a message to local MQ service
         /// </summary>
-        /// <param name="options">消息的参数</param>
-        /// <param name="message">消息内容</param>
-        /// <param name="hostInfo">主机信息,为空则使用容器配置</param>
+        /// <param name="options">Message parameters</param>
+        /// <param name="message">Message content</param>
+        /// <param name="hostInfo">Host information, use container configuration if null</param>
         /// <returns></returns>
         public override async Task<bool> SendMessageToAsync(SendMQItemOptions options, string message, MQHostInfo? hostInfo = null)
         {
@@ -160,16 +160,16 @@ namespace Asgard.MQ.RabbitMQ
             }
             catch (Exception ex)
             {
-                Logger.Error($"Sens message to server failed.", exception: ex);
+                Logger.Error($"Send message to server failed.", exception: ex);
                 return false;
             }
             return true;
         }
 
         /// <summary>
-        /// 关闭一个通道
+        /// Close a channel
         /// </summary>
-        /// <param name="channelToken">通道key</param>
+        /// <param name="channelToken">Channel key</param>
         public override void CloseConnection(string channelToken)
         {
             if (_channelPool.TryRemove(channelToken, out var channel))
@@ -181,9 +181,9 @@ namespace Asgard.MQ.RabbitMQ
 
 
         /// <summary>
-        /// 关闭一个通道
+        /// Close a channel
         /// </summary>
-        /// <param name="channelToken">通道key</param>
+        /// <param name="channelToken">Channel key</param>
         public override async Task CloseConnectionAsync(string channelToken)
         {
             if (_channelPool.TryRemove(channelToken, out var channel))
@@ -194,12 +194,12 @@ namespace Asgard.MQ.RabbitMQ
         }
 
         /// <summary>
-        /// 从本地的MQ中获取消息
+        /// Get message from local MQ
         /// </summary>
-        /// <param name="virtualHost">虚拟主机名称</param>
-        /// <param name="queueName">队列名</param>
-        /// <param name="callBackMethod">回调函数</param>
-        /// <param name="hostInfo">主机信息设置,不设置则使用容器配置</param>    
+        /// <param name="virtualHost">Virtual host name</param>
+        /// <param name="queueName">Queue name</param>
+        /// <param name="callBackMethod">Callback function</param>
+        /// <param name="hostInfo">Host information settings, use container configuration if not set</param>
         public override string? GotMessageFrom(string virtualHost, string queueName, Func<string, bool> callBackMethod, MQHostInfo? hostInfo = null)
         {
             var channelToken = Guid.NewGuid().ToString("N");
@@ -246,12 +246,12 @@ namespace Asgard.MQ.RabbitMQ
 
 
         /// <summary>
-        /// 从本地的MQ中获取消息
+        /// Get message from local MQ
         /// </summary>
-        /// <param name="virtualHost">虚拟主机名称</param>
-        /// <param name="queueName">队列名</param>
-        /// <param name="callBackMethod">回调函数</param>
-        /// <param name="hostInfo">主机信息设置,不设置则使用容器配置</param>    
+        /// <param name="virtualHost">Virtual host name</param>
+        /// <param name="queueName">Queue name</param>
+        /// <param name="callBackMethod">Callback function</param>
+        /// <param name="hostInfo">Host information settings, use container configuration if not set</param>
         public override async Task<string?> GotMessageFromAsync(string virtualHost, string queueName, Func<string, Task<bool>> callBackMethod, MQHostInfo? hostInfo = null)
         {
             var channelToken = Guid.NewGuid().ToString("N");
@@ -295,12 +295,12 @@ namespace Asgard.MQ.RabbitMQ
         }
 
         /// <summary>
-        /// 调用具体回调函数
+        /// Invoke specific callback function
         /// </summary>
-        /// <param name="callBackMethod">回调函数</param>
-        /// <param name="channel">通道</param>
-        /// <param name="tag">tag标</param>
-        /// <param name="message">消息体</param>
+        /// <param name="callBackMethod">Callback function</param>
+        /// <param name="channel">Channel</param>
+        /// <param name="tag">Tag</param>
+        /// <param name="message">Message body</param>
         private async Task CallbackInvokerAsync(Func<string, Task<bool>> callBackMethod, IChannel channel, ulong tag, string message)
         {
             if (callBackMethod is null)
@@ -314,17 +314,17 @@ namespace Asgard.MQ.RabbitMQ
             }
             catch (Exception ex)
             {
-                Logger.Error($"Invoke call Back got  failed.", exception: ex);
+                Logger.Error($"Invoke callback failed.", exception: ex);
                 await channel.BasicNackAsync(tag, false, true);
             }
         }
         /// <summary>
-        /// 调用具体回调函数
+        /// Invoke specific callback function
         /// </summary>
-        /// <param name="callBackMethod">回调函数</param>
-        /// <param name="channel">通道</param>
-        /// <param name="tag">tag标</param>
-        /// <param name="message">消息体</param>
+        /// <param name="callBackMethod">Callback function</param>
+        /// <param name="channel">Channel</param>
+        /// <param name="tag">Tag</param>
+        /// <param name="message">Message body</param>
         private async Task CallbackInvokerAsync(Func<string, bool> callBackMethod, IChannel channel, ulong tag, string message)
         {
             try
@@ -334,7 +334,7 @@ namespace Asgard.MQ.RabbitMQ
             }
             catch (Exception ex)
             {
-                Logger.Error($"Invoke call Back got  failed.", exception: ex);
+                Logger.Error($"Invoke callback failed.", exception: ex);
                 await channel.BasicNackAsync(tag, false, true);
             }
         }

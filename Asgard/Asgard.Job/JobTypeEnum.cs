@@ -1,16 +1,16 @@
 ﻿namespace Asgard.Job
 {
     /// <summary>
-    /// 任务类型枚举
+    /// Job type enumeration
     /// </summary>
     public enum JobTypeEnum
     {
         /// <summary>
-        /// 单例运行,创建一次对象永远不销毁
+        /// Singleton - object is created once and never destroyed
         /// </summary>
         Singleton = 0,
         /// <summary>
-        /// 范围内,代指每次运行都会创建一次对象,只要任务执行完毕,就会销毁,后面再次创建
+        /// Scoped - a new object is created for each execution and destroyed when the job completes, recreated on next execution
         /// </summary>
         Scoped = 1
     }

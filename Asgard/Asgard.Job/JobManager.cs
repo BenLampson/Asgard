@@ -5,20 +5,20 @@ using Asgard.Abstract.Logger;
 namespace Asgard.Job
 {
     /// <summary>
-    /// 任务管理器
+    /// Job manager
     /// </summary>
     public class JobManager : AbsJobManager
     {
 
         /// <summary>
-        /// 所有的任务对象
+        /// All job objects
         /// </summary>
         private readonly List<JobInfoItem> _allJobItems = new();
 
 
 
         /// <summary>
-        /// 默认构造
+        /// Default constructor
         /// </summary>
         public JobManager(AbsLoggerProvider provider) : base(provider)
         {
@@ -26,9 +26,9 @@ namespace Asgard.Job
 
 
         /// <summary>
-        /// 推送一个新的任务内容
+        /// Push a new job content
         /// </summary>
-        /// <param name="jobType">job服务的类型</param> 
+        /// <param name="jobType">Job service type</param>
         public override void PushNewJobInfo(Type jobType)
         {
             if (typeof(JobBase).IsAssignableFrom(jobType))
@@ -36,7 +36,7 @@ namespace Asgard.Job
                 var constructor = jobType.GetConstructor(new Type[] { typeof(AbsLogger) });
                 if (constructor is null)
                 {
-                    _logger.Information($"工作器的默认构造函数未找到,不加载!");
+                    _logger.Information($"Worker's default constructor not found, not loading!");
                     return;
                 }
 
@@ -46,12 +46,12 @@ namespace Asgard.Job
                     var instance = constructor.Invoke(new object[] { loggerInstance });
                     if (instance is null)
                     {
-                        _logger.Information($"创建工作器实例失败,不加载!");
+                        _logger.Information($"Failed to create worker instance, not loading!");
                         return;
                     }
                     if (instance is not JobBase jobBase)
                     {
-                        _logger.Information($"工作器没有继承基类AbsJobBase,不加载!");
+                        _logger.Information($"Worker does not inherit base class AbsJobBase, not loading!");
                         return;
                     }
                     var item = new JobInfoItem(constructor)
@@ -66,14 +66,14 @@ namespace Asgard.Job
                         item.JobInstance = jobBase;
                     }
                     _allJobItems.Add(item);
-                    _logger.Information($"找到工作器:{jobBase.Name}" +
-                        $" 类型:{Enum.GetName(jobBase.JobType)}" +
-                        $" 计时器类型:{Enum.GetName(jobBase.TimerType)}" +
-                        $" 间隔:{(jobBase.Interval == null ? "只运行一次" : jobBase.Interval.ToString())}");
+                    _logger.Information($"Found worker:{jobBase.Name}" +
+                        $" Type:{Enum.GetName(jobBase.JobType)}" +
+                        $" Timer type:{Enum.GetName(jobBase.TimerType)}" +
+                        $" Interval:{(jobBase.Interval == null ? "Run once" : jobBase.Interval.ToString())}");
                 }
                 catch (Exception ex)
                 {
-                    _logger.Information($"创建工作器实例报错!", exception: ex);
+                    _logger.Information($"Error creating worker instance!", exception: ex);
                     return;
                 }
 
@@ -81,7 +81,7 @@ namespace Asgard.Job
         }
 
         /// <summary>
-        /// 开始服务
+        /// Start service
         /// </summary>
         public override void Start()
         {
@@ -102,21 +102,21 @@ namespace Asgard.Job
 
                             if (instance is not JobBase baseInstance)
                             {
-                                _logger.Information($"创建工作器:{item.JobTypeFullName}实例完成,但是其并不是AbsJobBase, 跳过执行!");
+                                _logger.Information($"Worker {item.JobTypeFullName} instance creation complete, but it's not AbsJobBase, skipping execution!");
                                 return;
                             }
                             item.JobInstance = baseInstance;
 
                             if (item.JobInstance is null)
                             {
-                                _logger.Information($"创建工作器:{item.JobTypeFullName} 实例失败,跳过执行!");
+                                _logger.Information($"Failed to create worker {item.JobTypeFullName} instance, skipping execution!");
                                 return;
                             }
                         }
 
                         if (item.JobInstance is null)
                         {
-                            _logger.Information($"工作器:{item.JobTypeFullName}实例为空,跳过执行.");
+                            _logger.Information($"Worker {item.JobTypeFullName} instance is null, skipping execution.");
                             break;
                         }
                         if (item.TimerType == JobTimerTypeEnum.Independent)
@@ -165,7 +165,7 @@ namespace Asgard.Job
         }
 
         /// <summary>
-        /// 停止服务
+        /// Stop service
         /// </summary>
         public override void Stop(AsgardContext context)
         {

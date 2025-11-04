@@ -1,26 +1,26 @@
 ﻿namespace Asgard.Extends.AspNetCore.ApiModels
 {
     /// <summary>
-    /// 响应基础类
+    /// Response base class
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public class DataResponse<T>
     {
         /// <summary>
-        /// 响应状态
+        /// Response status
         /// </summary>
         public ResponseCodeEnum Code { get; set; }
         /// <summary>
-        /// 自定义消息
+        /// Custom message
         /// </summary>
         public string? Msg { get; set; }
         /// <summary>
-        /// 携带的数据
+        /// Carried data
         /// </summary>
         public T? Data { get; set; }
 
         /// <summary>
-        /// 数据总数
+        /// Total data count
         /// </summary>
         public int DataCount { get; set; }
     }

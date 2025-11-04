@@ -3,41 +3,41 @@
 namespace Asgard.Job
 {
     /// <summary>
-    /// job服务item
+    /// Job service item
     /// </summary>
     internal class JobInfoItem
     {
         /// <summary>
-        /// Job构造函数
+        /// Job constructor
         /// </summary>
         public ConstructorInfo Constructor { get; set; }
         /// <summary>
-        /// job类型
+        /// Job type
         /// </summary>
         public JobTypeEnum JobType { get; set; }
 
 
         /// <summary>
-        /// 间隔,默认为空,为空时,只会触发一次,然后销毁对象,可以修改,每次运行会获取,如果是null,改成数字,则失效,只有数字改才生效
+        /// Interval, default is null, when null it will only trigger once and then destroy the object, can be modified, retrieved each run, if null changed to number it becomes invalid, only number changes take effect
         /// </summary>
         public TimeSpan? Interval { get; set; } = null;
 
         /// <summary>
-        /// 类型
+        /// Type
         /// </summary>
         public JobTimerTypeEnum TimerType { get; set; } = JobTimerTypeEnum.Independent;
         /// <summary>
-        /// job得类型全名称
+        /// Job type full name
         /// </summary>
         public string JobTypeFullName { get; set; } = "";
 
         /// <summary>
-        /// 实例对象
+        /// Instance object
         /// </summary>
         private JobBase? _jobInstance;
 
         /// <summary>
-        /// Job实例对象
+        /// Job instance object
         /// </summary>
         public JobBase? JobInstance
         {
@@ -56,9 +56,9 @@ namespace Asgard.Job
         }
 
         /// <summary>
-        /// 构造函数
+        /// Constructor
         /// </summary>
-        /// <param name="constructor">目标的构造函数</param>
+        /// <param name="constructor">Target constructor</param>
         public JobInfoItem(ConstructorInfo constructor)
         {
             Constructor = constructor;

@@ -8,23 +8,23 @@ using FreeSql;
 namespace Asgard.Logger.FreeSqlProvider.LogRealizations
 {
     /// <summary>
-    /// 数据库日志
+    /// Database log
     /// </summary>
     internal class DBLog
     {
         /// <summary>
-        /// 数据库日志池
+        /// Database log pool
         /// </summary>
         private readonly Channel<LogInfo> _dbLogPool = Channel.CreateUnbounded<LogInfo>();
 
         /// <summary>
-        /// 日志数据库
+        /// Log database
         /// </summary>
         private readonly IFreeSql? _logDB;
 
         public DBLog(DBLogOptions opt)
         {
-            Console.WriteLine($"尝试创建数据库日志表.{opt.TableName}");
+            Console.WriteLine($"Attempting to create database log table.{opt.TableName}");
             _logDB = new FreeSqlBuilder().UseConnectionString((DataType)opt.DbType, opt.DbAddress).UseExitAutoDisposePool(false).Build();
 
             if (!_logDB.DbFirst.ExistsTable(opt.TableName))
@@ -32,13 +32,13 @@ namespace Asgard.Logger.FreeSqlProvider.LogRealizations
                 _logDB.CodeFirst.SyncStructure(typeof(LogInfo), opt.TableName);
             }
 
-            Console.WriteLine($"数据库日志初始化完成.{opt.TableName}");
+            Console.WriteLine($"Database log initialization complete.{opt.TableName}");
             DBLogJob(opt);
         }
 
 
         /// <summary>
-        /// 数据库日志任务
+        /// Database log task
         /// </summary>
         private void DBLogJob(DBLogOptions opt)
         {
@@ -70,7 +70,7 @@ namespace Asgard.Logger.FreeSqlProvider.LogRealizations
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"保存数据库日志报错. 错误信息:{ex}");
+                        Console.WriteLine($"Save database log error. Error info:{ex}");
                         continue;
                     }
                     await Task.Delay(100);

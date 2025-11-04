@@ -5,80 +5,80 @@
 [![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 [![Build](https://img.shields.io/badge/build-passing-brightgreen.svg)](https://github.com/your-org/asgard)
 
-> **阿斯加德框架** - 基于北欧神话世界之树概念设计的现代.NET微服务框架
+> **Asgard Framework** - A modern .NET microservices framework inspired by the Norse mythology Yggdrasil
 
-## 🎯 项目简介
+## 🎯 Project Overview
 
-Asgard（阿斯加德）是一个高度模块化的.NET微服务框架，灵感来源于北欧神话中的世界之树Yggdrasil。它提供了完整的微服务基础设施，包括认证、缓存、数据库、日志、消息队列等核心组件，支持插件化架构和动态扩展。
+Asgard is a highly modular .NET microservices framework inspired by Yggdrasil, the World Tree from Norse mythology. It provides complete microservices infrastructure including authentication, caching, database, logging, message queue and other core components, supporting plugin-based architecture and dynamic extension.
 
-## ✨ 核心特性
+## ✨ Core Features
 
-- 🧩 **插件化架构** - 支持动态加载和卸载插件
-- 🏗️ **模块化设计** - 认证、缓存、数据库、日志、消息队列独立模块
-- ⚙️ **配置中心** - 统一的配置管理和动态更新
-- 🔐 **JWT认证** - 完整的身份认证和授权体系
-- 🗄️ **多数据库支持** - 基于FreeSql的ORM，支持多种数据库
-- 📨 **消息队列** - 集成RabbitMQ，支持分布式消息处理
-- 🔄 **缓存系统** - Redis缓存支持，提升系统性能
-- 🆔 **分布式ID** - 雪花算法生成分布式唯一ID
-- 📊 **任务调度** - 内置定时任务和后台作业支持
-- 🚀 **ASP.NET Core集成** - 完美支持ASP.NET Core宿主
+- 🧩 **Plugin Architecture** - Support dynamic loading and unloading of plugins
+- 🏗️ **Modular Design** - Independent modules for authentication, caching, database, logging, message queue
+- ⚙️ **Configuration Center** - Unified configuration management and dynamic updates
+- 🔐 **JWT Authentication** - Complete identity authentication and authorization system
+- 🗄️ **Multi-Database Support** - ORM based on FreeSql, supports multiple databases
+- 📨 **Message Queue** - Integrated RabbitMQ, supports distributed message processing
+- 🔄 **Caching System** - Redis cache support, improves system performance
+- 🆔 **Distributed ID** - Snowflake algorithm for distributed unique ID generation
+- 📊 **Task Scheduling** - Built-in scheduled tasks and background job support
+- 🚀 **ASP.NET Core Integration** - Perfect support for ASP.NET Core hosting
 
-## 🏗️ 系统架构
+## 🏗️ System Architecture
 
-### 架构层次
+### Architecture Layers
 
 ```mermaid
 graph TD
-    A[Asgard框架] --> B[抽象层 Asgard.Abstract]
-    A --> C[宿主层 Asgard.Hosts]
-    A --> D[系统模块 Asgard.SystemModules]
-    A --> E[扩展模块 Asgard.Extends]
+    A[Asgard Framework] --> B[Abstraction Layer Asgard.Abstract]
+    A --> C[Host Layer Asgard.Hosts]
+    A --> D[System Modules Asgard.SystemModules]
+    A --> E[Extension Modules Asgard.Extends]
     
-    B --> B1[认证抽象]
-    B --> B2[缓存抽象]
-    B --> B3[数据库抽象]
-    B --> B4[日志抽象]
-    B --> B5[消息队列抽象]
-    B --> B6[插件系统]
+    B --> B1[Authentication Abstraction]
+    B --> B2[Cache Abstraction]
+    B --> B3[Database Abstraction]
+    B --> B4[Logging Abstraction]
+    B --> B5[Message Queue Abstraction]
+    B --> B6[Plugin System]
     
-    C --> C1[AspNetCore宿主]
-    C --> C2[控制台宿主]
+    C --> C1[AspNetCore Host]
+    C --> C2[Console Host]
     
-    D --> D1[Redis缓存]
-    D --> D2[FreeSql数据库]
-    D --> D3[RabbitMQ消息]
-    D --> D4[配置中心]
+    D --> D1[Redis Cache]
+    D --> D2[FreeSql Database]
+    D --> D3[RabbitMQ Message]
+    D --> D4[Configuration Center]
     
-    E --> E1[AspNetCore扩展]
-    E --> E2[JSON扩展]
-    E --> E3[工具类库]
+    E --> E1[AspNetCore Extensions]
+    E --> E2[JSON Extensions]
+    E --> E3[Utility Libraries]
 ```
 
-### 核心概念
+### Core Concepts
 
-- **Yggdrasil（世界之树）** - 框架核心容器，管理所有组件
-- **Bifrost（彩虹桥）** - 插件系统的入口点
-- **AsgardContext** - 上下文对象，提供运行时环境
-- **NodeConfig** - 节点配置，定义系统行为
+- **Yggdrasil (World Tree)** - Framework core container, manages all components
+- **Bifrost (Rainbow Bridge)** - Entry point of the plugin system
+- **AsgardContext** - Context object, provides runtime environment
+- **NodeConfig** - Node configuration, defines system behavior
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 1. 安装框架
+### 1. Install Framework
 
 ```bash
-# 创建新项目
+# Create new project
 dotnet new web -n MyAsgardApp
 cd MyAsgardApp
 
-# 添加核心包
+# Add core packages
 dotnet add package Asgard.Abstract
 dotnet add package Asgard.Hosts.AspNetCore
 ```
 
-### 2. 基本配置
+### 2. Basic Configuration
 
-创建配置文件 `appsettings.json`:
+Create configuration file `appsettings.json`:
 
 ```json
 {
@@ -100,7 +100,7 @@ dotnet add package Asgard.Hosts.AspNetCore
 }
 ```
 
-### 3. 启动应用
+### 3. Start Application
 
 ```csharp
 using Asgard.Abstract.Models.AsgardConfig;
@@ -108,7 +108,7 @@ using Asgard.Hosts.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 配置Asgard
+// Configure Asgard
 var nodeConfig = new NodeConfig
 {
     Name = "MyAsgardApp",
@@ -124,7 +124,7 @@ var nodeConfig = new NodeConfig
     }
 };
 
-// 构建并启动
+// Build and start
 var yggdrasil = new YggdrasilBuilder(nodeConfig)
     .UseFreeSqlDBManager()
     .UseRedisCache()
@@ -134,33 +134,33 @@ var yggdrasil = new YggdrasilBuilder(nodeConfig)
 await yggdrasil.LoadPluginFromAllSource().StartAsync();
 ```
 
-## 📋 详细文档
+## 📋 Detailed Documentation
 
-### 配置管理
+### Configuration Management
 
-Asgard使用统一的`NodeConfig`配置模型：
+Asgard uses unified `NodeConfig` configuration model:
 
 ```csharp
 public class NodeConfig
 {
-    public string Name { get; set; }                    // 节点名称
-    public DefaultDBConfig DefaultDB { get; set; }      // 数据库配置
-    public RedisConfig Redis { get; set; }              // Redis配置
-    public AuthConfig AuthConfig { get; set; }          // 认证配置
-    public WebApiConfig WebAPIConfig { get; set; }      // WebAPI配置
-    public List<PluginItem> Plugins { get; set; }       // 插件配置
+    public string Name { get; set; }                    // Node name
+    public DefaultDBConfig DefaultDB { get; set; }        // Database configuration
+    public RedisConfig Redis { get; set; }              // Redis configuration
+    public AuthConfig AuthConfig { get; set; }          // Authentication configuration
+    public WebApiConfig WebAPIConfig { get; set; }      // WebAPI configuration
+    public List<PluginItem> Plugins { get; set; }       // Plugin configuration
 }
 ```
 
-### 插件开发
+### Plugin Development
 
-#### 创建插件项目
+#### Create Plugin Project
 
-1. 创建类库项目
-2. 添加对`Asgard.Abstract`的引用
-3. 根据宿主类型选择合适的基类
+1. Create class library project
+2. Add reference to `Asgard.Abstract`
+3. Choose appropriate base class based on host type
 
-##### 基础插件（适用于所有宿主）
+##### Basic Plugin (for all hosts)
 
 ```csharp
 using Asgard.Abstract;
@@ -178,36 +178,36 @@ namespace MyPlugin
         }
 
         /// <summary>
-        /// 系统启动完成后调用
+        /// Called after system startup is complete
         /// </summary>
         public override void OnSystemStarted(AsgardContext context)
         {
             LoggerProvider?.CreateLogger<MyBifrost>()
-                .LogInformation("插件启动完成，事件ID: {EventID}", context.EventID);
+                .LogInformation("Plugin startup complete, EventID: {EventID}", context.EventID);
             
-            // 在这里执行插件初始化逻辑
+            // Execute plugin initialization logic here
         }
 
         /// <summary>
-        /// 系统关闭时调用
+        /// Called when system is shutting down
         /// </summary>
         public override void SystemTryShutDown()
         {
             LoggerProvider?.CreateLogger<MyBifrost>()
-                .LogInformation("插件正在关闭...");
+                .LogInformation("Plugin is shutting down...");
             
-            // 在这里执行清理工作
+            // Execute cleanup work here
         }
 
         /// <summary>
-        /// 插件排序（可选）
+        /// Plugin ordering (optional)
         /// </summary>
-        public override int Order => 1; // 默认为0
+        public override int Order => 1; // Default is 0
     }
 }
 ```
 
-##### ASP.NET Core插件
+##### ASP.NET Core Plugin
 
 ```csharp
 using Asgard.Abstract;
@@ -227,64 +227,64 @@ namespace MyAspNetPlugin
         }
 
         /// <summary>
-        /// Web应用构建时调用
+        /// Called when Web application is being built
         /// </summary>
         public override void OnBuildWebApp(IApplicationBuilder builder)
         {
-            // 配置ASP.NET Core中间件
+            // Configure ASP.NET Core middleware
             // builder.UseRouting();
             // builder.UseEndpoints(endpoints => { ... });
         }
 
         /// <summary>
-        /// 服务初始化时调用
+        /// Called when services are being initialized
         /// </summary>
         public override void OnServiceInit(IServiceCollection service)
         {
-            // 注册ASP.NET Core服务
+            // Register ASP.NET Core services
             // service.AddControllers();
             // service.AddScoped<IMyService, MyService>();
         }
 
         /// <summary>
-        /// 系统启动完成后调用
+        /// Called after system startup is complete
         /// </summary>
         public override void OnSystemStarted(AsgardContext context)
         {
             LoggerProvider?.CreateLogger<MyAspBifrost>()
-                .LogInformation("ASP.NET Core插件启动完成");
+                .LogInformation("ASP.NET Core plugin startup complete");
         }
 
         /// <summary>
-        /// 系统关闭时调用
+        /// Called when system is shutting down
         /// </summary>
         public override void SystemTryShutDown()
         {
             LoggerProvider?.CreateLogger<MyAspBifrost>()
-                .LogInformation("ASP.NET Core插件正在关闭");
+                .LogInformation("ASP.NET Core plugin is shutting down");
         }
     }
 }
 ```
 
-#### 插件项目结构
+#### Plugin Project Structure
 
 ```
 MyPlugin/
 ├── MyPlugin.csproj
-├── MyBifrost.cs          # 插件入口类
-├── Controllers/          # 控制器（ASP.NET Core插件）
+├── MyBifrost.cs          # Plugin entry class
+├── Controllers/          # Controllers (ASP.NET Core plugins)
 │   └── MyController.cs
-├── Services/             # 服务类
+├── Services/             # Service classes
 │   └── IMyService.cs
 │   └── MyService.cs
-└── Models/               # 数据模型
+└── Models/               # Data models
     └── MyModel.cs
 ```
 
-#### 插件配置
+#### Plugin Configuration
 
-在`appsettings.json`中配置插件：
+Configure plugins in `appsettings.json`:
 
 ```json
 {
@@ -300,32 +300,32 @@ MyPlugin/
 }
 ```
 
-#### 插件部署
+#### Plugin Deployment
 
-1. **编译插件项目**：
+1. **Compile plugin project**:
    ```bash
    dotnet build MyPlugin.csproj
    ```
 
-2. **复制到插件目录**：
+2. **Copy to plugin directory**:
    ```bash
    cp MyPlugin.dll ./plugins/MyPlugin/
    ```
 
-3. **配置启用**：
-   在配置文件中添加插件配置，或放入`plugins`目录自动加载
+3. **Enable configuration**:
+   Add plugin configuration in config file, or place in `plugins` directory for auto-loading
 
-### 认证系统
+### Authentication System
 
-Asgard提供基于JWT的认证系统，通过`AuthManager`实现：
+Asgard provides JWT-based authentication system through `AuthManager`:
 
-#### 配置认证
+#### Configure Authentication
 ```csharp
 var nodeConfig = new NodeConfig
 {
     AuthConfig = new AuthConfig
     {
-        JwtKey = AuthKVToolsMethod.CreateNewHMACSHA256Key(), // Base64编码的密钥
+        JwtKey = AuthKVToolsMethod.CreateNewHMACSHA256Key(), // Base64 encoded key
         Issuer = "MyApp",
         Audience = "MyAppUsers",
         AesKey = AuthKVToolsMethod.CreateNewAesKeyAndVi().key,
@@ -334,43 +334,43 @@ var nodeConfig = new NodeConfig
 };
 ```
 
-#### 创建Token
+#### Create Token
 ```csharp
-// 获取认证管理器
+// Get authentication manager
 var authManager = context.Auth;
 
-// 创建用户信息
+// Create user info
 var userInfo = new UserInfo
 {
     UID = 12345,
     UserName = "admin",
-    // 其他用户信息...
+    // Other user information...
 };
 
-// 创建访问Token
+// Create access token
 if (authManager.TryCreateToken(userInfo, out string token, null, DateTime.Now.AddHours(2)))
 {
-    // token创建成功
+    // Token created successfully
 }
 
-// 创建刷新Token
+// Create refresh token
 if (authManager.TryCreateRefreshToken(userInfo, out string refreshToken, out string jti))
 {
-    // 刷新token创建成功
+    // Refresh token created successfully
 }
 ```
 
-#### 验证Token
+#### Validate Token
 ```csharp
-// 验证并解析Token
+// Validate and parse token
 if (authManager.TryGetUserInfo(rawToken, out UserInfo userInfo, out string jti, out TokenType type))
 {
-    // 验证成功，userInfo包含用户信息
-    Console.WriteLine($"用户ID: {userInfo.UID}");
+    // Validation successful, userInfo contains user information
+    Console.WriteLine($"User ID: {userInfo.UID}");
 }
 ```
 
-#### 控制器中使用认证
+#### Use Authentication in Controllers
 ```csharp
 [ApiController]
 [Route("api/[controller]")]
@@ -379,52 +379,52 @@ public class UserController : APIControllerBase
     public UserController(AsgardContext context, AbsLoggerProvider logger)
         : base(context, logger) { }
 
-    // 需要认证
+    // Requires authentication
     [HttpGet("profile")]
-    [Auth()]  // 使用Asgard的认证特性
+    [Auth()]  // Use Asgard's authentication attribute
     public DataResponse<UserProfile> GetProfile()
     {
-        // 从Context中获取当前用户信息
+        // Get current user info from Context
         var userInfo = Context.Auth?.GetCurrentUser();
         return HandleData(new UserProfile { UserName = userInfo?.UserName });
     }
 
-    // 需要特定角色
+    // Requires specific role
     [HttpGet("admin")]
     [Auth(roles: new[] { "admin" })]
     public DataResponse<string> AdminOnly()
     {
-        return HandleData("管理员访问");
+        return HandleData("Admin access");
     }
 
-    // 需要商户ID
+    // Requires tenant ID
     [HttpGet("tenant")]
     [Auth(needsTenantID: true)]
     public DataResponse<string> TenantData()
     {
-        return HandleData("商户数据");
+        return HandleData("Tenant data");
     }
 }
 ```
 
-### 缓存系统
+### Caching System
 
-支持Redis和内存缓存：
+Support Redis and memory cache:
 
 ```csharp
-// 使用Redis缓存
+// Use Redis cache
 builder.UseRedisCache();
 
-// 使用内存缓存
+// Use memory cache
 builder.UseMemCache();
 ```
 
-### 数据库操作
+### Database Operations
 
-基于FreeSql的ORM支持：
+ORM support based on FreeSql:
 
 ```csharp
-// 定义实体
+// Define entity
 public class User
 {
     public long Id { get; set; }
@@ -432,103 +432,103 @@ public class User
     public string Email { get; set; }
 }
 
-// 使用仓储模式
+// Use repository pattern
 var userRepo = context.DB.GetRepository<User>();
 var user = await userRepo.Where(u => u.Id == 1).FirstAsync();
 ```
 
-### 消息队列
+### Message Queue
 
-集成RabbitMQ支持：
+Integrated RabbitMQ support:
 
 ```csharp
-// 发送消息
+// Send message
 await context.MQ.PublishAsync("exchange.name", new { Message = "Hello World" });
 
-// 接收消息
+// Receive message
 await context.MQ.SubscribeAsync("queue.name", async (message) =>
 {
-    // 处理消息
+    // Process message
     Console.WriteLine($"Received: {message}");
 });
 ```
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 Asgard/
-├── Asgard.Abstract/              # 核心抽象层
-│   ├── Auth/                     # 认证抽象
-│   ├── Cache/                    # 缓存抽象
-│   ├── DataBase/                 # 数据库抽象
-│   ├── Logger/                   # 日志抽象
-│   ├── MQ/                       # 消息队列抽象
-│   ├── Models/                   # 数据模型
-│   └── Plugin/                   # 插件系统
-├── Asgard.Hosts/                 # 宿主实现
-│   └── Asgard.Hosts.AspNetCore/  # ASP.NET Core宿主
-├── Asgard.SystemModules/         # 系统模块
-│   ├── Asgard.Caches.Redis/      # Redis缓存实现
-│   ├── Asgard.DataBaseManager.FreeSql/  # FreeSql数据库
-│   ├── Asgard.MQ.RabbitMQ/       # RabbitMQ消息队列
-│   └── Asgard.Logger.FreeSqlProvider/  # FreeSql日志
-├── Asgard.Extends/               # 扩展模块
-│   ├── Asgard.Extends.AspNetCore/  # ASP.NET Core扩展
-│   ├── Asgard.Extends.Json/      # JSON扩展
-│   └── Asgard.Tools/             # 工具类库
-└── Asgard.Examples/              # 示例项目
-    └── Asgard.AspNetCore.Full/   # 完整示例
+├── Asgard.Abstract/              # Core abstraction layer
+│   ├── Auth/                     # Authentication abstraction
+│   ├── Cache/                    # Cache abstraction
+│   ├── DataBase/                 # Database abstraction
+│   ├── Logger/                   # Logging abstraction
+│   ├── MQ/                       # Message queue abstraction
+│   ├── Models/                   # Data models
+│   └── Plugin/                   # Plugin system
+├── Asgard.Hosts/                 # Host implementations
+│   └── Asgard.Hosts.AspNetCore/  # ASP.NET Core host
+├── Asgard.SystemModules/         # System modules
+│   ├── Asgard.Caches.Redis/      # Redis cache implementation
+│   ├── Asgard.DataBaseManager.FreeSql/  # FreeSql database
+│   ├── Asgard.MQ.RabbitMQ/       # RabbitMQ message queue
+│   └── Asgard.Logger.FreeSqlProvider/  # FreeSql logging
+├── Asgard.Extends/               # Extension modules
+│   ├── Asgard.Extends.AspNetCore/  # ASP.NET Core extensions
+│   ├── Asgard.Extends.Json/      # JSON extensions
+│   └── Asgard.Tools/             # Utility libraries
+└── Asgard.Examples/              # Example projects
+    └── Asgard.AspNetCore.Full/   # Complete example
 ```
 
-## 🛠️ 开发指南
+## 🛠️ Development Guide
 
-### 环境要求
+### Environment Requirements
 
-- .NET 6.0 或更高版本
-- Visual Studio 2022 或 VS Code
-- Redis (可选)
-- RabbitMQ (可选)
-- SQLite/MySQL/PostgreSQL (根据需求)
+- .NET 6.0 or higher
+- Visual Studio 2022 or VS Code
+- Redis (optional)
+- RabbitMQ (optional)
+- SQLite/MySQL/PostgreSQL (as needed)
 
-### 开发规范
+### Development Standards
 
-1. **命名规范**
-   - 抽象类使用`Abs`前缀
-   - 接口使用`I`前缀
-   - 插件类使用`Bifrost`后缀
+1. **Naming Conventions**
+   - Abstract classes use `Abs` prefix
+   - Interfaces use `I` prefix
+   - Plugin classes use `Bifrost` suffix
 
-2. **代码风格**
-   - 使用C# 10.0语法
-   - 遵循SOLID原则
-   - 提供完整的XML注释
+2. **Code Style**
+   - Use C# 10.0 syntax
+   - Follow SOLID principles
+   - Provide complete XML comments
 
-3. **插件开发**
-   - 每个插件独立项目
-   - 使用特性标记插件类型
-   - 提供完整的配置选项
+3. **Plugin Development**
+   - Each plugin is an independent project
+   - Use attributes to mark plugin types
+   - Provide complete configuration options
 
-### 贡献指南
+### Contribution Guide
 
-1. Fork项目
-2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
-3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
-4. 推送到分支 (`git push origin feature/AmazingFeature`)
-5. 创建Pull Request
+1. Fork the project
+2. Create feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to branch (`git push origin feature/AmazingFeature`)
+5. Create Pull Request
 
-## 📚 示例项目
+## 📚 Example Projects
 
-### 基础Web API
+### Basic Web API
 
-查看 `Asgard/Examples/Asgard.AspNetCore.Full` 获取完整示例：
+Check `Asgard/Examples/Asgard.AspNetCore.Full` for complete example:
 
 ```bash
 cd Asgard/Examples/Asgard.AspNetCore.Full
 dotnet run
 ```
 
-### 插件示例
+### Plugin Example
 
-基于 `Asgard.AspNetCore.Full` 示例项目的正确插件实现：
+Correct plugin implementation based on `Asgard.AspNetCore.Full` example project:
 
 ```csharp
 using System.Reflection;
@@ -542,7 +542,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace MyAsgardApp
 {
     /// <summary>
-    /// 插件入口类 - 继承自 AbsAspNetCoreHostBifrost
+    /// Plugin entry class - inherits from AbsAspNetCoreHostBifrost
     /// </summary>
     public class Bifrost : AbsAspNetCoreHostBifrost
     {
@@ -552,48 +552,48 @@ namespace MyAsgardApp
         }
 
         /// <summary>
-        /// Web应用构建完成后调用
+        /// Called after Web application build is complete
         /// </summary>
         public override void OnBuildWebApp(IApplicationBuilder builder)
         {
-            // 可以在这里添加中间件配置
+            // Can add middleware configuration here
             // builder.UseMiddleware<MyMiddleware>();
         }
 
         /// <summary>
-        /// 服务初始化时调用
+        /// Called when services are being initialized
         /// </summary>
         public override void OnServiceInit(IServiceCollection service)
         {
-            // 注册自定义服务
+            // Register custom services
             // service.AddScoped<IMyService, MyService>();
         }
 
         /// <summary>
-        /// 系统启动完成后调用
+        /// Called after system startup is complete
         /// </summary>
         public override void OnSystemStarted(AsgardContext context)
         {
-            // 系统启动后的初始化工作
+            // Post-startup initialization work
             var logger = LoggerProvider.CreateLogger<Bifrost>();
-            logger.LogInformation("系统启动完成，事件ID: {EventID}", context.EventID);
+            logger.LogInformation("System startup complete, EventID: {EventID}", context.EventID);
         }
 
         /// <summary>
-        /// 系统关闭时调用
+        /// Called when system is shutting down
         /// </summary>
         public override void SystemTryShutDown()
         {
-            // 清理资源
-            LoggerProvider.CreateLogger<Bifrost>().LogInformation("系统正在关闭...");
+            // Clean up resources
+            LoggerProvider.CreateLogger<Bifrost>().LogInformation("System is shutting down...");
         }
     }
 }
 ```
 
-### 控制器示例
+### Controller Example
 
-基于示例项目的控制器实现：
+Controller implementation based on example project:
 
 ```csharp
 using Asgard.Abstract;
@@ -606,7 +606,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace MyAsgardApp.Controllers
 {
     /// <summary>
-    /// HelloWorld控制器示例
+    /// HelloWorld controller example
     /// </summary>
     [ApiController]
     [Route("Asgard/[Controller]")]
@@ -619,17 +619,17 @@ namespace MyAsgardApp.Controllers
         }
 
         /// <summary>
-        /// 获取欢迎消息
+        /// Get welcome message
         /// </summary>
         [HttpGet("")]
-        [Auth()]  // 需要认证
+        [Auth()]  // Requires authentication
         public virtual DataResponse<string> GetWelcomeMessage()
         {
-            return HandleData("欢迎来到Asgard框架！");
+            return HandleData("Welcome to Asgard Framework!");
         }
 
         /// <summary>
-        /// 获取系统信息
+        /// Get system information
         /// </summary>
         [HttpGet("system-info")]
         public virtual DataResponse<object> GetSystemInfo()
@@ -645,29 +645,29 @@ namespace MyAsgardApp.Controllers
 }
 ```
 
-## 🔧 故障排除
+## 🔧 Troubleshooting
 
-### 常见问题
+### Common Issues
 
-1. **插件加载失败**
-   - 检查插件DLL路径是否正确
-   - 确认插件类继承自`AbsBifrost`
-   - 验证特性标记是否正确
+1. **Plugin Loading Failed**
+   - Check if plugin DLL path is correct
+   - Confirm plugin class inherits from `AbsBifrost`
+   - Verify attribute markings are correct
 
-2. **数据库连接失败**
-   - 检查连接字符串格式
-   - 确认数据库服务已启动
-   - 验证数据库权限
+2. **Database Connection Failed**
+   - Check connection string format
+   - Confirm database service is started
+   - Verify database permissions
 
-3. **Redis连接失败**
-   - 检查Redis服务状态
-   - 确认连接字符串格式
-   - 验证防火墙设置
+3. **Redis Connection Failed**
+   - Check Redis service status
+   - Confirm connection string format
+   - Verify firewall settings
 
-### 调试技巧
+### Debugging Tips
 
 ```csharp
-// 启用详细日志
+// Enable detailed logging
 var nodeConfig = new NodeConfig
 {
     SystemLog = new LogConfig
@@ -678,21 +678,21 @@ var nodeConfig = new NodeConfig
 };
 ```
 
-## 📄 许可证
+## 📄 License
 
-本项目采用MIT许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🤝 支持
+## 🤝 Support
 
-- 📧 邮箱: support@asgard-framework.com
-- 💬 讨论: [GitHub Discussions](https://github.com/your-org/asgard/discussions)
-- 🐛 问题: [GitHub Issues](https://github.com/your-org/asgard/issues)
+- 📧 Email: support@asgard-framework.com
+- 💬 Discussion: [GitHub Discussions](https://github.com/your-org/asgard/discussions)
+- 🐛 Issues: [GitHub Issues](https://github.com/your-org/asgard/issues)
 
-## 🙏 致谢
+## 🙏 Acknowledgments
 
-- 感谢所有贡献者的努力
-- 特别感谢.NET社区的支持
-- 灵感来源于北欧神话的世界之树
+- Thanks to all contributors for their efforts
+- Special thanks to the .NET community for support
+- Inspired by the World Tree from Norse mythology
 
 ---
 
