@@ -37,6 +37,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asgard.Hosts.AspNetCore", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asgard.AspNetCore.Full", "Examples\Asgard.AspNetCore.Full\Asgard.AspNetCore.Full.csproj", "{EC3F6139-3BB3-4D6D-8759-00019F817B02}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Asgard.Hoenir", "SystemModules\Asgard.Hoenir\Asgard.Hoenir.csproj", "{5BA73A4B-6329-49EE-8737-CF9A6570499F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{EC3F6139-3BB3-4D6D-8759-00019F817B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC3F6139-3BB3-4D6D-8759-00019F817B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC3F6139-3BB3-4D6D-8759-00019F817B02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BA73A4B-6329-49EE-8737-CF9A6570499F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BA73A4B-6329-49EE-8737-CF9A6570499F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BA73A4B-6329-49EE-8737-CF9A6570499F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BA73A4B-6329-49EE-8737-CF9A6570499F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -112,6 +118,7 @@ Global
 		{14904027-09E6-4AF1-B0E7-D13BAF561D4C} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{44015965-489D-474A-83BD-7BF9AA3A888A} = {CDCDADAA-827A-4190-82AF-5892E5B487ED}
 		{EC3F6139-3BB3-4D6D-8759-00019F817B02} = {E7761CA9-521C-4006-BBC3-3FA6983DF95E}
+		{5BA73A4B-6329-49EE-8737-CF9A6570499F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A299BA7-4569-46D9-A723-A5111721BF02}

@@ -68,7 +68,7 @@ namespace Asgard.Hoenir
         /// <summary>
         /// Enhanced trigger with A2A routing support
         /// </summary>
-        public new ICollection<MessageDataItem?> Trigger(string messageKey, MessageDataItem? data = null, bool ignoreEx = true, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0)
+        public ICollection<MessageDataItem?> TriggerWithA2A(string messageKey, MessageDataItem? data = null, bool ignoreEx = true, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0)
         {
             if (filePath is null)
             {
@@ -78,10 +78,10 @@ namespace Asgard.Hoenir
             // A2A unicast routing
             if (data?.RoutingMode == MessageRoutingModeEnum.Unicast && !string.IsNullOrEmpty(data.TargetAgentId))
             {
-                if (_agentRegistry.TryGetValue(data.TargetAgentId, out var targetCallbackId))
+                if (_agentRegistry.ContainsKey(data.TargetAgentId))
                 {
                     var agentMessageKey = $"agent:{data.TargetAgentId}:{messageKey}";
-                    return base.Trigger(agentMessageKey, data, ignoreEx, filePath, num);
+                    return Trigger(agentMessageKey, data, ignoreEx, filePath, num);
                 }
                 return new List<MessageDataItem?>(); // No agent found
             }
@@ -90,25 +90,25 @@ namespace Asgard.Hoenir
             if (data?.RoutingMode == MessageRoutingModeEnum.Group && !string.IsNullOrEmpty(data.TargetAgentId))
             {
                 var groupMessageKey = $"group:{data.TargetAgentId}:{messageKey}";
-                return base.Trigger(groupMessageKey, data, ignoreEx, filePath, num);
+                return Trigger(groupMessageKey, data, ignoreEx, filePath, num);
             }
 
             // Original broadcast behavior (unchanged)
-            return base.Trigger(messageKey, data, ignoreEx, filePath, num);
+            return Trigger(messageKey, data, ignoreEx, filePath, num);
         }
 
         /// <summary>
         /// Enhanced async trigger with A2A routing support
         /// </summary>
-        public new async Task<ICollection<MessageDataItem?>> TriggerAsync(string messageKey, MessageDataItem? data = null, bool wait = true, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0)
+        public async Task<ICollection<MessageDataItem?>> TriggerAsyncWithA2A(string messageKey, MessageDataItem? data = null, bool wait = true, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0)
         {
             // A2A unicast routing
             if (data?.RoutingMode == MessageRoutingModeEnum.Unicast && !string.IsNullOrEmpty(data.TargetAgentId))
             {
-                if (_agentRegistry.TryGetValue(data.TargetAgentId, out var targetCallbackId))
+                if (_agentRegistry.ContainsKey(data.TargetAgentId))
                 {
                     var agentMessageKey = $"agent:{data.TargetAgentId}:{messageKey}";
-                    return await base.TriggerAsync(agentMessageKey, data, wait, filePath, num);
+                    return await TriggerAsync(agentMessageKey, data, wait, filePath, num);
                 }
                 return new List<MessageDataItem?>(); // No agent found
             }
@@ -117,25 +117,25 @@ namespace Asgard.Hoenir
             if (data?.RoutingMode == MessageRoutingModeEnum.Group && !string.IsNullOrEmpty(data.TargetAgentId))
             {
                 var groupMessageKey = $"group:{data.TargetAgentId}:{messageKey}";
-                return await base.TriggerAsync(groupMessageKey, data, wait, filePath, num);
+                return await TriggerAsync(groupMessageKey, data, wait, filePath, num);
             }
 
             // Original broadcast behavior (unchanged)
-            return await base.TriggerAsync(messageKey, data, wait, filePath, num);
+            return await TriggerAsync(messageKey, data, wait, filePath, num);
         }
 
         /// <summary>
         /// Enhanced single trigger with A2A routing support
         /// </summary>
-        public new MessageDataItem? TriggerSingle(string messageKey, MessageDataItem? data = null, bool ignoreEx = true, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0)
+        public MessageDataItem? TriggerSingleWithA2A(string messageKey, MessageDataItem? data = null, bool ignoreEx = true, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0)
         {
             // A2A unicast routing
             if (data?.RoutingMode == MessageRoutingModeEnum.Unicast && !string.IsNullOrEmpty(data.TargetAgentId))
             {
-                if (_agentRegistry.TryGetValue(data.TargetAgentId, out var targetCallbackId))
+                if (_agentRegistry.ContainsKey(data.TargetAgentId))
                 {
                     var agentMessageKey = $"agent:{data.TargetAgentId}:{messageKey}";
-                    return base.TriggerSingle(agentMessageKey, data, ignoreEx, filePath, num);
+                    return TriggerSingle(agentMessageKey, data, ignoreEx, filePath, num);
                 }
                 return default; // No agent found
             }
@@ -144,25 +144,25 @@ namespace Asgard.Hoenir
             if (data?.RoutingMode == MessageRoutingModeEnum.Group && !string.IsNullOrEmpty(data.TargetAgentId))
             {
                 var groupMessageKey = $"group:{data.TargetAgentId}:{messageKey}";
-                return base.TriggerSingle(groupMessageKey, data, ignoreEx, filePath, num);
+                return TriggerSingle(groupMessageKey, data, ignoreEx, filePath, num);
             }
 
             // Original broadcast behavior (unchanged)
-            return base.TriggerSingle(messageKey, data, ignoreEx, filePath, num);
+            return TriggerSingle(messageKey, data, ignoreEx, filePath, num);
         }
 
         /// <summary>
         /// Enhanced async single trigger with A2A routing support
         /// </summary>
-        public new async Task<MessageDataItem?> TriggerSingleAsync(string messageKey, MessageDataItem? data = null, bool wait = true, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0)
+        public async Task<MessageDataItem?> TriggerSingleAsyncWithA2A(string messageKey, MessageDataItem? data = null, bool wait = true, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0)
         {
             // A2A unicast routing
             if (data?.RoutingMode == MessageRoutingModeEnum.Unicast && !string.IsNullOrEmpty(data.TargetAgentId))
             {
-                if (_agentRegistry.TryGetValue(data.TargetAgentId, out var targetCallbackId))
+                if (_agentRegistry.ContainsKey(data.TargetAgentId))
                 {
                     var agentMessageKey = $"agent:{data.TargetAgentId}:{messageKey}";
-                    return await base.TriggerSingleAsync(agentMessageKey, data, wait, filePath, num);
+                    return await TriggerSingleAsync(agentMessageKey, data, wait, filePath, num);
                 }
                 return default; // No agent found
             }
@@ -171,11 +171,11 @@ namespace Asgard.Hoenir
             if (data?.RoutingMode == MessageRoutingModeEnum.Group && !string.IsNullOrEmpty(data.TargetAgentId))
             {
                 var groupMessageKey = $"group:{data.TargetAgentId}:{messageKey}";
-                return await base.TriggerSingleAsync(groupMessageKey, data, wait, filePath, num);
+                return await TriggerSingleAsync(groupMessageKey, data, wait, filePath, num);
             }
 
             // Original broadcast behavior (unchanged)
-            return await base.TriggerSingleAsync(messageKey, data, wait, filePath, num);
+            return await TriggerSingleAsync(messageKey, data, wait, filePath, num);
         }
         /// <summary>
         /// 初始化日志模块

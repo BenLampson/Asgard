@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
+  </ItemGroup>
+
 </Project>
