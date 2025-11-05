@@ -24,10 +24,4 @@ jobs:
       - run: dotnet build ${{ matrix.project }} --configuration Release --no-restore
       - run: dotnet pack ${{ matrix.project }} --configuration Release --no-build --output ./nupkg
       - name: Push to NuGet TEST Gallery (safe)
-        run: |
-          for pkg in ./nupkg/*.nupkg; do
-            dotnet nuget push "$pkg" \
-            --api-key ${{ secrets.GITHUB_TOKEN }} \
-            --source https://nuget.pkg.github.com/BenLampson/index.json \
-            --skip-duplicate
-          done
+        run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.GITHUBKEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
