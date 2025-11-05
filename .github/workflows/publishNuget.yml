@@ -23,17 +23,11 @@ jobs:
       - run: dotnet restore Asgard/Asgard.sln
       - run: dotnet build ${{ matrix.project }} --configuration Release --no-restore
       - run: dotnet pack ${{ matrix.project }} --configuration Release --no-build --output ./nupkg
-      - name: 🧪 Test Output - List Generated .nupkg Files
+      - name: Push to NuGet TEST Gallery (safe)
         run: |
-          echo "📦 Generated NuGet packages:"
-          ls -l ./nupkg/
-          echo ""
-          echo "✅ Would push the following packages (dry run):"
           for pkg in ./nupkg/*.nupkg; do
-            if [ -f "$pkg" ]; then
-              echo "  ➤ $pkg"
-            else
-              echo "  ❌ No .nupkg files found!"
-              exit 1
-            fi
+            dotnet nuget push "$pkg" \
+              --api-key "TEST_API_KEY" \
+              --source https://api.int.nugettest.org/v3/index.json \
+              --skip-duplicate
           done
