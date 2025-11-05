@@ -14,13 +14,13 @@ jobs:
     strategy:
       matrix:
         project:
-          - src/Asgard/SystemModules/Asgard.Hoenir/Asgard.Hoenir.csproj          
+          - Asgard/SystemModules/Asgard.Hoenir/Asgard.Hoenir.csproj          
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.x'
-      - run: dotnet restore
+      - run: dotnet restore Asgard/Asgard.sln
       - run: dotnet build ${{ matrix.project }} --configuration Release --no-restore
       - run: dotnet pack ${{ matrix.project }} --configuration Release --no-build --output ./nupkg
       - name: 🧪 Test Output - List Generated .nupkg Files
