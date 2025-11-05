@@ -1,0 +1,275 @@
+# Asgard.Hoenir - A2A消息总线系统
+
+Asgard.Hoenir是一个轻量级、高性能的事件驱动消息总线系统，支持进程内通信和A2A（Agent-to-Agent）通信。基于现有事件总线架构，通过最小化修改实现A2A通信能力。
+
+## 🚀 核心特性
+
+### 多模式消息路由
+- **单播 (Unicast)**: 精确发送到指定代理
+- **组播 (Group)**: 发送到同类代理组
+- **广播 (Broadcast)**: 发送到所有订阅者
+
+### 智能寻址
+- 基于`messageKey`的统一寻址方案
+- 动态代理注册与发现
+- 零学习成本的迁移路径
+
+### 向后兼容
+- 现有代码100%兼容
+- 零破坏性升级
+- 渐进式功能增强
+
+## 📁 项目结构
+
+```
+Asgard.Hoenir/
+├── MessageDataItem.cs          # 消息数据模型
+├── MessageHubManager.cs       # 消息中心管理器
+├── MessageRoutingModeEnum.cs  # 路由模式枚举
+└── README.md                  # 本文档
+```
+
+## 🔧 快速开始
+
+### 1. 注册为网络代理
+
+```csharp
+using Asgard.Hoenir;
+
+// 注册为代理节点
+MessageHubManager.Instance.RegisterAgent("user-service-1", "user-service-handler");
+MessageHubManager.Instance.RegisterAgent("order-service-1", "order-service-handler");
+```
+
+### 2. 发送A2A消息
+
+#### 单播到指定代理
+```csharp
+var message = new MessageDataItem
+{
+    TargetAgentId = "user-service-1",
+    SourceAgentId = "api-gateway-1",
+    RoutingMode = MessageRoutingModeEnum.Unicast,
+    Data = new { action = "getUser", userId = 123 }
+};
+
+var response = MessageHubManager.Instance.Trigger("user-request", message);
+```
+
+#### 组播到代理组
+```csharp
+var groupMessage = new MessageDataItem
+{
+    TargetAgentId = "user-service", // 组名
+    SourceAgentId = "system-monitor",
+    RoutingMode = MessageRoutingModeEnum.Group,
+    Data = new { action = "cache-invalidate", keys = new[] { "user:123" } }
+};
+
+MessageHubManager.Instance.Trigger("system-event", groupMessage);
+```
+
+#### 广播到所有节点
+```csharp
+// 传统方式（完全兼容）
+MessageHubManager.Instance.Trigger("system-shutdown", new MessageDataItem { Data = "系统维护中" });
+
+// A2A方式
+var broadcast = new MessageDataItem
+{
+    RoutingMode = MessageRoutingModeEnum.Broadcast,
+    Data = new { action = "system-update", version = "2.0.0" }
+};
+MessageHubManager.Instance.Trigger("broadcast-event", broadcast);
+```
+
+### 3. 接收A2A消息
+
+```csharp
+// 注册单播处理器
+MessageHubManager.Instance.RegistCB("agent:user-service-1:user-request", HandleUserRequest, "user-service-1");
+
+// 注册组播处理器
+MessageHubManager.Instance.RegistCB("group:user-service:system-event", HandleGroupMessage, "user-service-1");
+
+// 注册广播处理器
+MessageHubManager.Instance.RegistCB("broadcast-event", HandleBroadcast, "system-monitor");
+
+MessageDataItem? HandleUserRequest(MessageDataItem? message)
+{
+    var userId = message?.GetData<dynamic>()?.userId;
+    Console.WriteLine($"处理用户请求: {userId}");
+    return new MessageDataItem { Data = new { success = true, user = new { id = userId, name = "张三" } } };
+}
+```
+
+## 🏗️ 架构设计
+
+### 统一寻址方案
+
+| 模式 | 地址格式 | 示例 |
+|---|---|---|
+| 单播 | `agent:{agentId}:{messageType}` | `agent:user-service-1:getUser` |
+| 组播 | `group:{groupName}:{messageType}` | `group:user-service:cache-invalidate` |
+| 广播 | `{messageType}` | `system-shutdown` |
+
+### 消息生命周期
+
+```mermaid
+graph TD
+    A[消息发送] --> B{路由模式}
+    B -->|单播| C[查找目标代理]
+    B -->|组播| D[查找代理组]
+    B -->|广播| E[所有订阅者]
+    C --> F[直接发送]
+    D --> G[组内广播]
+    E --> H[全局广播]
+```
+
+## 📊 性能特性
+
+- **零拷贝消息传递**: 基于引用传递，避免序列化开销
+- **智能去重**: 基于GUID的消息去重，防止重复处理
+- **异步支持**: 非阻塞的异步消息处理
+- **内存优化**: 可配置的缓存大小和清理策略
+
+## 🔍 高级功能
+
+### 消息确认机制
+```csharp
+// 发送并等待确认
+var response = await MessageHubManager.Instance.TriggerAsync("agent:user-service-1:process-order", orderData);
+if (response?.GetData<dynamic>()?.acknowledged == true)
+{
+    Console.WriteLine("订单处理已确认");
+}
+```
+
+### 错误处理与重试
+```csharp
+// 忽略异常继续处理
+var results = MessageHubManager.Instance.Trigger("risky-operation", data, ignoreEx: true);
+
+// 捕获异常进行重试
+try
+{
+    var result = MessageHubManager.Instance.Trigger("critical-operation", data, ignoreEx: false);
+}
+catch (Exception ex)
+{
+    // 重试逻辑
+}
+```
+
+### 消息追踪
+```csharp
+// 启用详细日志
+MessageHubManager.LogDetailInfo = true;
+
+// 消息包含调试信息
+var message = new MessageDataItem
+{
+    FromFile = "OrderService.cs",
+    Line = 42,
+    Data = orderData
+};
+```
+
+## 🎯 最佳实践
+
+### 1. 代理命名规范
+```csharp
+// 推荐格式: {服务类型}-{实例编号}
+MessageHubManager.Instance.RegisterAgent("user-service-prod-1", "user-handler-1");
+MessageHubManager.Instance.RegisterAgent("order-service-prod-2", "order-handler-2");
+```
+
+### 2. 消息版本控制
+```csharp
+// 在Header中添加版本信息
+message.Header["version"] = "v1.0";
+message.Header["schema"] = "user-v1";
+```
+
+### 3. 超时处理
+```csharp
+// 异步调用超时控制
+var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+var task = MessageHubManager.Instance.TriggerAsync("agent:service:operation", data);
+var result = await task.WaitAsync(cts.Token);
+```
+
+### 4. 负载均衡
+```csharp
+// 组播实现负载均衡
+MessageHubManager.Instance.Trigger("group:user-service:process-request", requestData);
+```
+
+## 🔄 迁移指南
+
+### 从传统事件总线迁移
+
+| 传统方式 | A2A方式 | 说明 |
+|---|---|---|
+| `RegistCB("event", handler, "id")` | 保持不变 | 100%兼容 |
+| `Trigger("event", data)` | 保持不变 | 100%兼容 |
+| 新增代理注册 | `RegisterAgent("agent-id", "callback-id")` | 新增功能 |
+| 新增单播 | 设置`TargetAgentId`和`RoutingMode` | 新增功能 |
+
+## 🧪 测试用例
+
+### 单元测试示例
+```csharp
+[Test]
+public void Test_A2A_Unicast()
+{
+    // Arrange
+    var hub = MessageHubManager.Instance;
+    var received = false;
+    
+    hub.RegisterAgent("test-agent", "test-callback");
+    hub.RegistCB("agent:test-agent:test-message", 
+        msg => { received = true; return msg; }, 
+        "test-callback");
+    
+    // Act
+    var message = new MessageDataItem
+    {
+        TargetAgentId = "test-agent",
+        RoutingMode = MessageRoutingModeEnum.Unicast,
+        Data = "test data"
+    };
+    hub.Trigger("test-message", message);
+    
+    // Assert
+    Assert.IsTrue(received);
+}
+```
+
+## 📈 应用场景
+
+### 微服务通信
+- 服务间RPC调用
+- 事件驱动架构
+- 状态同步机制
+
+### 插件系统
+- 插件间通信
+- 主程序与插件交互
+- 插件生命周期管理
+
+### 分布式系统
+- 节点状态广播
+- 配置变更通知
+- 故障转移通知
+
+## 📞 支持与反馈
+
+如有问题或建议，请通过以下方式联系：
+- 提交Issue到项目仓库
+- 发送邮件到维护团队
+- 参与社区讨论
+
+---
+
+**Asgard.Hoenir** - 让进程内通信和A2A通信一样简单！
