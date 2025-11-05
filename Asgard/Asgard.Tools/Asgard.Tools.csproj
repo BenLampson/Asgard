@@ -1,9 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<IsPackable>true</IsPackable>
 
+		<Product>Asgard</Product>
+		<Title>Asgard Framework</Title>
+		<PackageId>Asgard.Tools</PackageId>
+		<Description>Asgard.Tools 是一个包含多种实用工具的 .NET 库，旨在简化开发过程中的常见任务，如加密、压缩和枚举处理。</Description>
+
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- 项目专属 README -->
+		<None Include="README.md" Pack="True" PackagePath="\" />
+	</ItemGroup>
 </Project>
