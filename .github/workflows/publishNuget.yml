@@ -27,7 +27,7 @@ jobs:
         run: |
           for pkg in ./nupkg/*.nupkg; do
             dotnet nuget push "$pkg" \
-              --api-key "TEST_API_KEY" \
-              --source https://api.int.nugettest.org/v3/index.json \
-              --skip-duplicate
+            --api-key ${{ secrets.GITHUB_TOKEN }} \
+            --source https://nuget.pkg.github.com/BenLampson/index.json \
+            --skip-duplicate
           done
