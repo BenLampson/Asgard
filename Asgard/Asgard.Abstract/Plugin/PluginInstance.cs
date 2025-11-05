@@ -104,7 +104,7 @@ namespace Asgard.Abstract.Plugin
             instance = null;
             Assembly = new AssemblyLoader(PluginFilePath);
             //How to check this or use the detail way to set value info
-            var tempInfo = Assembly.Assembly.CreateInstance(_pluginItem.EntranceTypeDesc, true, BindingFlags.Default, null, new object[] { dbInstance, loggerProvider }, null, null);
+            var tempInfo = Assembly.Assembly.CreateInstance(_pluginItem.EntranceTypeDesc, true, BindingFlags.Default, null, new object[] { dbInstance!, loggerProvider! }, null, null);
             if (tempInfo is AbsBifrost entrance && Assembly is not null)
             {
                 EnteranceInstance = instance = entrance;

@@ -15,7 +15,9 @@ namespace Asgard.Hosts.AspNetCore
         public Action<WebApplicationBuilder>? OnWebAppbuild { get; init; }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public Yggdrasil()
         {
 

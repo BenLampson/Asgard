@@ -16,6 +16,9 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 
 namespace Asgard.Hosts.AspNetCore
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class Yggdrasil
     {
         /// <summary>

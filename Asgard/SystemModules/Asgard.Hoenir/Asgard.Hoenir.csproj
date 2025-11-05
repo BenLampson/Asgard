@@ -1,20 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	  <IsPackable>true</IsPackable>
+	<PropertyGroup>
+		<IsPackable>true</IsPackable>
 
-	  <Product>Asgard</Product>
-	  <Title>Asgard Framework</Title>
-	  <PackageId>Asgard.Hoenir</PackageId>
-	  <Description>Asgard.Hoenir是一个轻量级、高性能的事件驱动消息总线系统，支持进程内通信和A2A（Agent-to-Agent）通信。基于现有事件总线架构，通过最小化修改实现A2A通信能力。</Description>
-	  <PackageReleaseNotes> 
-	  </PackageReleaseNotes>
+		<Product>Asgard</Product>
+		<Title>Asgard Framework</Title>
+		<PackageId>Asgard.Hoenir</PackageId>
+		<Description>Asgard.Hoenir是一个轻量级、高性能的事件驱动消息总线系统，支持进程内通信和A2A（Agent-to-Agent）通信。基于现有事件总线架构，通过最小化修改实现A2A通信能力。</Description>
+		<PackageReleaseNotes>
+		</PackageReleaseNotes>
 
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<!-- 项目专属 README -->
