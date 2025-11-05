@@ -1,74 +1,59 @@
 namespace Asgard.Hoenir
 {
     /// <summary>
-    /// Message payload for event bus and A2A communication
+    /// 消息中心消息体
     /// </summary>
     public class MessageDataItem
     {
         /// <summary>
-        /// Constructs a new message
+        /// 构造一个新的消息
         /// </summary>
-        /// <param name="source">Message source for deduplication filtering</param>
-        public MessageDataItem(string? source = null)
+        /// <param name="source">来源,系统会在一定窗口期自动过滤重复消息源</param>
+        /// <param name="to">给谁,支持通配符例如*</param>
+        public MessageDataItem(string? source = null, string? to = null)
         {
             Source = source ?? "";
+            To = to ?? "";
         }
-
         /// <summary>
-        /// Message originator identifier
+        /// 由谁发起的
         /// </summary>
         public string Source { get; private set; }
-
         /// <summary>
-        /// Unique message identifier
+        /// 发给谁的,指定对方ID,就可以准确发送
+        /// </summary>
+        public string To { get; private set; }
+        /// <summary>
+        /// 消息ID
         /// </summary>
         public string MessageID { get; set; } = Guid.NewGuid().ToString("N");
 
         /// <summary>
-        /// Message payload data
+        /// 内容
         /// </summary>
         public object? Data { get; set; }
-
         /// <summary>
-        /// Message creation timestamp
+        /// 发起时间
         /// </summary>
         public long TimeStamp { get; init; } = DateTime.Now.Ticks;
-
         /// <summary>
-        /// Source file path for debugging
+        /// 哪个文件调用的
         /// </summary>
         public string FromFile { get; set; } = string.Empty;
-
         /// <summary>
-        /// Source line number for debugging
+        /// 第几行
         /// </summary>
         public int Line { get; set; }
-
         /// <summary>
-        /// Custom headers for routing and metadata
+        /// 头消息可以传递一些普通参数
         /// </summary>
         public Dictionary<string, object> Header { get; set; } = new();
 
         /// <summary>
-        /// Target agent ID for unicast routing. Null for broadcast.
+        /// 获取数据,如果是这个类型,则转换,如果不是则为空
         /// </summary>
-        public string? TargetAgentId { get; set; }
-
-        /// <summary>
-        /// Source agent ID for reply routing
-        /// </summary>
-        public string? SourceAgentId { get; set; }
-
-        /// <summary>
-        /// Message routing mode for A2A communication
-        /// </summary>
-        public MessageRoutingModeEnum RoutingMode { get; set; } = MessageRoutingModeEnum.Broadcast;
-
-        /// <summary>
-        /// Gets typed data if compatible
-        /// </summary>
-        /// <typeparam name="T">Target type for conversion</typeparam>
-        /// <returns>Typed data or default</returns>
+        /// <typeparam name="T">想要转换到的类型</typeparam>
+        /// <returns></returns>
         public T? GetData<T>()
         {
             if (Data is T res)
@@ -77,12 +62,11 @@ namespace Asgard.Hoenir
             }
             return default;
         }
-
         /// <summary>
-        /// Attempts to get typed data
+        /// 获取数据,如果是这个类型,则转换,如果不是则为空
         /// </summary>
-        /// <typeparam name="T">Target type for conversion</typeparam>
-        /// <returns>True if conversion successful</returns>
+        /// <typeparam name="T">想要转换到的类型</typeparam>
+        /// <returns></returns>
         public bool TryGetData<T>(out T? data)
         {
             data = default;
@@ -93,5 +77,6 @@ namespace Asgard.Hoenir
             }
             return false;
         }
+
     }
 }
