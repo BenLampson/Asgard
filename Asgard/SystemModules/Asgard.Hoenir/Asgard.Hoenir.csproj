@@ -1,13 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	  <IsPackable>true</IsPackable>
+
+	  <Product>Asgard</Product>
+	  <Title>Asgard Framework</Title>
+	  <PackageId>Asgard.Hoenir</PackageId>
+	  <Description>Asgard.Hoenir是一个轻量级、高性能的事件驱动消息总线系统，支持进程内通信和A2A（Agent-to-Agent）通信。基于现有事件总线架构，通过最小化修改实现A2A通信能力。</Description>
+	  <PackageReleaseNotes> 
+	  </PackageReleaseNotes>
+
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<!-- 项目专属 README -->
+		<None Include="README.md" Pack="True" PackagePath="\" />
+	</ItemGroup>
 </Project>

@@ -10,7 +10,7 @@ Asgard.Hoenir是一个轻量级、高性能的事件驱动消息总线系统，�
 - **广播 (Broadcast)**: 发送到所有订阅者
 
 ### 智能寻址
-- 基于`messageKey`的统一寻址方案
+- 基于`To`属性的统一寻址方案
 - 动态代理注册与发现
 - 零学习成本的迁移路径
 
@@ -25,7 +25,6 @@ Asgard.Hoenir是一个轻量级、高性能的事件驱动消息总线系统，�
 Asgard.Hoenir/
 ├── MessageDataItem.cs          # 消息数据模型
 ├── MessageHubManager.cs       # 消息中心管理器
-├── MessageRoutingModeEnum.cs  # 路由模式枚举
 └── README.md                  # 本文档
 ```
 
@@ -37,8 +36,8 @@ Asgard.Hoenir/
 using Asgard.Hoenir;
 
 // 注册为代理节点
-MessageHubManager.Instance.RegisterAgent("user-service-1", "user-service-handler");
-MessageHubManager.Instance.RegisterAgent("order-service-1", "order-service-handler");
+MessageHubManager.Instance.RegistCB("user-request", HandleUserRequest, "user-service-1");
+MessageHubManager.Instance.RegistCB("order-request", HandleOrderRequest, "order-service-1");
 ```
 
 ### 2. 发送A2A消息
@@ -47,9 +46,8 @@ MessageHubManager.Instance.RegisterAgent("order-service-1", "order-service-handl
 ```csharp
 var message = new MessageDataItem
 {
-    TargetAgentId = "user-service-1",
-    SourceAgentId = "api-gateway-1",
-    RoutingMode = MessageRoutingModeEnum.Unicast,
+    Source = "api-gateway-1",
+    To = "user-service-1",
     Data = new { action = "getUser", userId = 123 }
 };
 
@@ -60,9 +58,8 @@ var response = MessageHubManager.Instance.Trigger("user-request", message);
 ```csharp
 var groupMessage = new MessageDataItem
 {
-    TargetAgentId = "user-service", // 组名
-    SourceAgentId = "system-monitor",
-    RoutingMode = MessageRoutingModeEnum.Group,
+    Source = "system-monitor",
+    To = "user-service-*", // 组名
     Data = new { action = "cache-invalidate", keys = new[] { "user:123" } }
 };
 
@@ -77,7 +74,8 @@ MessageHubManager.Instance.Trigger("system-shutdown", new MessageDataItem { Data
 // A2A方式
 var broadcast = new MessageDataItem
 {
-    RoutingMode = MessageRoutingModeEnum.Broadcast,
+    Source = "system-monitor",
+    To = "*", // 广播到所有节点
     Data = new { action = "system-update", version = "2.0.0" }
 };
 MessageHubManager.Instance.Trigger("broadcast-event", broadcast);
@@ -87,19 +85,33 @@ MessageHubManager.Instance.Trigger("broadcast-event", broadcast);
 
 ```csharp
 // 注册单播处理器
-MessageHubManager.Instance.RegistCB("agent:user-service-1:user-request", HandleUserRequest, "user-service-1");
+MessageHubManager.Instance.RegistCB("user-request", HandleUserRequest, "user-service-1");
 
 // 注册组播处理器
-MessageHubManager.Instance.RegistCB("group:user-service:system-event", HandleGroupMessage, "user-service-1");
+MessageHubManager.Instance.RegistCB("user-service-*", HandleGroupMessage, "user-service-1");
 
 // 注册广播处理器
-MessageHubManager.Instance.RegistCB("broadcast-event", HandleBroadcast, "system-monitor");
+MessageHubManager.Instance.RegistCB("*", HandleBroadcast, "system-monitor");
 
 MessageDataItem? HandleUserRequest(MessageDataItem? message)
 {
     var userId = message?.GetData<dynamic>()?.userId;
     Console.WriteLine($"处理用户请求: {userId}");
     return new MessageDataItem { Data = new { success = true, user = new { id = userId, name = "张三" } } };
+}
+
+MessageDataItem? HandleGroupMessage(MessageDataItem? message)
+{
+    var keys = message?.GetData<dynamic>()?.keys;
+    Console.WriteLine($"处理组播消息: {string.Join(", ", keys)}");
+    return new MessageDataItem { Data = new { success = true, keysProcessed = keys } };
+}
+
+MessageDataItem? HandleBroadcast(MessageDataItem? message)
+{
+    var action = message?.GetData<dynamic>()?.action;
+    Console.WriteLine($"处理广播消息: {action}");
+    return new MessageDataItem { Data = new { success = true, actionReceived = action } };
 }
 ```
 
@@ -109,9 +121,9 @@ MessageDataItem? HandleUserRequest(MessageDataItem? message)
 
 | 模式 | 地址格式 | 示例 |
 |---|---|---|
-| 单播 | `agent:{agentId}:{messageType}` | `agent:user-service-1:getUser` |
-| 组播 | `group:{groupName}:{messageType}` | `group:user-service:cache-invalidate` |
-| 广播 | `{messageType}` | `system-shutdown` |
+| 单播 | `具体代理ID` | `user-service-1` |
+| 组播 | `代理组通配符` | `user-service-*` |
+| 广播 | `*` | `*` |
 
 ### 消息生命周期
 
@@ -135,32 +147,6 @@ graph TD
 
 ## 🔍 高级功能
 
-### 消息确认机制
-```csharp
-// 发送并等待确认
-var response = await MessageHubManager.Instance.TriggerAsync("agent:user-service-1:process-order", orderData);
-if (response?.GetData<dynamic>()?.acknowledged == true)
-{
-    Console.WriteLine("订单处理已确认");
-}
-```
-
-### 错误处理与重试
-```csharp
-// 忽略异常继续处理
-var results = MessageHubManager.Instance.Trigger("risky-operation", data, ignoreEx: true);
-
-// 捕获异常进行重试
-try
-{
-    var result = MessageHubManager.Instance.Trigger("critical-operation", data, ignoreEx: false);
-}
-catch (Exception ex)
-{
-    // 重试逻辑
-}
-```
-
 ### 消息追踪
 ```csharp
 // 启用详细日志
@@ -169,7 +155,7 @@ MessageHubManager.LogDetailInfo = true;
 // 消息包含调试信息
 var message = new MessageDataItem
 {
-    FromFile = "OrderService.cs",
+    Source = "OrderService.cs",
     Line = 42,
     Data = orderData
 };
@@ -180,8 +166,8 @@ var message = new MessageDataItem
 ### 1. 代理命名规范
 ```csharp
 // 推荐格式: {服务类型}-{实例编号}
-MessageHubManager.Instance.RegisterAgent("user-service-prod-1", "user-handler-1");
-MessageHubManager.Instance.RegisterAgent("order-service-prod-2", "order-handler-2");
+MessageHubManager.Instance.RegistCB("user-service-prod-1", HandleUserRequest, "user-service-1");
+MessageHubManager.Instance.RegistCB("order-service-prod-2", HandleOrderRequest, "order-service-2");
 ```
 
 ### 2. 消息版本控制
@@ -195,14 +181,14 @@ message.Header["schema"] = "user-v1";
 ```csharp
 // 异步调用超时控制
 var cts = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-var task = MessageHubManager.Instance.TriggerAsync("agent:service:operation", data);
+var task = MessageHubManager.Instance.TriggerAsync("user-request", message);
 var result = await task.WaitAsync(cts.Token);
 ```
 
 ### 4. 负载均衡
 ```csharp
 // 组播实现负载均衡
-MessageHubManager.Instance.Trigger("group:user-service:process-request", requestData);
+MessageHubManager.Instance.Trigger("user-service-*", requestData);
 ```
 
 ## 🔄 迁移指南
@@ -213,8 +199,10 @@ MessageHubManager.Instance.Trigger("group:user-service:process-request", request
 |---|---|---|
 | `RegistCB("event", handler, "id")` | 保持不变 | 100%兼容 |
 | `Trigger("event", data)` | 保持不变 | 100%兼容 |
-| 新增代理注册 | `RegisterAgent("agent-id", "callback-id")` | 新增功能 |
-| 新增单播 | 设置`TargetAgentId`和`RoutingMode` | 新增功能 |
+| 新增代理注册 | `RegistCB("event", handler, "id")` | 保持不变 |
+| 新增单播 | 设置`Source`和`To`属性 | 新增功能 |
+| 新增组播 | 设置`Source`和`To`属性为通配符 | 新增功能 |
+| 新增广播 | 设置`To`属性为`*` | 新增功能 |
 
 ## 🧪 测试用例
 
@@ -227,22 +215,25 @@ public void Test_A2A_Unicast()
     var hub = MessageHubManager.Instance;
     var received = false;
     
-    hub.RegisterAgent("test-agent", "test-callback");
-    hub.RegistCB("agent:test-agent:test-message", 
-        msg => { received = true; return msg; }, 
-        "test-callback");
+    hub.RegistCB("test-request", HandleTestRequest, "test-service-1");
     
     // Act
     var message = new MessageDataItem
     {
-        TargetAgentId = "test-agent",
-        RoutingMode = MessageRoutingModeEnum.Unicast,
+        Source = "test-source",
+        To = "test-service-1",
         Data = "test data"
     };
-    hub.Trigger("test-message", message);
+    hub.Trigger("test-request", message);
     
     // Assert
     Assert.IsTrue(received);
+}
+
+MessageDataItem? HandleTestRequest(MessageDataItem? message)
+{
+    received = true;
+    return message;
 }
 ```
 

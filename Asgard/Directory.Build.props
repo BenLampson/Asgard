@@ -1,0 +1,32 @@
+<!-- Directory.Build.props -->
+<Project>
+	<PropertyGroup>
+		<!-- 公共框架和语言设置 -->
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<!-- 公共包元数据 -->
+		<Version>3.0.0</Version>
+		<Authors>BenLampson</Authors>
+		<Company>BenLampson</Company>
+		<Product>Asgard</Product>
+		<Copyright>Copyright 2025 BenLampson</Copyright>
+		<PackageProjectUrl>https://github.com/BenLampson/Asgard</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/BenLampson/Asgard</RepositoryUrl>
+		<RepositoryType>GitHub</RepositoryType>
+		<PackageTags>.netcore;MuDou;AI;Asgard;Container</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageIcon>logo.png</PackageIcon>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+	</PropertyGroup>
+
+
+	<ItemGroup>
+		<None Include="$(MSBuildThisFileDirectory)logo.png"
+			  Pack="true"
+			  PackagePath=""
+			  Visible="false" />
+	</ItemGroup>
+</Project>
