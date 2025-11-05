@@ -15,7 +15,7 @@ namespace Asgard.ConfigCenter.HostExtendsModules
         /// <summary>
         /// 从默认文件中加载节点配置,默认是应用程序目录下的appsettings.json,如果没有则会生成一个范本文件
         /// </summary>
-        /// <param name="yggdrasil"></param>
+        /// <param name="builder"></param>
         /// <returns></returns>
         public static YggdrasilBuilder UseNodeConfigFromFile(this YggdrasilBuilder builder)
         {

@@ -1,13 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<IsPackable>true</IsPackable>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Asgard.Tools\Asgard.Tools.csproj" />
-  </ItemGroup>
+		<Product>Asgard</Product>
+		<Title>Asgard Framework</Title>
+		<PackageId>Asgard.Extends.Json</PackageId>
+		<Description>Asgard.Extends.Json 是 Asgard 框架的一部分，提供了一些常用的 `System.Text.Json` 扩展功能，包括自定义的转换器（Converters）。</Description>
 
+
+	</PropertyGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Asgard.Tools\Asgard.Tools.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- 项目专属 README -->
+		<None Include="README.md" Pack="True" PackagePath="\" />
+	</ItemGroup>
 </Project>

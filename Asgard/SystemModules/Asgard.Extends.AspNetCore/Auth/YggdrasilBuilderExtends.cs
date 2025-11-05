@@ -7,6 +7,11 @@ namespace Asgard.Extends.AspNetCore.Auth
     /// </summary>
     public static class YggdrasilBuilderExtends
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="builder"></param>
+        /// <returns></returns>
         public static YggdrasilBuilder UseAuthModule(this YggdrasilBuilder builder)
         {
             return builder.SetAuthManager((loggerProvider, nodeConfig) => new AuthManager(nodeConfig, loggerProvider));
