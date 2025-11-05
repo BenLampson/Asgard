@@ -1,12 +1,9 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
 # Controls when the workflow will run
 on:
-  workflow_dispatch:
-
-      #- run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+  workflow_dispatch: 
+  
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   publish:
@@ -14,7 +11,11 @@ jobs:
     strategy:
       matrix:
         project:
-          - Asgard/SystemModules/Asgard.Hoenir/Asgard.Hoenir.csproj          
+          - Asgard/SystemModules/Asgard.Hoenir/Asgard.Hoenir.csproj 
+          - Asgard/Asgard.Abstract/Asgard.Abstract.csproj     
+          - Asgard/Asgard.Tools/Asgard.Tools.csproj         
+          - Asgard/Asgard.Extends.Json/Asgard.Extends.Json.csproj       
+          - Asgard/Asgard.IDGen/Asgard.IDGen.csproj       
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
