@@ -1,0 +1,39 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  workflow_dispatch:
+
+      #- run: dotnet nuget push ./nupkg/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project:
+          - src/Asgard/SystemModules/Asgard.Hoenir/Asgard.Hoenir.csproj          
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+      - run: dotnet restore
+      - run: dotnet build ${{ matrix.project }} --configuration Release --no-restore
+      - run: dotnet pack ${{ matrix.project }} --configuration Release --no-build --output ./nupkg
+      - name: 🧪 Test Output - List Generated .nupkg Files
+        run: |
+          echo "📦 Generated NuGet packages:"
+          ls -l ./nupkg/
+          echo ""
+          echo "✅ Would push the following packages (dry run):"
+          for pkg in ./nupkg/*.nupkg; do
+            if [ -f "$pkg" ]; then
+              echo "  ➤ $pkg"
+            else
+              echo "  ❌ No .nupkg files found!"
+              exit 1
+            fi
+          done
