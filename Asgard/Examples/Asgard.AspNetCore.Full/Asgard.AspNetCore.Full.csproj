@@ -12,7 +12,18 @@
   </ItemGroup>
 
   <ItemGroup> 
+    <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" /> 
+    <ProjectReference Include="..\..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" /> 
+    <ProjectReference Include="..\..\Asgard.Extends\Asgard.Extends.csproj" /> 
+    <ProjectReference Include="..\..\Asgard.IDGen\Asgard.IDGen.csproj" /> 
+    <ProjectReference Include="..\..\Asgard.Job\Asgard.Job.csproj" /> 
+    <ProjectReference Include="..\..\Asgard.Tools\Asgard.Tools.csproj" /> 
     <ProjectReference Include="..\..\Hosts\Asgard.Hosts.AspNetCore\Asgard.Hosts.AspNetCore.csproj" /> 
+    <ProjectReference Include="..\..\SystemModules\Asgard.Caches.Redis\Asgard.Caches.Redis.csproj" /> 
+    <ProjectReference Include="..\..\SystemModules\Asgard.ConfigCenter\Asgard.ConfigCenter.csproj" /> 
+    <ProjectReference Include="..\..\SystemModules\Asgard.DataBaseManager.FreeSql\Asgard.DataBaseManager.FreeSql.csproj" /> 
+    <ProjectReference Include="..\..\SystemModules\Asgard.Logger.FreeSqlProvider\Asgard.Logger.FreeSqlProvider.csproj" /> 
+    <ProjectReference Include="..\..\SystemModules\Asgard.MQ.RabbitMQ\Asgard.MQ.RabbitMQ.csproj" /> 
   </ItemGroup>
 
 </Project>

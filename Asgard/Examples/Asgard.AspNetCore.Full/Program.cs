@@ -2,7 +2,6 @@
 using Asgard.Abstract.Models.AsgardConfig;
 using Asgard.Caches.Redis;
 using Asgard.DataBaseManager.FreeSql;
-using Asgard.Extends.AspNetCore.Auth;
 using Asgard.Hosts.AspNetCore;
 using Asgard.Logger.FreeSqlProvider;
 using Asgard.Tools;
@@ -46,7 +45,6 @@ var aspHost = new YggdrasilBuilder(nodeConfig)
     .UseMemCache()
     .UseFreeSqlLogger()
     .UseFreeSqlDBManager()
-    .UseAuthModule()
     .BuildAspNetCoreHost();
 
 await aspHost.LoadPluginFromAllSource().StartAsync();
