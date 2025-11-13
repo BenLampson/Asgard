@@ -14,6 +14,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Asgard.Extends.AspNetCore.Auth
 {
+    /// <summary>
+    /// 提供基于 JWT 的认证管理功能。
+    /// </summary>
     public class AuthManager : AbsAuthManager
     {
         private readonly JwtSecurityTokenHandler _hander = new();
@@ -21,11 +24,10 @@ namespace Asgard.Extends.AspNetCore.Auth
         private readonly SigningCredentials _signingCredentials;
 
         /// <summary>
-        /// 构造函数
+        /// 初始化 AuthManager 实例。
         /// </summary>
-        /// <param name="jwtKey">密钥RSA512</param>
-        /// <param name="issuer">颁发人</param>
-        /// <param name="audience">听众</param> 
+        /// <param name="config">节点配置，包含认证相关参数。</param>
+        /// <param name="loggerProvider">日志提供者，可选。</param>
         public AuthManager(NodeConfig config, AbsLoggerProvider? loggerProvider) : base(config, loggerProvider)
         {
             IdentityModelEventSource.ShowPII = true;

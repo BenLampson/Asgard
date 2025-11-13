@@ -1,7 +1,7 @@
 ﻿namespace Asgard.Extends.AspNetCore.JSCreator
 {
     /// <summary>
-    /// 映射TS与C#的类型
+    /// TypeScript 与 C# 类型映射工具
     /// </summary>
     public class TypescriptAndCSharpTypeMap
     {
@@ -28,9 +28,16 @@
             {"decimal[]","Array<number>"},
             {"datetime[]","Array<string>"}
         };
-
+        /// <summary>
+        /// 获取类型字符串及是否为数组
+        /// </summary>
+        /// <param name="rawTargetType">原始目标类型</param>
+        /// <param name="modelNamespace">模型命名空间</param>
+        /// <param name="res">类型字符串</param>
+        /// <param name="isArray">是否为数组</param>
         public static void GetTypeString(Type rawTargetType, string modelNamespace, out string res, out bool isArray)
         {
+            _ = modelNamespace;
             var targetType = rawTargetType;
             if (rawTargetType.IsGenericType)
             {

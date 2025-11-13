@@ -16,6 +16,11 @@ namespace Asgard.AspNetCore.Full.Controllers
     [ApiExplorerSettings(GroupName = "Asgard.AspNetCore.Full")]
     public class HelloWorldController : APIControllerBase
     {
+        /// <summary>
+        /// 初始化 HelloWorldController 实例。
+        /// </summary>
+        /// <param name="context">Asgard 上下文</param>
+        /// <param name="logger">日志提供者</param>
         public HelloWorldController(AsgardContext context, AbsLoggerProvider logger) : base(context, logger)
         {
         }

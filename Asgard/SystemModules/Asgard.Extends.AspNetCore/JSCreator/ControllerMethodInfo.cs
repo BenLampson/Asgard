@@ -79,11 +79,11 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         /// <summary>
         /// 加载这个函数的信息
         /// </summary>
-        /// <param name="method"></param>
-        /// <param name="noticXml"></param>
-        /// <param name="modelNamespace"></param>
-        /// <param name="allModel"></param>
-        /// <returns></returns>
+        /// <param name="method">方法信息</param>
+        /// <param name="noticXml">注释 XML 文档</param>
+        /// <param name="modelNamespace">模型命名空间</param>
+        /// <param name="allModel">所有模型类型集合</param>
+        /// <returns>控制器方法信息</returns>
         public ControllerMethodInfo LoadInfo(MethodInfo method, XDocument noticXml, string modelNamespace, List<ControllerModelTypeInfo> allModel)
         {
 
@@ -122,9 +122,9 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         /// <summary>
         /// 处理返回值
         /// </summary>
-        /// <param name="modelNamespace"></param>
-        /// <param name="noticXml"></param>
-        /// <param name="allModel"></param> 
+        /// <param name="modelNamespace">模型命名空间</param>
+        /// <param name="noticXml">注释 XML 文档</param>
+        /// <param name="allModel">所有模型类型集合</param>
         private void HandleResultType(string modelNamespace, XDocument noticXml, List<ControllerModelTypeInfo> allModel)
         {
             if (SourceMethodTypeInfo is null || SourceMethodTypeInfo.ReturnType == typeof(void))
@@ -182,10 +182,8 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         /// <summary>
         /// 处理参数
         /// </summary>
-        /// <param name="modelNamespace"></param>
-        /// <param name="doc"></param>
-        /// <param name="allModel"></param>
-        /// <param name="assName"></param>
+        /// <param name="doc">注释 XML 文档</param>
+        /// <param name="allModel">所有模型类型集合</param>
         private void HandleParameterType(XDocument doc, List<ControllerModelTypeInfo> allModel)
         {
             if (SourceMethodTypeInfo is null)
@@ -227,6 +225,11 @@ namespace Asgard.Extends.AspNetCore.JSCreator
             }
         }
 
+        /// <summary>
+        /// 判断类型是否为系统类型
+        /// </summary>
+        /// <param name="type">类型</param>
+        /// <returns>是否为系统类型</returns>
         public static bool IsSystemType(Type type)
         {
             TypeInfo typeInfo = type.GetTypeInfo();

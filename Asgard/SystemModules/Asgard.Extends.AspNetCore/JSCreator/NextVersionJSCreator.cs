@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Asgard.Extends.AspNetCore.JSCreator
 {
+    /// <summary>
+    /// TypeScript API 生成器
+    /// </summary>
     public class TSApiCreator
     {
         /// <summary>
@@ -44,6 +47,13 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         private List<ControllerInfo> AllController { get; set; } = new();
 
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="folder">源文件夹</param>
+        /// <param name="entranceName">入口名称</param>
+        /// <param name="ass">程序集</param>
+        /// <param name="resultFolder">结果文件夹</param>
         public TSApiCreator(string folder, string entranceName, Assembly ass, string resultFolder)
         {
             _folder = resultFolder;
@@ -59,7 +69,7 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         }
 
         /// <summary>
-        /// 生成
+        /// 加载 DLL 并检索所有控制器
         /// </summary>
         public void LoadDll()
         {
@@ -87,7 +97,7 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         }
 
         /// <summary>
-        /// 构造TS脚本
+        /// 生成 TypeScript 脚本
         /// </summary>
         public void CreateScript()
         {

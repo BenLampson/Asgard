@@ -10,9 +10,8 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 构建Asp.net Core主机
         /// </summary>
-        /// <param name="builder"></param>
-        /// <param name="onWebAppbuild"></param>
-        /// <returns></returns>
+        /// <param name="builder">世界之树建造者</param>
+        /// <returns>世界之树实例</returns>
         public static Yggdrasil BuildAspNetCoreHost(this YggdrasilBuilder builder)
         {
             var loggerProvider = builder.LoggerProvider != null ? builder.LoggerProvider(builder.NodeConfig!) : null;

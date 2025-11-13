@@ -1,15 +1,10 @@
 ﻿namespace Asgard.Extends.AspNetCore.JSCreator
 {
+    /// <summary>
+    /// 临时代码信息
+    /// </summary>
     public class TempCodeInfo
     {
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public string ControllerCode { get; set; } = "";
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public string ModelCode { get; set; } = "";
         /// <summary>
         /// 全代码
         /// </summary>
