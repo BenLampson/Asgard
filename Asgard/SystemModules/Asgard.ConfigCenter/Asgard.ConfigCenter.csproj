@@ -1,9 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	  <OutputType>Library</OutputType>
+	  <IsPackable>true</IsPackable>
+
+	  <Product>Asgard</Product>
+	  <Title>Asgard Framework</Title>
+	  <PackageId>Asgard.Abstract</PackageId>
+	  <Description>Asgard.Abstract 是阿斯加德框架（Asgard Framework）中的一个核心抽象层，主要用于定义系统的基础接口和模型，为整个框架的扩展和实现提供标准化的基础。该项目采用 .NET 8，设计目标是实现高可扩展性、高可维护性和模块化的企业级应用开发。</Description>
+
   </PropertyGroup>
 
   <ItemGroup>

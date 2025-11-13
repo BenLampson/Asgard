@@ -14,6 +14,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
+		<ProjectReference Include="..\..\Asgard.Tools\Asgard.Tools.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,9 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	  <OutputType>Library</OutputType>
+	  <IsPackable>true</IsPackable>
+
+	  <Product>Asgard</Product>
+	  <Title>Asgard Framework</Title>
+	  <PackageId>Asgard.IDGen</PackageId>
+	  <Description>Asgard.MQ.RabbitMQ 提供基于 RabbitMQ 的消息队列实现，支持发布/订阅、路由、持久化队列、消息确认与事务等特性，适用于分布式消息传递与异步任务处理场景。兼容 .NET 8 并与 Asgard 框架的消息抽象接口无缝集成。</Description>
+
   </PropertyGroup>
 
   <ItemGroup>
