@@ -7,7 +7,7 @@
 
 	  <Product>Asgard</Product>
 	  <Title>Asgard Framework</Title>
-	  <PackageId>Asgard.Abstract</PackageId>
+	  <PackageId>Asgard.Hosts.AspNetCore</PackageId>
 	  <Description>Asgard.Hosts.AspNetCore 提供基于 ASP.NET Core 的宿主层实现，负责应用启动与依赖注入引导、通用中间件与管道配置、端点路由、gRPC 与 Swagger 集成，以及与 Asgard 框架模块（日志、配置、扩展等）的托管适配。兼容 .NET 8，面向可扩展的微服务与 Web 应用托管。</Description>
 
   </PropertyGroup>
