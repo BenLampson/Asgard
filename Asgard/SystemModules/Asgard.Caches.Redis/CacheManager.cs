@@ -14,7 +14,7 @@ using Microsoft.Extensions.Caching.Redis;
 namespace Asgard.Caches.Redis
 {
     /// <summary>
-    /// 缓存管理对象
+    /// 缓存管理对象，支持 Redis 和内存缓存。
     /// </summary>
     public class CacheManager : AbsCache
     {
@@ -248,6 +248,12 @@ namespace Asgard.Caches.Redis
             }
         }
 
+        /// <summary>
+        /// 获取对象的序列化字符串表示。
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="data">对象实例</param>
+        /// <returns>序列化后的字符串</returns>
         protected override string GetInstanceString<T>(T data)
         {
             return JsonSerializer.Serialize(data, CommonSerializerOptions.CamelCaseChineseNameCaseInsensitive);

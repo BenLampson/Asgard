@@ -105,6 +105,9 @@ namespace Asgard.Logger.FreeSqlProvider.LogRealizations
             }
         }
 
+        /// <summary>
+        /// 释放 FileLog 使用的资源。
+        /// </summary>
         public void Dispose()
         {
             try
@@ -116,6 +119,7 @@ namespace Asgard.Logger.FreeSqlProvider.LogRealizations
             {
                 Console.WriteLine(ex);
             }
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -13,9 +13,9 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         /// <summary>
         /// 增加一个返回值的类型
         /// </summary>
-        /// <param name="list"></param>
-        /// <param name="target"></param>
-        /// <param name="doc"></param>
+        /// <param name="list">模型类型集合</param>
+        /// <param name="target">目标类型</param>
+        /// <param name="doc">注释 XML 文档</param>
         public static void AddNewType(this List<ControllerModelTypeInfo> list, Type target, XDocument doc)
         {
             if (list.Any(item => item.RawType is null || item.RawType.FullName == target.FullName)) //如果有,直接忽略
@@ -46,10 +46,10 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         /// <summary>
         /// 处理枚举类型
         /// </summary>
-        /// <param name="list"></param>
-        /// <param name="target"></param>
-        /// <param name="doc"></param>
-        /// <param name="sourceType"></param>
+        /// <param name="_">模型类型集合</param>
+        /// <param name="target">枚举类型</param>
+        /// <param name="__">注释 XML 文档</param>
+        /// <param name="sourceType">模型类型信息</param>
         private static void HandleEnumType(this List<ControllerModelTypeInfo> _, Type target, XDocument __, ControllerModelTypeInfo sourceType)
         {
             foreach (var item in Enum.GetNames(target))
@@ -62,9 +62,10 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         /// <summary>
         /// 处理字段
         /// </summary>
-        /// <param name="targetType"></param>
-        /// <param name="list"></param>
-        /// <param name="doc"></param>
+        /// <param name="list">模型类型集合</param>
+        /// <param name="target">目标类型</param>
+        /// <param name="doc">注释 XML 文档</param>
+        /// <param name="sourceType">模型类型信息</param>
         private static void HandleProperties(this List<ControllerModelTypeInfo> list, Type target, XDocument doc, ControllerModelTypeInfo sourceType)
         {
             var allPropertyTypes = target.GetProperties();
@@ -137,9 +138,9 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         /// <summary>
         /// 找Class的注释
         /// </summary>
-        /// <param name="method"></param>
-        /// <param name="notes"></param>
-        /// <returns></returns>
+        /// <param name="noticXml">注释 XML 文档</param>
+        /// <param name="targetType">目标类型</param>
+        /// <returns>类的注释</returns>
         public static string GetClassNotice(this XDocument noticXml, Type targetType)
         {
 
@@ -158,6 +159,8 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         /// <summary>
         /// 获取类型的完整名称（支持嵌套类型）。
         /// </summary>
+        /// <param name="type">类型</param>
+        /// <returns>完整类型名称</returns>
         private static string GetFullTypeName(Type type)
         {
             if (type.DeclaringType == null)
@@ -173,7 +176,7 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         /// 获取指定属性的注释。
         /// </summary>
         /// <param name="property">目标属性</param>
-        /// <param name="xmlFilePath">XML 注释文件路径</param>
+        /// <param name="doc">注释 XML 文档</param>
         /// <returns>属性的注释内容</returns>
         public static string GetPropertySummary(PropertyInfo property, XDocument doc)
         {
@@ -199,9 +202,11 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         }
 
         /// <summary>
-        /// 注释,控制器操作的
-        /// </summary> 
-        /// <returns></returns>
+        /// 获取方法的注释
+        /// </summary>
+        /// <param name="noticXml">注释 XML 文档</param>
+        /// <param name="targetType">目标方法</param>
+        /// <returns>方法的注释</returns>
         public static string GetMethodNotice(this XDocument noticXml, MethodInfo targetType)
         {
             if (targetType.DeclaringType is null)
@@ -224,6 +229,11 @@ namespace Asgard.Extends.AspNetCore.JSCreator
         }
 
 
+        /// <summary>
+        /// 首字母小写转换
+        /// </summary>
+        /// <param name="instance">字符串实例</param>
+        /// <returns>转换后的字符串</returns>
         public static string ToFirstLowCode(this string instance)
         {
             var res = "";
