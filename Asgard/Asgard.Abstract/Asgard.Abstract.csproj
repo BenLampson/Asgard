@@ -13,10 +13,6 @@
 
 	</PropertyGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" />
-		<ProjectReference Include="..\Asgard.Tools\Asgard.Tools.csproj" />
-	</ItemGroup>
 
 	<ItemGroup>
 		<!-- 项目专属 README -->

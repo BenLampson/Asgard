@@ -1,9 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
+	  <OutputType>Library</OutputType>
+	  <IsPackable>true</IsPackable>
+
+	  <Product>Asgard</Product>
+	  <Title>Asgard Framework</Title>
+	  <PackageId>Asgard.IDGen</PackageId>
+	  <Description>Asgard.Job 提供任务调度与后台作业执行能力，支持定时任务、延迟任务、分布式调度与任务持久化，便于在微服务与分布式场景中可靠执行异步作业。兼容 .NET 8 并与 Asgard 框架的其他模块集成。</Description>
+
   </PropertyGroup>
 
   <ItemGroup>

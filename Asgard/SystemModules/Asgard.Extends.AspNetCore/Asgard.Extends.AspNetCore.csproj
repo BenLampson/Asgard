@@ -15,6 +15,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
+    <ProjectReference Include="..\..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" />
+    <ProjectReference Include="..\..\Asgard.Tools\Asgard.Tools.csproj" />
   </ItemGroup>
 
 </Project>

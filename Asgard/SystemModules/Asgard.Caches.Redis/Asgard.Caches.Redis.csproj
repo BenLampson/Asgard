@@ -1,18 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<IsPackable>true</IsPackable>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
-    <ProjectReference Include="..\..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" />
-  </ItemGroup>
+		<Product>Asgard</Product>
+		<Title>Asgard.Caches.Redis</Title>
+		<PackageId>Asgard.Caches.Redis</PackageId>
+		<Description>Asgard.Caches.Redis 为阿斯加德框架提供基于 CSRedis 的缓存实现，针对 .NET 8 进行构建与兼容性优化。</Description>
+
+	</PropertyGroup>
+
 	<ItemGroup>
-		<PackageReference Include="Caching.CSRedis" Version="3.8.800" /> 
+		<ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
+		<ProjectReference Include="..\..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Caching.CSRedis" Version="3.8.800" />
 		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.10" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.10" />  
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.10" />
 	</ItemGroup>
 </Project>
