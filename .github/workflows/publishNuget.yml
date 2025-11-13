@@ -11,11 +11,19 @@ jobs:
     strategy:
       matrix:
         project:
-          - Asgard/SystemModules/Asgard.Hoenir/Asgard.Hoenir.csproj 
-          - Asgard/Asgard.Abstract/Asgard.Abstract.csproj     
-          - Asgard/Asgard.Tools/Asgard.Tools.csproj         
-          - Asgard/Asgard.Extends.Json/Asgard.Extends.Json.csproj       
-          - Asgard/Asgard.IDGen/Asgard.IDGen.csproj       
+          - Asgard/Asgard.Job/Asgard.Job.csproj   
+          - Asgard/Asgard.IDGen/Asgard.IDGen.csproj    
+          - Asgard/Asgard.Tools/Asgard.Tools.csproj       
+          - Asgard/Asgard.Abstract/Asgard.Abstract.csproj   
+          - Asgard/Asgard.Extends.Json/Asgard.Extends.Json.csproj      
+          - Asgard/Hosts/Asgard.Hosts.AspNetCore/Asgard.Hosts.AspNetCore.csproj 
+          - Asgard/SystemModules/Asgard.Hoenir/Asgard.Hoenir.csproj     
+          - Asgard/SystemModules/Asgard.Caches.Redis/Asgard.Caches.Redis.csproj 
+          - Asgard/SystemModules/Asgard.ConfigCenter/Asgard.ConfigCenter.csproj 
+          - Asgard/SystemModules/Asgard.DataBaseManager.FreeSql/Asgard.DataBaseManager.FreeSql.csproj
+          - Asgard/SystemModules/Asgard.Extends.AspNetCore/Asgard.Extends.AspNetCore.csproj 
+          - Asgard/SystemModules/Asgard.Logger.FreeSqlProvider/Asgard.Logger.FreeSqlProvider.csproj 
+          - Asgard/SystemModules/Asgard.MQ.RabbitMQ/Asgard.MQ.RabbitMQ.csproj 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
