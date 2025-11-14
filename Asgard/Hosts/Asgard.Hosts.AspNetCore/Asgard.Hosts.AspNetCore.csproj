@@ -1,28 +1,32 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-	  <ImplicitUsings>enable</ImplicitUsings>
-	  <Nullable>enable</Nullable>
-	  <OutputType>Library</OutputType>
+	<PropertyGroup>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<OutputType>Library</OutputType>
 
-	  <Product>Asgard</Product>
-	  <Title>Asgard Framework</Title>
-	  <PackageId>Asgard.Hosts.AspNetCore</PackageId>
-	  <Description>Asgard.Hosts.AspNetCore 提供基于 ASP.NET Core 的宿主层实现，负责应用启动与依赖注入引导、通用中间件与管道配置、端点路由、gRPC 与 Swagger 集成，以及与 Asgard 框架模块（日志、配置、扩展等）的托管适配。兼容 .NET 8，面向可扩展的微服务与 Web 应用托管。</Description>
+		<Product>Asgard</Product>
+		<Title>Asgard Framework</Title>
+		<PackageId>Asgard.Hosts.AspNetCore</PackageId>
+		<Description>Asgard.Hosts.AspNetCore 提供基于 ASP.NET Core 的宿主层实现，负责应用启动与依赖注入引导、通用中间件与管道配置、端点路由、gRPC 与 Swagger 集成，以及与 Asgard 框架模块（日志、配置、扩展等）的托管适配。兼容 .NET 8，面向可扩展的微服务与 Web 应用托管。</Description>
 
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
-    <ProjectReference Include="..\..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" />
-    <ProjectReference Include="..\..\Asgard.Extends\Asgard.Extends.csproj" />
-    <ProjectReference Include="..\..\Asgard.Tools\Asgard.Tools.csproj" />
-    <ProjectReference Include="..\..\SystemModules\Asgard.Extends.AspNetCore\Asgard.Extends.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\SystemModules\Asgard.Logger.FreeSqlProvider\Asgard.Logger.FreeSqlProvider.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
+		<ProjectReference Include="..\..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" />
+		<ProjectReference Include="..\..\Asgard.Extends\Asgard.Extends.csproj" />
+		<ProjectReference Include="..\..\Asgard.Tools\Asgard.Tools.csproj" />
+		<ProjectReference Include="..\..\SystemModules\Asgard.Extends.AspNetCore\Asgard.Extends.AspNetCore.csproj" />
+		<ProjectReference Include="..\..\SystemModules\Asgard.Logger.FreeSqlProvider\Asgard.Logger.FreeSqlProvider.csproj" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Grpc.AspNetCore.Server" Version="2.71.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
+	</ItemGroup>
+	<ItemGroup>
+		<!-- 项目专属 README -->
+		<None Include="README.md" Pack="True" PackagePath="\" />
 	</ItemGroup>
 </Project>

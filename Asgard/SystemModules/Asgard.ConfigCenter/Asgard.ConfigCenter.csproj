@@ -1,21 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	  <OutputType>Library</OutputType>
-	  <IsPackable>true</IsPackable>
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+		<IsPackable>true</IsPackable>
 
-	  <Product>Asgard</Product>
-	  <Title>Asgard Framework</Title>
-	  <PackageId>Asgard.ConfigCenter</PackageId>
-	  <Description>Asgard.ConfigCenter 是阿斯加德框架（Asgard Framework）中的一个模块，负责配置中心相关功能的实现与管理。</Description>
+		<Product>Asgard</Product>
+		<Title>Asgard Framework</Title>
+		<PackageId>Asgard.ConfigCenter</PackageId>
+		<Description>Asgard.ConfigCenter 是阿斯加德框架（Asgard Framework）中的一个模块，负责配置中心相关功能的实现与管理。</Description>
 
-  </PropertyGroup>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
-    <ProjectReference Include="..\..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" />
-    <ProjectReference Include="..\..\Asgard.IDGen\Asgard.IDGen.csproj" />
-    <ProjectReference Include="..\Asgard.DataBaseManager.FreeSql\Asgard.DataBaseManager.FreeSql.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
+		<ProjectReference Include="..\..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" />
+		<ProjectReference Include="..\..\Asgard.IDGen\Asgard.IDGen.csproj" />
+		<ProjectReference Include="..\Asgard.DataBaseManager.FreeSql\Asgard.DataBaseManager.FreeSql.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+		<!-- 项目专属 README -->
+		<None Include="README.md" Pack="True" PackagePath="\" />
+	</ItemGroup>
 
 </Project>

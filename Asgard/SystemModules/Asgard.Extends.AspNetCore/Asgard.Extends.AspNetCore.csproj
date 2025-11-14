@@ -19,4 +19,8 @@
     <ProjectReference Include="..\..\Asgard.Tools\Asgard.Tools.csproj" />
   </ItemGroup>
 
+	<ItemGroup>
+		<!-- 项目专属 README -->
+		<None Include="README.md" Pack="True" PackagePath="\" />
+	</ItemGroup>
 </Project>
