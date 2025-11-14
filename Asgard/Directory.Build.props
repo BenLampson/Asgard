@@ -8,7 +8,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- 公共包元数据 -->
-		<Version>3.0.0</Version>
+		<Version>3.0.1</Version>
 		<Authors>BenLampson</Authors>
 		<Company>BenLampson</Company>
 		<Product>Asgard</Product>

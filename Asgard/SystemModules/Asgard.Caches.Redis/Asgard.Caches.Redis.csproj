@@ -16,9 +16,9 @@
 		<ProjectReference Include="..\..\Asgard.Extends.Json\Asgard.Extends.Json.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Caching.CSRedis" Version="3.8.800" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.10" />
-		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="9.0.10" />
+		<PackageReference Include="Caching.CSRedis" Version="3.8.807" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="10.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="10.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
