@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+	<ItemGroup>
+		<!-- 项目专属 README -->
+		<None Include="README.md" Pack="True" PackagePath="\" />
+	</ItemGroup>
 </Project>
