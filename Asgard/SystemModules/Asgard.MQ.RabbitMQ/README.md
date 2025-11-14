@@ -1,21 +1,9 @@
 # Asgard.MQ.RabbitMQ
 
-本包用于Asgard框架的RabbitMQ消息队列模块，支持高效的消息分发与处理。
+本项目为 Asgard 框架的 RabbitMQ 消息队列模块，支持分布式消息通信，提升系统解耦与扩展性。
 
-## 使用方法
+## 基本使用
 
-1. 在你的项目中引用本包。
-2. 配置RabbitMQ连接参数（如主机、端口、用户名、密码等）。
-3. 使用`RabbitMQManager`类进行消息的发送与接收。
-
-示例代码：
-
-```csharp
-var manager = new RabbitMQManager("amqp://user:password@localhost:5672/");
-manager.Publish("queueName", "消息内容");
-manager.Subscribe("queueName", msg => {
-    Console.WriteLine($"收到消息: {msg}");
-});
-```
-
-更多详细用法请参考源码或相关文档。
+1. 引用本项目的 DLL 到你的主工程。
+2. 配置 RabbitMQ 连接参数。
+3. 按需调用消息发送与接收 API。
