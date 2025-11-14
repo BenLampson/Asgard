@@ -10,7 +10,7 @@ using Asgard.Plugin;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 using Swashbuckle.AspNetCore.SwaggerUI;
 
@@ -53,7 +53,7 @@ namespace Asgard.Hosts.AspNetCore
         /// </summary>
         /// <param name="builder"></param>
         /// <param name="webApiConfig"></param>
-        private void InitHost(WebApplicationBuilder builder, WebApiConfig webApiConfig)
+        private static void InitHost(WebApplicationBuilder builder, WebApiConfig webApiConfig)
         {
             _ = builder.WebHost.UseKestrel(option =>
             {
@@ -98,7 +98,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <param name="builder"></param>
         /// <param name="plugin"></param>
         /// <param name="webapiConfig"></param>
-        private void InitServices(WebApplicationBuilder builder, PluginLoaderManager? plugin, WebApiConfig webapiConfig)
+        private static void InitServices(WebApplicationBuilder builder, PluginLoaderManager? plugin, WebApiConfig webapiConfig)
         {
             _ = builder.Services.AddControllers()
                 .ConfigureApplicationPartManager(action =>
@@ -148,19 +148,14 @@ namespace Asgard.Hosts.AspNetCore
                         BearerFormat = "JWT",
                         Scheme = "bearer"
                     });
-                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    c.AddSecurityDefinition("Bearer_Grpc", new OpenApiSecurityScheme()
                     {
-                        {
-                            new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference
-                                {
-                                    Type=ReferenceType.SecurityScheme,
-                                    Id="Bearer"
-                                }
-                            },
-                            Array.Empty<string>()
-                        }
+                        In = ParameterLocation.Header,
+                        Description = "Please enter token for grpc",
+                        Name = "Authorization",
+                        Type = SecuritySchemeType.Http,
+                        BearerFormat = "JWT",
+                        Scheme = "bearer"
                     });
                     c.SwaggerDoc("Asgard", new OpenApiInfo()
                     {
@@ -268,7 +263,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 初始化静态文件服务支持
         /// </summary>
-        private void InitStaticFile(WebApplication app, WebApplicationBuilder builder, WebApiConfig webapiConfig)
+        private static void InitStaticFile(WebApplication app, WebApplicationBuilder builder, WebApiConfig webapiConfig)
         {
             if (webapiConfig.StaticFileConfig is not null && webapiConfig.StaticFileConfig.UseStaticFolder)
             {
@@ -310,7 +305,7 @@ namespace Asgard.Hosts.AspNetCore
         /// <summary>
         /// 初始化swagger支持部分
         /// </summary>
-        private void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager? pluginManager)
+        private static void InitSwagger(WebApplication app, WebApiConfig webAPIConfig, PluginLoaderManager? pluginManager)
         {
             if (webAPIConfig.UseSwagger)
             {
@@ -319,7 +314,7 @@ namespace Asgard.Hosts.AspNetCore
                 {
                     c.PreSerializeFilters.Add((doc, _) =>
                     {
-                        doc.Servers.Add(new Microsoft.OpenApi.Models.OpenApiServer()
+                        doc.Servers?.Add(new OpenApiServer()
                         {
                             Url = webAPIConfig.SwaggerUrlPrefix
                         });
@@ -345,7 +340,7 @@ namespace Asgard.Hosts.AspNetCore
         /// 配置websocket
         /// </summary>
         /// <param name="app"></param>
-        private void ConfigWebsocket(WebApplication app)
+        private static void ConfigWebsocket(WebApplication app)
         {
             _ = app.UseWebSockets(new WebSocketOptions()
             {
@@ -408,7 +403,7 @@ namespace Asgard.Hosts.AspNetCore
                          if (rawMethodInfo is not null)
                          {
                              var method = rawMethodInfo.MakeGenericMethod(item);
-                             _ = method.Invoke(null, new[] { endpoints });
+                             _ = method.Invoke(null, [endpoints]);
                          }
                      }
                  });
