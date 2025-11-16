@@ -14,9 +14,9 @@ namespace Asgard.Hoenir
         /// </summary>
         public static readonly MessageHubManager Instance = new();
         /// <summary>
-        /// IDE的sessionID
+        /// Global SessionID
         /// </summary>
-        public static string IDESessionID { get; set; } = Guid.NewGuid().ToString("N");
+        public static string GlobalSessionID { get; set; } = Guid.NewGuid().ToString("N");
 
         /// <summary>
         /// 记录详细信息
@@ -59,13 +59,13 @@ namespace Asgard.Hoenir
         /// 主字典的Key:事件ID
         /// 主字典的Value:这个事件所包含的所有需要回调的函数信息
         /// </summary>
-        public ConcurrentDictionary<string, ConcurrentDictionary<string, Func<MessageDataItem?, MessageDataItem?>>> _callBackPool = new();
+        public ConcurrentDictionary<string, ConcurrentDictionary<string, Func<MessageDataItem?, Task<MessageDataItem?>>>> _callBackPool = new();
         /// <summary>
         /// 回调池 独立事件
         /// 主字典的Key:事件ID
         /// 主字典的Value:这个事件所包含的所有需要回调的函数信息
         /// </summary>
-        public ConcurrentDictionary<string, Func<MessageDataItem?, MessageDataItem?>> _singleCallBackPool = new();
+        public ConcurrentDictionary<string, Func<MessageDataItem?, Task<MessageDataItem?>>> _singleCallBackPool = new();
 
 
         /// <summary>

@@ -16,13 +16,13 @@ namespace Asgard.Hoenir
         /// <param name="cbID">注册ID</param>
         /// <param name="filePath"></param>
         /// <param name="num"></param>
-        public void RegistCB(string messageKey, Func<MessageDataItem?, MessageDataItem?> cb, string cbID, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0)
+        public void RegistCB(string messageKey, Func<MessageDataItem?, Task<MessageDataItem?>> cb, string cbID, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0)
         {
-            Logger?.Trace($"尝试注册回调, MessageKey:{messageKey} cbID:{cbID} 发起文件:{filePath} 行号:{num}", eventID: IDESessionID);
+            Logger?.Trace($"尝试注册回调, MessageKey:{messageKey} cbID:{cbID} 发起文件:{filePath} 行号:{num}", eventID: GlobalSessionID);
 
             _ = _callBackPool.AddOrUpdate(messageKey, (key) =>
              {
-                 var data = new ConcurrentDictionary<string, Func<MessageDataItem?, MessageDataItem?>>();
+                 var data = new ConcurrentDictionary<string, Func<MessageDataItem?, Task<MessageDataItem?>>>();
                  _ = data.TryAdd(cbID, cb);
                  return data;
              },
@@ -46,7 +46,7 @@ namespace Asgard.Hoenir
         /// <param name="num">调用行号</param> 
         public void UnRegistCB(string messageKey, string cbID, [CallerFilePath] string filePath = "", [CallerLineNumber] int num = 0)
         {
-            Logger?.Trace($"尝试注销回调, MessageKey:{messageKey} 发起文件:{filePath} 行号:{num}", eventID: IDESessionID);
+            Logger?.Trace($"尝试注销回调, MessageKey:{messageKey} 发起文件:{filePath} 行号:{num}", eventID: GlobalSessionID);
 
 
             if (_callBackPool.TryGetValue(messageKey, out var cbs))//尝试用事件Key,获取一下这个事件Key所有的回调池
