@@ -1,83 +1,63 @@
-root=true
-[*.cs]
+root = true
 
-indent_size = 4
-indent_style = space
-tab_width = 4
-
+[*]
+charset = utf-8-bom
 end_of_line = crlf
-insert_final_newline = false 
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.cs]
+indent_style = space
+indent_size = 4
+tab_width = 4
+end_of_line = crlf
+insert_final_newline = true
 
 dotnet_sort_system_directives_first = true
 dotnet_separate_import_directive_groups = true
 
-csharp_space_after_comma=true
-csharp_space_after_semicolon_in_for_statement=true
-csharp_indent_block_contents=true
+csharp_space_after_comma = true
+csharp_space_after_semicolon_in_for_statement = true
+csharp_indent_block_contents = true
 
- 
- 
+# Roslyn diagnostics（仅设置 severity）
 dotnet_diagnostic.IDE0009.severity = error
+dotnet_diagnostic.IDE0036.severity = error
+dotnet_diagnostic.IDE0040.severity = error
+dotnet_diagnostic.IDE0044.severity = error
+dotnet_diagnostic.IDE0062.severity = error
+dotnet_diagnostic.IDE0064.severity = error
+dotnet_diagnostic.IDE0048.severity = warning
+dotnet_diagnostic.IDE0010.severity = error
+dotnet_diagnostic.IDE0033.severity = error
+dotnet_diagnostic.IDE0039.severity = error
+dotnet_diagnostic.IDE0031.severity = error
+dotnet_diagnostic.IDE0041.severity = error
+dotnet_diagnostic.IDE1005.severity = error
+dotnet_diagnostic.IDE0019.severity = error
+dotnet_diagnostic.IDE0038.severity = error
+dotnet_diagnostic.CS0162.severity = error
+dotnet_diagnostic.IDE0051.severity = error
+dotnet_diagnostic.IDE0052.severity = error
+dotnet_diagnostic.IDE0058.severity = error
+dotnet_diagnostic.IDE0059.severity = error
+dotnet_diagnostic.IDE0060.severity = error
+dotnet_diagnostic.IDE0079.severity = error
+dotnet_diagnostic.IDE0080.severity = error
+dotnet_diagnostic.IDE1006.severity = error
 
-dotnet_diagnostic.IDE0036 = public,private,protected,internal,static,extern,new,virtual,abstract,sealed,override,readonly,unsafe,volatile,async:error
-dotnet_diagnostic.IDE0036.severity=error
-
-
-dotnet_diagnostic.IDE0040=always
-dotnet_diagnostic.IDE0040.severity=error
-
-
-dotnet_diagnostic.IDE0044.severity=error
-
-dotnet_diagnostic.IDE0062.severity=error
-
-dotnet_diagnostic.IDE0064.severity=error
-
-dotnet_diagnostic.IDE0048.severity=warning
-
-dotnet_diagnostic.IDE0010.severity=error
-
-dotnet_diagnostic.IDE0033.severity=error
-
-dotnet_diagnostic.IDE0039.severity=error
-
-dotnet_diagnostic.IDE0031.severity=error
-
-dotnet_diagnostic.IDE0041.severity=error
-
-dotnet_diagnostic.IDE1005.severity=error
-
-dotnet_diagnostic.IDE0019.severity=error
-
-dotnet_diagnostic.IDE0038.severity=error
-
-dotnet_diagnostic.CS0162.severity=error
-
-dotnet_diagnostic.IDE0051.severity=error
-
-dotnet_diagnostic.IDE0052.severity=error
-
-dotnet_diagnostic.IDE0058.severity=error
-
-dotnet_diagnostic.IDE0059.severity=error
-
-dotnet_diagnostic.IDE0060.severity=error
-
-dotnet_diagnostic.IDE0079.severity=error
-
-dotnet_diagnostic.IDE0080.severity=error
-
-dotnet_diagnostic.IDE1006.severity=error
-
-
-
+# 命名规则示例（保留原有配置）
 dotnet_naming_rule.camel_case_for_private_internal_fields.severity = suggestion
-dotnet_naming_rule.camel_case_for_private_internal_fields.symbols  = private_internal_fields
+dotnet_naming_rule.camel_case_for_private_internal_fields.symbols = private_internal_fields
 dotnet_naming_rule.camel_case_for_private_internal_fields.style = camel_case_underscore_style
+
 dotnet_naming_symbols.private_internal_fields.applicable_kinds = field
 dotnet_naming_symbols.private_internal_fields.applicable_accessibilities = private, internal
+
 dotnet_naming_style.camel_case_underscore_style.required_prefix = _
-dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case 
+dotnet_naming_style.camel_case_underscore_style.capitalization = camel_case
+
+# 其他样式设置
 csharp_using_directive_placement = outside_namespace:silent
 csharp_style_expression_bodied_methods = false:silent
 csharp_style_expression_bodied_constructors = false:silent
@@ -106,21 +86,26 @@ csharp_style_prefer_readonly_struct_member = true:suggestion
 csharp_style_prefer_readonly_struct = true:suggestion
 csharp_style_allow_embedded_statements_on_same_line_experimental = true:silent
 csharp_style_allow_blank_lines_between_consecutive_braces_experimental = true:silent
+
 [*.{cs,vb}]
 end_of_line = crlf
+indent_size = 4
+tab_width = 4
+
 dotnet_style_qualification_for_field = false:silent
 dotnet_style_qualification_for_property = false:silent
 dotnet_style_qualification_for_method = false:silent
 dotnet_style_qualification_for_event = false:silent
-indent_size = 4
-tab_width = 4
+
 dotnet_style_operator_placement_when_wrapping = beginning_of_line
 dotnet_style_require_accessibility_modifiers = for_non_interface_members:silent
 dotnet_code_quality_unused_parameters = all:suggestion
 dotnet_style_readonly_field = true:suggestion
+
 dotnet_style_parentheses_in_arithmetic_binary_operators = always_for_clarity:silent
 dotnet_style_parentheses_in_relational_binary_operators = always_for_clarity:silent
 dotnet_style_parentheses_in_other_binary_operators = always_for_clarity:silent
 dotnet_style_parentheses_in_other_operators = never_if_unnecessary:silent
+
 dotnet_style_allow_statement_immediately_after_block_experimental = true:silent
 dotnet_style_allow_multiple_blank_lines_experimental = true:silent
