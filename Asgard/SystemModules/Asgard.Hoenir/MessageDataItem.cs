@@ -1,59 +1,47 @@
 namespace Asgard.Hoenir
 {
     /// <summary>
-    /// ÏûÏ¢ÖĞĞÄÏûÏ¢Ìå
+    /// æ¶ˆæ¯æ•°æ®é¡¹ï¼Œå°è£…æ¶ˆæ¯çš„åŸºæœ¬ä¿¡æ¯
     /// </summary>
-    public class MessageDataItem
+    public class MessageDataItem(string? source = null, string? to = null)
     {
         /// <summary>
-        /// ¹¹ÔìÒ»¸öĞÂµÄÏûÏ¢
+        /// æ¶ˆæ¯æ¥æº
         /// </summary>
-        /// <param name="source">À´Ô´,ÏµÍ³»áÔÚÒ»¶¨´°¿ÚÆÚ×Ô¶¯¹ıÂËÖØ¸´ÏûÏ¢Ô´</param>
-        /// <param name="to">¸øË­,Ö§³ÖÍ¨Åä·ûÀıÈç*</param>
-        public MessageDataItem(string? source = null, string? to = null)
-        {
-            Source = source ?? "";
-            To = to ?? "";
-        }
+        public string Source { get; private set; } = source ?? "";
         /// <summary>
-        /// ÓÉË­·¢ÆğµÄ
+        /// ç›®æ ‡æ¥æ”¶è€…ï¼Œé€šå¸¸ä¸ºæ¥æ”¶æ–¹IDï¼Œå¯ä¸º null
         /// </summary>
-        public string Source { get; private set; }
+        public string? To { get; private set; } = to;
         /// <summary>
-        /// ·¢¸øË­µÄ,Ö¸¶¨¶Ô·½ID,¾Í¿ÉÒÔ×¼È··¢ËÍ
-        /// </summary>
-        public string To { get; private set; }
-        /// <summary>
-        /// ÏûÏ¢ID
+        /// æ¶ˆæ¯ID
         /// </summary>
         public string MessageID { get; set; } = Guid.NewGuid().ToString("N");
 
         /// <summary>
-        /// ÄÚÈİ
+        /// æ¶ˆæ¯å†…å®¹
         /// </summary>
         public object? Data { get; set; }
         /// <summary>
-        /// ·¢ÆğÊ±¼ä
+        /// æ¶ˆæ¯æ—¶é—´æˆ³ï¼ˆTicksï¼‰
         /// </summary>
         public long TimeStamp { get; init; } = DateTime.Now.Ticks;
         /// <summary>
-        /// ÄÄ¸öÎÄ¼şµ÷ÓÃµÄ
+        /// æ¥æºæ–‡ä»¶è·¯å¾„
         /// </summary>
         public string FromFile { get; set; } = string.Empty;
         /// <summary>
-        /// µÚ¼¸ĞĞ
+        /// è¡Œå·
         /// </summary>
         public int Line { get; set; }
         /// <summary>
-        /// Í·ÏûÏ¢¿ÉÒÔ´«µİÒ»Ğ©ÆÕÍ¨²ÎÊı
+        /// æ¶ˆæ¯å¤´ï¼Œå­˜æ”¾ä¸€äº›é€šç”¨å…ƒæ•°æ®
         /// </summary>
-        public Dictionary<string, object> Header { get; set; } = new();
+        public Dictionary<string, object> Header { get; set; } = new Dictionary<string, object>();
 
         /// <summary>
-        /// »ñÈ¡Êı¾İ,Èç¹ûÊÇÕâ¸öÀàĞÍ,Ôò×ª»»,Èç¹û²»ÊÇÔòÎª¿Õ
+        /// è·å–æ¶ˆæ¯å†…å®¹å¹¶å°è¯•ç±»å‹è½¬æ¢ï¼Œå¤±è´¥åˆ™è¿”å›é»˜è®¤å€¼
         /// </summary>
-        /// <typeparam name="T">ÏëÒª×ª»»µ½µÄÀàĞÍ</typeparam>
-        /// <returns></returns>
         public T? GetData<T>()
         {
             if (Data is T res)
@@ -63,10 +51,8 @@ namespace Asgard.Hoenir
             return default;
         }
         /// <summary>
-        /// »ñÈ¡Êı¾İ,Èç¹ûÊÇÕâ¸öÀàĞÍ,Ôò×ª»»,Èç¹û²»ÊÇÔòÎª¿Õ
+        /// è·å–æ¶ˆæ¯å†…å®¹å¹¶å°è¯•ç±»å‹è½¬æ¢ï¼Œè¿”å›æ˜¯å¦è½¬æ¢æˆåŠŸ
         /// </summary>
-        /// <typeparam name="T">ÏëÒª×ª»»µ½µÄÀàĞÍ</typeparam>
-        /// <returns></returns>
         public bool TryGetData<T>(out T? data)
         {
             data = default;
@@ -77,6 +63,5 @@ namespace Asgard.Hoenir
             }
             return false;
         }
-
     }
 }
