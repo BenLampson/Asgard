@@ -1,4 +1,4 @@
-<!-- Directory.Build.props -->
+﻿<!-- Directory.Build.props -->
 <Project>
 	<PropertyGroup>
 		<!-- 公共框架和语言设置 -->
@@ -8,7 +8,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- 公共包元数据 -->
-		<Version>3.0.1</Version>
+		<Version>3.0.2</Version>
 		<Authors>BenLampson</Authors>
 		<Company>BenLampson</Company>
 		<Product>Asgard</Product>
