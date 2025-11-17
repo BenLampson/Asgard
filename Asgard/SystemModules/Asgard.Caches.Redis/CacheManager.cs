@@ -15,6 +15,7 @@ namespace Asgard.Caches.Redis
 {
     /// <summary>
     /// 缓存管理对象，支持 Redis 和内存缓存。
+    /// 由于是自己实现插件,这里的正反序列化都增加了CommonSerializerOptions.CamelCaseChineseNameCaseInsensitive支持
     /// </summary>
     public class CacheManager : AbsCache
     {
@@ -80,14 +81,24 @@ namespace Asgard.Caches.Redis
         /// <typeparam name="T">目标类型</typeparam>
         /// <param name="key">key</param> 
         /// <returns>从缓存获取的值,可能为空</returns>
-        public override T? TryGet<T>(string key) where T : class
+        public override async Task<T?> TryGetAsync<T>(string key) where T : class
         {
             try
             {
-                var res = _redisCacheExtends?.GetString(key) ?? Encoding.UTF8.GetString(MemoryCache.Get<byte[]>(key) ?? []);
-                if (!string.IsNullOrWhiteSpace(res))
+                // 优先从内存获取
+                var memStr = Encoding.UTF8.GetString(MemoryCache.Get<byte[]>(key) ?? []);
+                if (!string.IsNullOrWhiteSpace(memStr))
                 {
-                    return JsonSerializer.Deserialize<T>(res, CommonSerializerOptions.CamelCaseChineseNameCaseInsensitive)!;
+                    return JsonSerializer.Deserialize<T>(memStr, CommonSerializerOptions.CamelCaseChineseNameCaseInsensitive);
+                }
+                // 再查 Redis
+                if (_redisCacheExtends is not null)
+                {
+                    var redisStr = await _redisCacheExtends.GetStringAsync(key).ConfigureAwait(false);
+                    if (!string.IsNullOrWhiteSpace(redisStr))
+                    {
+                        return JsonSerializer.Deserialize<T>(redisStr, CommonSerializerOptions.CamelCaseChineseNameCaseInsensitive);
+                    }
                 }
             }
             catch (Exception ex)
@@ -105,11 +116,25 @@ namespace Asgard.Caches.Redis
         /// </summary> 
         /// <param name="key">key</param> 
         /// <returns>从缓存获取的值,可能为空</returns>
-        public override string? TryGetString(string key)
+        public override async Task<string?> TryGetStringAsync(string key)
         {
             try
             {
-                return _redisCacheExtends?.GetString(key) ?? Encoding.UTF8.GetString(MemoryCache.Get<byte[]>(key) ?? []); ;
+                // 优先从内存获取
+                var memStr = Encoding.UTF8.GetString(MemoryCache.Get<byte[]>(key) ?? []);
+                if (!string.IsNullOrWhiteSpace(memStr))
+                {
+                    return memStr;
+                }
+                // 再查 Redis
+                if (_redisCacheExtends is not null)
+                {
+                    var redisStr = await _redisCacheExtends.GetStringAsync(key).ConfigureAwait(false);
+                    if (!string.IsNullOrWhiteSpace(redisStr))
+                    {
+                        return redisStr;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -123,18 +148,26 @@ namespace Asgard.Caches.Redis
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public override bool Exists(string key)
+        public override async Task<bool> ExistsAsync(string key)
         {
             try
             {
-                var rawBytes = _redisCacheExtends?.Get(key) ?? MemoryCache.Get<byte[]>(key);
-                return rawBytes is null;
+                // 优先查内存
+                if (MemoryCache.Get<byte[]>(key) is not null)
+                {
+                    return true;
+                }
+                // 再查 Redis
+                if (_redisCacheExtends is not null)
+                {
+                    return (await _redisCacheExtends.GetAsync(key).ConfigureAwait(false)) is not null;
+                }
             }
             catch (Exception ex)
             {
                 _logger?.Information($"尝试获取缓存 {key} 报错.", exception: ex);
             }
-            return default;
+            return false;
         }
 
 
@@ -148,11 +181,13 @@ namespace Asgard.Caches.Redis
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="settings"></param>
-        public override void SetString(string key, string value, CacheItemSettings settings)
+        public override async Task SetStringAsync(string key, string value, CacheItemSettings settings)
         {
             var bytes = Encoding.UTF8.GetBytes(value);
-            if (_redisCacheExtends is null)
+
+            if (settings.SaveToAll)
             {
+                // 同时写入内存和 Redis
                 var opt = new MemoryCacheEntryOptions()
                 {
                     AbsoluteExpiration = settings.AbsoluteExpiration,
@@ -160,16 +195,42 @@ namespace Asgard.Caches.Redis
                     SlidingExpiration = settings.SlidingExpiration,
                 };
                 _ = MemoryCache.Set(key, bytes, opt);
+
+                if (_redisCacheExtends is not null)
+                {
+                    var cacheSettings = new DistributedCacheEntryOptions()
+                    {
+                        AbsoluteExpiration = settings.AbsoluteExpiration,
+                        AbsoluteExpirationRelativeToNow = settings.AbsoluteExpirationRelativeToNow,
+                        SlidingExpiration = settings.SlidingExpiration,
+                    };
+                    await _redisCacheExtends.SetAsync(key, bytes, cacheSettings).ConfigureAwait(false);
+                }
             }
             else
             {
-                var cacheSettings = new DistributedCacheEntryOptions()
+                if (_redisCacheExtends is not null)
                 {
-                    AbsoluteExpiration = settings.AbsoluteExpiration,
-                    AbsoluteExpirationRelativeToNow = settings.AbsoluteExpirationRelativeToNow,
-                    SlidingExpiration = settings.SlidingExpiration,
-                };
-                _redisCacheExtends?.Set(key, bytes, cacheSettings);
+                    // 只写 Redis
+                    var cacheSettings = new DistributedCacheEntryOptions()
+                    {
+                        AbsoluteExpiration = settings.AbsoluteExpiration,
+                        AbsoluteExpirationRelativeToNow = settings.AbsoluteExpirationRelativeToNow,
+                        SlidingExpiration = settings.SlidingExpiration,
+                    };
+                    await _redisCacheExtends.SetAsync(key, bytes, cacheSettings).ConfigureAwait(false);
+                }
+                else
+                {
+                    // 只写内存
+                    var opt = new MemoryCacheEntryOptions()
+                    {
+                        AbsoluteExpiration = settings.AbsoluteExpiration,
+                        AbsoluteExpirationRelativeToNow = settings.AbsoluteExpirationRelativeToNow,
+                        SlidingExpiration = settings.SlidingExpiration,
+                    };
+                    _ = MemoryCache.Set(key, bytes, opt);
+                }
             }
         }
 
@@ -178,21 +239,22 @@ namespace Asgard.Caches.Redis
         /// </summary>
         /// <param name="pattern"></param>
         /// <returns></returns>
-        public override string[] GetKeys(string pattern)
+        public override async Task<string[]> GetKeysAsync(string pattern)
         {
             try
             {
                 if (_redis is not null)
                 {
-                    return _redis.Keys(pattern);
+                    var redisRes = await _redis.KeysAsync(pattern).ConfigureAwait(false);
+                    if (redisRes is not null && redisRes.Length != 0)
+                    {
+                        return redisRes;
+                    }
                 }
-                else
-                {
-                    var realPattern = pattern.Replace("*", "");
-                    return MemoryCache.Keys.Select(item => item.ToString()).ToList().Where(item => item?.StartsWith(realPattern) ?? false)
-                        .Select(item => item ?? "BadKeyData")
-                        .ToArray() ?? [];
-                }
+                var realPattern = pattern.Replace("*", "");
+                return MemoryCache.Keys.Select(item => item.ToString()).ToList().Where(item => item?.StartsWith(realPattern) ?? false)
+                    .Select(item => item ?? "BadKeyData")
+                    .ToArray() ?? [];
             }
             catch (Exception ex)
             {
@@ -205,18 +267,15 @@ namespace Asgard.Caches.Redis
         /// 移除一个缓存
         /// </summary>
         /// <param name="key">key</param>
-        public override void Remove(string key)
+        public override async Task RemoveAsync(string key)
         {
             try
             {
-                if (_redisCacheExtends is null)
+                if (_redisCacheExtends is not null)
                 {
-                    MemoryCache.Remove(key);
+                    await _redisCacheExtends.RemoveAsync(key).ConfigureAwait(false);
                 }
-                else
-                {
-                    _redisCacheExtends?.Remove(key);
-                }
+                MemoryCache.Remove(key);
             }
             catch (Exception ex)
             {
@@ -228,19 +287,16 @@ namespace Asgard.Caches.Redis
         /// 刷新一下某个缓存
         /// </summary>
         /// <param name="key">key</param> 
-        public override void Refresh(string key)
+        public override async Task RefreshAsync(string key)
         {
 
             try
             {
-                if (_redisCacheExtends is null)
+                if (_redisCacheExtends is not null)
                 {
-                    _ = MemoryCache.Get(key);
+                    await _redisCacheExtends.RefreshAsync(key).ConfigureAwait(false);
                 }
-                else
-                {
-                    _redisCacheExtends.Refresh(key);
-                }
+                _ = MemoryCache.Get(key);
             }
             catch (Exception ex)
             {

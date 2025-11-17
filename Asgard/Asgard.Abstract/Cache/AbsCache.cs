@@ -27,21 +27,21 @@ namespace Asgard.Abstract.Cache
         /// <typeparam name="T">目标类型</typeparam>
         /// <param name="key">key</param> 
         /// <returns>从缓存获取的值,可能为空</returns>
-        public abstract T? TryGet<T>(string key) where T : class;
+        public abstract Task<T?> TryGetAsync<T>(string key) where T : class;
 
         /// <summary>
         /// 根据key获取某一个缓存,自己用优先级判定
         /// </summary> 
         /// <param name="key">key</param> 
         /// <returns>从缓存获取的值,可能为空</returns>
-        public abstract string? TryGetString(string key);
+        public abstract Task<string?> TryGetStringAsync(string key);
 
         /// <summary>
         /// 判断key是否存在,会延续存续时长
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        public abstract bool Exists(string key);
+        public abstract Task<bool> ExistsAsync(string key);
 
         /// <summary>
         /// 获取某个对象的字符串表示
@@ -57,26 +57,26 @@ namespace Asgard.Abstract.Cache
         /// <param name="key"></param>
         /// <param name="value"></param>
         /// <param name="settings"></param>
-        public abstract void SetString(string key, string value, CacheItemSettings settings);
+        public abstract Task SetStringAsync(string key, string value, CacheItemSettings settings);
 
         /// <summary>
         /// 根据某一个匹配模型获取所有key
         /// </summary>
         /// <param name="pattern"></param>
         /// <returns></returns>
-        public abstract string[] GetKeys(string pattern);
+        public abstract Task<string[]> GetKeysAsync(string pattern);
 
         /// <summary>
         /// 移除一个缓存
         /// </summary>
         /// <param name="key">key</param>
-        public abstract void Remove(string key);
+        public abstract Task RemoveAsync(string key);
 
         /// <summary>
         /// 刷新一下某个缓存
         /// </summary>
         /// <param name="key">key</param> 
-        public abstract void Refresh(string key);
+        public abstract Task RefreshAsync(string key);
 
         /// <summary>
         /// 根据Key获取,如果获取不到则新增
@@ -86,17 +86,21 @@ namespace Asgard.Abstract.Cache
         /// <param name="onSet">当获取不到的时候从哪获取值</param>
         /// <param name="settings">过期时间</param> 
         /// <returns></returns>
-        public T GetOrSet<T>(string key, Func<T> onSet, CacheItemSettings settings) where T : class
+        public async Task<T?> GetOrSet<T>(string key, Func<Task<T?>> onSet, CacheItemSettings settings) where T : class
         {
-            var res = TryGet<T>(key);
+            var res = await TryGetAsync<T>(key);
             if (res is not null)
             {
                 return res;
             }
             else
             {
-                var data = onSet();
-                Set(key, data, settings);
+                var data = await onSet();
+                if (data is null)
+                {
+                    return null;
+                }
+                await SetAsync(key, data, settings);
                 return data;
             }
 
@@ -109,17 +113,21 @@ namespace Asgard.Abstract.Cache
         /// <param name="onSet">当获取不到的时候从哪获取值</param>
         /// <param name="settings">过期时间</param> 
         /// <returns></returns>
-        public string GetOrSetString(string key, Func<string> onSet, CacheItemSettings settings)
+        public async Task<string?> GetOrSetStringAsync(string key, Func<Task<string?>> onSet, CacheItemSettings settings)
         {
-            var res = TryGetString(key);
+            var res = await TryGetStringAsync(key);
             if (res is not null)
             {
                 return res;
             }
             else
             {
-                var data = onSet();
-                Set(key, data, settings);
+                var data = await onSet();
+                if (data is null)
+                {
+                    return null;
+                }
+                await SetAsync(key, data, settings);
                 return data;
             }
 
@@ -132,7 +140,7 @@ namespace Asgard.Abstract.Cache
         /// <param name="key">key</param>
         /// <param name="data">数据</param>
         /// <param name="settings">过期时间</param>
-        public void Set<T>(string key, T data, CacheItemSettings settings)
+        public async Task SetAsync<T>(string key, T data, CacheItemSettings settings)
         {
             try
             {
@@ -145,7 +153,7 @@ namespace Asgard.Abstract.Cache
                 {
                     realStringData = GetInstanceString(data);
                 }
-                SetString(key, realStringData, settings);
+                await SetStringAsync(key, realStringData, settings);
             }
             catch (Exception ex)
             {
