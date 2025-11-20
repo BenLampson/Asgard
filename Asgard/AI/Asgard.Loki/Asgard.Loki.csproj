@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <IsPackable>true</IsPackable>
+
+	  <Product>Asgard</Product>
+	  <Title>Asgard Framework</Title>
+	  <PackageId>Asgard.Loki</PackageId>
+	  <Description>Asgard.Loki是Asgard框架中专门负责AI相关功能的模块，提供高性能、可扩展的AI服务能力。</Description>
+	  <PackageReleaseNotes>
+	  </PackageReleaseNotes>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Agents.AI" Version="1.0.0-preview.251114.1" />
+    <PackageReference Include="Microsoft.Agents.AI.OpenAI" Version="1.0.0-preview.251114.1" />
+    <PackageReference Include="Microsoft.Agents.AI.Workflows" Version="1.0.0-preview.251114.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Asgard.Abstract\Asgard.Abstract.csproj" />
+    <ProjectReference Include="..\..\Asgard.IDGen\Asgard.IDGen.csproj" />
+    <ProjectReference Include="..\..\Asgard.Tools\Asgard.Tools.csproj" />
+  </ItemGroup>
+
+</Project>
