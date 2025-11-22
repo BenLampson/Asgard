@@ -58,7 +58,7 @@ var workflow = AgentWorkflowBuilder
 
 // Start the group chat
 var messages = new List<ChatMessage> {
-    new(ChatRole.User, " Create a slogan for an eco-friendly electric vehicle.")
+    new(ChatRole.User, "我的孩子叫做刘沐阳,今年6岁,给我写一个1000字的文章,讲述她从小成长成国防军开飞机的历程,最后要输出这个1000字的文章")//Create a slogan for an eco-friendly electric vehicle.")
 };
 
 StreamingRun run = await InProcessExecution.StreamAsync(workflow, messages);
